@@ -1,0 +1,522 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000D80401B4A63B2007DE5AE /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 000D803F1B4A63B2007DE5AE /* bg.jpg */; };
+		002D864D1B462EA300D1D729 /* Boss.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D862E1B462EA300D1D729 /* Boss.m */; };
+		002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86301B462EA300D1D729 /* BossLocalDao.m */; };
+		002D864F1B462EA300D1D729 /* HDBDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86321B462EA300D1D729 /* HDBDatasource.m */; };
+		002D86501B462EA300D1D729 /* HAccess1.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 002D86331B462EA300D1D729 /* HAccess1.sqlite */; };
+		002D86511B462EA300D1D729 /* HAccess2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 002D86341B462EA300D1D729 /* HAccess2.sqlite */; };
+		002D86551B462EA300D1D729 /* Student.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D863E1B462EA300D1D729 /* Student.m */; };
+		002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86401B462EA300D1D729 /* StudentLocalDao.m */; };
+		002D86571B462EA300D1D729 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86421B462EA300D1D729 /* User.m */; };
+		002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86441B462EA300D1D729 /* UserLocalDao.m */; };
+		002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D865B1B465ABC00D1D729 /* MenuVC.m */; };
+		002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86601B465BFA00D1D729 /* HDatabaseDAO.m */; };
+		002D866E1B465BFA00D1D729 /* HDBMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86621B465BFA00D1D729 /* HDBMgr.m */; };
+		002D866F1B465BFA00D1D729 /* HEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86651B465BFA00D1D729 /* HEntity.m */; };
+		002D86701B465BFA00D1D729 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86681B465BFA00D1D729 /* HNetworkDAO.m */; };
+		002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */; };
+		002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86771B46616300D1D729 /* NetworkDaoTestVC.m */; };
+		00769C111BA866980022878B /* HEntityMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 00769C101BA866980022878B /* HEntityMgr.m */; };
+		00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = 00786CFA1B96D0F4005A8247 /* TestEntity1.m */; };
+		00BC95CF1C27D3C30036B322 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 00BC95CE1C27D3C30036B322 /* test.json */; };
+		00DD89211B462D6600214FD3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89201B462D6600214FD3 /* main.m */; };
+		00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89231B462D6600214FD3 /* AppDelegate.m */; };
+		00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD892B1B462D6600214FD3 /* Images.xcassets */; };
+		00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E907841BAD11F600E10652 /* DeserializeDemo.m */; };
+		B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CAB5AA2A23FAC518F6E98C /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		000D803F1B4A63B2007DE5AE /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
+		002D862D1B462EA300D1D729 /* Boss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boss.h; sourceTree = "<group>"; };
+		002D862E1B462EA300D1D729 /* Boss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Boss.m; sourceTree = "<group>"; };
+		002D862F1B462EA300D1D729 /* BossLocalDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossLocalDao.h; sourceTree = "<group>"; };
+		002D86301B462EA300D1D729 /* BossLocalDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BossLocalDao.m; sourceTree = "<group>"; };
+		002D86311B462EA300D1D729 /* HDBDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBDatasource.h; sourceTree = "<group>"; };
+		002D86321B462EA300D1D729 /* HDBDatasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBDatasource.m; sourceTree = "<group>"; };
+		002D86331B462EA300D1D729 /* HAccess1.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HAccess1.sqlite; sourceTree = "<group>"; };
+		002D86341B462EA300D1D729 /* HAccess2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HAccess2.sqlite; sourceTree = "<group>"; };
+		002D863D1B462EA300D1D729 /* Student.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Student.h; sourceTree = "<group>"; };
+		002D863E1B462EA300D1D729 /* Student.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Student.m; sourceTree = "<group>"; };
+		002D863F1B462EA300D1D729 /* StudentLocalDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentLocalDao.h; sourceTree = "<group>"; };
+		002D86401B462EA300D1D729 /* StudentLocalDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentLocalDao.m; sourceTree = "<group>"; };
+		002D86411B462EA300D1D729 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		002D86421B462EA300D1D729 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		002D86431B462EA300D1D729 /* UserLocalDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLocalDao.h; sourceTree = "<group>"; };
+		002D86441B462EA300D1D729 /* UserLocalDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLocalDao.m; sourceTree = "<group>"; };
+		002D865A1B465ABC00D1D729 /* MenuVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuVC.h; sourceTree = "<group>"; };
+		002D865B1B465ABC00D1D729 /* MenuVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuVC.m; sourceTree = "<group>"; };
+		002D865F1B465BFA00D1D729 /* HDatabaseDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDatabaseDAO.h; sourceTree = "<group>"; };
+		002D86601B465BFA00D1D729 /* HDatabaseDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDatabaseDAO.m; sourceTree = "<group>"; };
+		002D86611B465BFA00D1D729 /* HDBMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBMgr.h; sourceTree = "<group>"; };
+		002D86621B465BFA00D1D729 /* HDBMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBMgr.m; sourceTree = "<group>"; };
+		002D86641B465BFA00D1D729 /* HEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HEntity.h; sourceTree = "<group>"; };
+		002D86651B465BFA00D1D729 /* HEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HEntity.m; sourceTree = "<group>"; };
+		002D86671B465BFA00D1D729 /* HNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAO.h; sourceTree = "<group>"; };
+		002D86681B465BFA00D1D729 /* HNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAO.m; sourceTree = "<group>"; };
+		002D86691B465BFA00D1D729 /* HNetworkDAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAOManager.h; sourceTree = "<group>"; };
+		002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAOManager.m; sourceTree = "<group>"; };
+		002D86761B46616300D1D729 /* NetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDaoTestVC.h; sourceTree = "<group>"; };
+		002D86771B46616300D1D729 /* NetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDaoTestVC.m; sourceTree = "<group>"; };
+		00769C0F1BA866980022878B /* HEntityMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HEntityMgr.h; sourceTree = "<group>"; };
+		00769C101BA866980022878B /* HEntityMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HEntityMgr.m; sourceTree = "<group>"; };
+		00786CF91B96D0F4005A8247 /* TestEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestEntity1.h; sourceTree = "<group>"; };
+		00786CFA1B96D0F4005A8247 /* TestEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestEntity1.m; sourceTree = "<group>"; };
+		00BC95CE1C27D3C30036B322 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		00DD891B1B462D6600214FD3 /* HAccess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HAccess.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00DD891F1B462D6600214FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00DD89201B462D6600214FD3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		00DD89221B462D6600214FD3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		00DD89231B462D6600214FD3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		00DD892B1B462D6600214FD3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		00E907831BAD11F600E10652 /* DeserializeDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeserializeDemo.h; sourceTree = "<group>"; };
+		00E907841BAD11F600E10652 /* DeserializeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeserializeDemo.m; sourceTree = "<group>"; };
+		63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		99CAB5AA2A23FAC518F6E98C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00DD89181B462D6600214FD3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0024389F1C30E0D4003F3CF9 /* dbtest */ = {
+			isa = PBXGroup;
+			children = (
+				002D862D1B462EA300D1D729 /* Boss.h */,
+				002D862E1B462EA300D1D729 /* Boss.m */,
+				002D862F1B462EA300D1D729 /* BossLocalDao.h */,
+				002D86301B462EA300D1D729 /* BossLocalDao.m */,
+				002D86311B462EA300D1D729 /* HDBDatasource.h */,
+				002D86321B462EA300D1D729 /* HDBDatasource.m */,
+				002D86331B462EA300D1D729 /* HAccess1.sqlite */,
+				002D86341B462EA300D1D729 /* HAccess2.sqlite */,
+				002D863D1B462EA300D1D729 /* Student.h */,
+				002D863E1B462EA300D1D729 /* Student.m */,
+				002D863F1B462EA300D1D729 /* StudentLocalDao.h */,
+				002D86401B462EA300D1D729 /* StudentLocalDao.m */,
+				002D86411B462EA300D1D729 /* User.h */,
+				002D86421B462EA300D1D729 /* User.m */,
+				002D86431B462EA300D1D729 /* UserLocalDao.h */,
+				002D86441B462EA300D1D729 /* UserLocalDao.m */,
+			);
+			name = dbtest;
+			sourceTree = "<group>";
+		};
+		002438A01C30E0F3003F3CF9 /* deserial */ = {
+			isa = PBXGroup;
+			children = (
+				00786CF91B96D0F4005A8247 /* TestEntity1.h */,
+				00786CFA1B96D0F4005A8247 /* TestEntity1.m */,
+				00E907831BAD11F600E10652 /* DeserializeDemo.h */,
+				00E907841BAD11F600E10652 /* DeserializeDemo.m */,
+			);
+			name = deserial;
+			sourceTree = "<group>";
+		};
+		002438A11C30E108003F3CF9 /* network */ = {
+			isa = PBXGroup;
+			children = (
+				002D86761B46616300D1D729 /* NetworkDaoTestVC.h */,
+				002D86771B46616300D1D729 /* NetworkDaoTestVC.m */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
+		002D862C1B462EA300D1D729 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				002438A11C30E108003F3CF9 /* network */,
+				002438A01C30E0F3003F3CF9 /* deserial */,
+				0024389F1C30E0D4003F3CF9 /* dbtest */,
+				002D865A1B465ABC00D1D729 /* MenuVC.h */,
+				002D865B1B465ABC00D1D729 /* MenuVC.m */,
+				000D803F1B4A63B2007DE5AE /* bg.jpg */,
+				00BC95CE1C27D3C30036B322 /* test.json */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		002D865D1B465BFA00D1D729 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				002D865E1B465BFA00D1D729 /* Database */,
+				002D86631B465BFA00D1D729 /* Entity */,
+				002D86661B465BFA00D1D729 /* Network */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		002D865E1B465BFA00D1D729 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				002D865F1B465BFA00D1D729 /* HDatabaseDAO.h */,
+				002D86601B465BFA00D1D729 /* HDatabaseDAO.m */,
+				002D86611B465BFA00D1D729 /* HDBMgr.h */,
+				002D86621B465BFA00D1D729 /* HDBMgr.m */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		002D86631B465BFA00D1D729 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				002D86641B465BFA00D1D729 /* HEntity.h */,
+				002D86651B465BFA00D1D729 /* HEntity.m */,
+				00769C0F1BA866980022878B /* HEntityMgr.h */,
+				00769C101BA866980022878B /* HEntityMgr.m */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		002D86661B465BFA00D1D729 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				002D86671B465BFA00D1D729 /* HNetworkDAO.h */,
+				002D86681B465BFA00D1D729 /* HNetworkDAO.m */,
+				002D86691B465BFA00D1D729 /* HNetworkDAOManager.h */,
+				002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		00DD89121B462D6600214FD3 = {
+			isa = PBXGroup;
+			children = (
+				002D865D1B465BFA00D1D729 /* Classes */,
+				002D862C1B462EA300D1D729 /* Demo */,
+				00DD891D1B462D6600214FD3 /* HAccess */,
+				00DD891C1B462D6600214FD3 /* Products */,
+				6AB15CECE928247E4185CCCC /* Pods */,
+				77E818DC0ADCB480589DA6AE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		00DD891C1B462D6600214FD3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00DD891B1B462D6600214FD3 /* HAccess.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00DD891D1B462D6600214FD3 /* HAccess */ = {
+			isa = PBXGroup;
+			children = (
+				00DD89221B462D6600214FD3 /* AppDelegate.h */,
+				00DD89231B462D6600214FD3 /* AppDelegate.m */,
+				00DD892B1B462D6600214FD3 /* Images.xcassets */,
+				00DD891E1B462D6600214FD3 /* Supporting Files */,
+			);
+			path = HAccess;
+			sourceTree = "<group>";
+		};
+		00DD891E1B462D6600214FD3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				00DD891F1B462D6600214FD3 /* Info.plist */,
+				00DD89201B462D6600214FD3 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6AB15CECE928247E4185CCCC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */,
+				63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		77E818DC0ADCB480589DA6AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				99CAB5AA2A23FAC518F6E98C /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00DD891A1B462D6600214FD3 /* HAccess */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00DD893E1B462D6600214FD3 /* Build configuration list for PBXNativeTarget "HAccess" */;
+			buildPhases = (
+				C710932FBCB45639246F26F9 /* Check Pods Manifest.lock */,
+				00DD89171B462D6600214FD3 /* Sources */,
+				00DD89181B462D6600214FD3 /* Frameworks */,
+				00DD89191B462D6600214FD3 /* Resources */,
+				1D0782E0E2B469A1C4C0A3E5 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HAccess;
+			productName = HAccess;
+			productReference = 00DD891B1B462D6600214FD3 /* HAccess.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00DD89131B462D6600214FD3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = zhangchutian;
+				TargetAttributes = {
+					00DD891A1B462D6600214FD3 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+				};
+			};
+			buildConfigurationList = 00DD89161B462D6600214FD3 /* Build configuration list for PBXProject "HAccess" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00DD89121B462D6600214FD3;
+			productRefGroup = 00DD891C1B462D6600214FD3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				00DD891A1B462D6600214FD3 /* HAccess */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00DD89191B462D6600214FD3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000D80401B4A63B2007DE5AE /* bg.jpg in Resources */,
+				002D86511B462EA300D1D729 /* HAccess2.sqlite in Resources */,
+				00BC95CF1C27D3C30036B322 /* test.json in Resources */,
+				00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */,
+				002D86501B462EA300D1D729 /* HAccess1.sqlite in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D0782E0E2B469A1C4C0A3E5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C710932FBCB45639246F26F9 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00DD89171B462D6600214FD3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				002D864D1B462EA300D1D729 /* Boss.m in Sources */,
+				002D86571B462EA300D1D729 /* User.m in Sources */,
+				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
+				002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */,
+				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
+				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
+				002D866F1B465BFA00D1D729 /* HEntity.m in Sources */,
+				002D86701B465BFA00D1D729 /* HNetworkDAO.m in Sources */,
+				002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */,
+				002D864F1B462EA300D1D729 /* HDBDatasource.m in Sources */,
+				002D866E1B465BFA00D1D729 /* HDBMgr.m in Sources */,
+				002D86551B462EA300D1D729 /* Student.m in Sources */,
+				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
+				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,
+				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
+				00769C111BA866980022878B /* HEntityMgr.m in Sources */,
+				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
+				00DD89211B462D6600214FD3 /* main.m in Sources */,
+				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		00DD893C1B462D6600214FD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00DD893D1B462D6600214FD3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		00DD893F1B462D6600214FD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = HAccess/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		00DD89401B462D6600214FD3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = HAccess/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00DD89161B462D6600214FD3 /* Build configuration list for PBXProject "HAccess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00DD893C1B462D6600214FD3 /* Debug */,
+				00DD893D1B462D6600214FD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00DD893E1B462D6600214FD3 /* Build configuration list for PBXNativeTarget "HAccess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00DD893F1B462D6600214FD3 /* Debug */,
+				00DD89401B462D6600214FD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00DD89131B462D6600214FD3 /* Project object */;
+}

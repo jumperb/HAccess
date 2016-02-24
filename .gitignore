@@ -1,0 +1,61 @@
+# Xcode 
+############
+
+*.mode1
+*.mode1v3
+*.mode2
+*.mode2v3
+*.mode1v3
+*.pbxuser
+*.perspective 
+*.perspectivev3
+*.pyc 
+*~.nib/
+*.moved-aside
+build/*
+build/
+dSYM/*
+DerivedData/
+package/
+*/*/xcuserdata/*
+*/*/xcshareddata/*
+
+#cocoapods
+Pods/
+Podfile.lock
+
+# Textmate -
+############
+*.tm_build_errors
+
+# Subversion
+############
+.svn
+
+# appCode
+############
+.idea
+
+# OS generated files #
+######################
+*.DS_Store
+ehthumbs.db
+Thumbs.db
+
+
+# Misc #
+######################
+*.swp
+
+
+# Project #
+#####################
+clangScanBuildReports/
+simian_reports/
+trimed_files
+sloccount.sc
+lcov_reports/
+git_diff_m_file.diff
+git_diff_h_file.diff
+
+*.xcuserstate

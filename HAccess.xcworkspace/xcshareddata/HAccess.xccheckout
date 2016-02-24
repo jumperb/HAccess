@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D5DE370C-127E-4C19-AB4E-86B0957DE9C5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>HAccess</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>871ECB5204335378F918FC4E1AA6F009D8A157C9</key>
+		<string>192.168.1.33:HAccess</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>HAccess.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>871ECB5204335378F918FC4E1AA6F009D8A157C9</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>192.168.1.33:HAccess</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>871ECB5204335378F918FC4E1AA6F009D8A157C9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>871ECB5204335378F918FC4E1AA6F009D8A157C9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>HAccess</string>
+		</dict>
+	</array>
+</dict>
+</plist>
