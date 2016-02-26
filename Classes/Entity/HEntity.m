@@ -160,10 +160,11 @@
                     {
                         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
                         NSNumber *valueNum = [formatter numberFromString:value];
-                        
+                        //if cannot convert value to number , set to 0 by defaylt
+                        if (!valueNum) valueNum = @(0);
                         if ([propertyExts isInRange:valueNum])
                         {
-                            [self setValue:value forKey:ppDetail.name];
+                            [self setValue:valueNum forKey:ppDetail.name];
                         }
                         else
                         {

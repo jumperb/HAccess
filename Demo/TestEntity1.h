@@ -74,7 +74,7 @@
 @interface TestEntity8 : HEntity
 @property (nonatomic) int a;
 @property (nonatomic) NSString *b;
-@property (nonatomic) float c;
+@property (nonatomic) NSUInteger c;
 @end
 
 @protocol TestProtocal <NSObject>
