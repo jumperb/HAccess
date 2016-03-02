@@ -7,7 +7,7 @@
 //
 
 #import "HDatabaseDAO.h"
-#import "HEntityMgr.h"
+#import "HPropertyMgr.h"
 #import <objc/runtime.h>
 #import <HCommon.h>
 
@@ -18,7 +18,7 @@
     self.ID = [result stringForColumn:@"id"];
     self.created = [result longForColumn:@"created"];
     self.modified = [result longForColumn:@"modified"];
-    NSArray *pplist = [[HEntityMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
     for (NSString *p in pplist)
     {
         if(result.columnNameToIndexMap[p])
@@ -174,8 +174,8 @@
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSArray *pplist = [[HEntityMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
-         NSString *fields = [[HEntityMgr shared] entityPropertylistString:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
          NSMutableString *values = [[NSMutableString alloc] init];
          int index = 0;
          for (NSString *p in pplist)
@@ -246,7 +246,7 @@
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HEntityMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -278,7 +278,7 @@
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HEntityMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -424,8 +424,8 @@
     if (!tableName) return NO;
     if ([entities count] == 0) return NO;
     NSString *entityClassName = [[HDBMgr shared] entityNameWithTableName:tableName];
-    NSArray *pplist = [[HEntityMgr shared] entityPropertylist:entityClassName isDepSearch:NO];
-    NSString *fields = [[HEntityMgr shared] entityPropertylistString:entityClassName isDepSearch:NO];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:entityClassName isDepSearch:NO];
+    NSString *fields = [[HPropertyMgr shared] entityPropertylistString:entityClassName isDepSearch:NO];
     fields = [fields stringByAppendingString:@",created,modified"];
 
     __block BOOL res = YES;

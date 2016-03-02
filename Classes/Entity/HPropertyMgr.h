@@ -1,5 +1,5 @@
 //
-//  HEntityMgr.h
+//  HPropertyMgr.h
 //  HAccess
 //
 //  Created by zhangchutian on 15/9/15.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HEntityMgr : NSObject
+@interface HPropertyMgr : NSObject
 //singleton
 + (instancetype)shared;
 
@@ -31,7 +31,7 @@
 /**
  *  property desc
  */
-@interface HEntityPropertyDetail : NSObject
+@interface HPropertyDetail : NSObject
 @property (nonatomic) NSString *name;
 @property (nonatomic) BOOL isObj;
 @property (nonatomic) char typeCode;

@@ -1,36 +1,36 @@
 //
-//  HEntityMgr.m
+//  HPropertyMgr.m
 //  HAccess
 //
 //  Created by zhangchutian on 15/9/15.
 //  Copyright (c) 2015年 zhangchutian. All rights reserved.
 //
 
-#import "HEntityMgr.h"
-#import "HEntity.h"
+#import "HPropertyMgr.h"
 #import <objc/runtime.h>
 #import <HCommon.h>
+#import "HDeserializableObject.h"
 
-@interface HEntityStructCacheData : NSObject
+@interface HPropertyStructCacheData : NSObject
 @property (nonatomic) NSArray *pplist;
 @property (nonatomic) NSString *pplistString;
 @property (nonatomic) NSArray *ppDetailList;
 @end
 
-@implementation HEntityStructCacheData
+@implementation HPropertyStructCacheData
 
 @end
 
-@interface HEntityMgr ()
-@property (nonatomic) NSMutableDictionary *entityStructCache;
+@interface HPropertyMgr ()
+@property (nonatomic) NSMutableDictionary *propertyStructCache;
 @end
 
 
-@implementation HEntityMgr
+@implementation HPropertyMgr
 + (instancetype)shared
 {
     static dispatch_once_t pred;
-    static HEntityMgr *o = nil;
+    static HPropertyMgr *o = nil;
 
     dispatch_once(&pred, ^{ o = [[self alloc] init]; });
     return o;
@@ -40,7 +40,7 @@
 {
     self = [super init];
     if (self) {
-        _entityStructCache = [[NSMutableDictionary alloc] init];
+        _propertyStructCache = [[NSMutableDictionary alloc] init];
         self.strictModle = YES;
     }
     return self;
@@ -56,19 +56,19 @@
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
-    HEntityStructCacheData *cacheData = _entityStructCache[key];
+    HPropertyStructCacheData *cacheData = _propertyStructCache[key];
 
     if (!cacheData)
     {
-        cacheData = [[HEntityStructCacheData alloc] init];
-        [_entityStructCache setObject:cacheData forKey:key];
+        cacheData = [[HPropertyStructCacheData alloc] init];
+        [_propertyStructCache setObject:cacheData forKey:key];
     }
     if (!cacheData.pplist)
     {
         NSMutableArray *pplist = [[NSMutableArray alloc] init];
         Class theClass = NSClassFromString(entityClassName);
         if (!theClass) return nil;
-        while (theClass != [HEntity class]) {
+        while (theClass != [HDeserializableObject class]) {
             unsigned int count, i;
             objc_property_t *properties = class_copyPropertyList(theClass, &count);
             if (count)
@@ -104,11 +104,11 @@
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
-    HEntityStructCacheData *cacheData = _entityStructCache[key];
+    HPropertyStructCacheData *cacheData = _propertyStructCache[key];
     if (!cacheData)
     {
-        cacheData = [[HEntityStructCacheData alloc] init];
-        [_entityStructCache setObject:cacheData forKey:key];
+        cacheData = [[HPropertyStructCacheData alloc] init];
+        [_propertyStructCache setObject:cacheData forKey:key];
     }
     if (!cacheData.pplistString)
     {
@@ -135,11 +135,11 @@
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
-    HEntityStructCacheData *cacheData = _entityStructCache[key];
+    HPropertyStructCacheData *cacheData = _propertyStructCache[key];
     if (!cacheData)
     {
-        cacheData = [[HEntityStructCacheData alloc] init];
-        [_entityStructCache setObject:cacheData forKey:key];
+        cacheData = [[HPropertyStructCacheData alloc] init];
+        [_propertyStructCache setObject:cacheData forKey:key];
     }
     if (!cacheData.ppDetailList)
     {
@@ -218,7 +218,7 @@
                     protocalString = [attrString substringWithRange:NSMakeRange(leftJian - attr + 1, rightJian - leftJian - 1)];
                 }
             }
-            HEntityPropertyDetail *detail = [HEntityPropertyDetail new];
+            HPropertyDetail *detail = [HPropertyDetail new];
             detail.name = p;
             detail.isObj = isObj;
             detail.typeCode = attr[1];
@@ -235,6 +235,6 @@
 
 
 
-@implementation HEntityPropertyDetail
+@implementation HPropertyDetail
 
 @end

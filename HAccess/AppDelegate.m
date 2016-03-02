@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MenuVC.h"
-#import "HEntityMgr.h"
+#import "HPropertyMgr.h"
 
 @interface AppDelegate ()
 
