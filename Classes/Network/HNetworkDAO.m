@@ -95,6 +95,7 @@
         _queueName = nil;
         self.baseURL = nil;
         self.pathURL = nil;
+        self.isMock = NO;
         
         _failedBlock = nil;
         _holdSelf = nil;
@@ -115,7 +116,6 @@
     return urlString;
 }
 
-
 - (void)startWithQueueName:(NSString*)queueName
 {
     _queueName = queueName;
@@ -124,21 +124,28 @@
 
     NSString* urlString = [self fullurl];
 
+#ifdef DEBUG
+    if (self.isMock)
+    {
+        [self doMockFileRequest];
+        return;
+    }
+#endif
+
+
     //prepare file download path
     if (self.isFileDownload)
     {
         self.fileDownloadPath = [self createTempFilePath:urlString];
     }
     else self.fileDownloadPath = nil;
-    
-    
+
+
     //if is file access url
     if ([urlString hasPrefix:@"file://"])
     {
         [self doLocalFileRequest:urlString];
     }
-    
-    
     
     
     //if is bundle access url
@@ -344,6 +351,28 @@
         }
     });
 }
+
+#ifdef DEBUG
+//local request
+- (void)doMockFileRequest
+{
+    NSString *urlString = @"HNetworkDAO.bundle";
+    NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]];
+    if (mockFileBundle)
+    {
+        urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:@"json"];
+        urlString = [NSURL fileURLWithPath:urlString].absoluteString;
+        [self doLocalFileRequest:urlString];
+    }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
+        });
+    }
+}
+#endif
+
 #pragma mark - about cache
 
 - (NSString *)cacheKey
