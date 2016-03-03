@@ -191,6 +191,7 @@ ppx(appkey, HPMapto(@"key"))
     if (self) {
         self.baseURL = @"http://www.tuling123.com";
         self.pathURL = @"openapi/api";
+        self.isMock = YES;
         self.deserializer = [HNEntityDeserializer deserializerWithClass:[DemoEntity class]];
     }
     return self;
