@@ -95,7 +95,6 @@
         _queueName = nil;
         self.baseURL = nil;
         self.pathURL = nil;
-        self.isMock = NO;
         
         _failedBlock = nil;
         _holdSelf = nil;
