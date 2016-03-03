@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HAccess"
-  s.version      = "1.7.8"
+  s.version      = "1.7.9"
   s.summary      = "A short description of HAccess."
 
   s.description  = <<-DESC
