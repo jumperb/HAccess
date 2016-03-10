@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000C9B251C900F8F009D6EE0 /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 000C9B241C900F8F009D6EE0 /* HNJsonDeserializer.m */; };
+		000C9B281C90326C009D6EE0 /* TestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */; };
 		000D80401B4A63B2007DE5AE /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 000D803F1B4A63B2007DE5AE /* bg.jpg */; };
 		002D864D1B462EA300D1D729 /* Boss.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D862E1B462EA300D1D729 /* Boss.m */; };
 		002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86301B462EA300D1D729 /* BossLocalDao.m */; };
@@ -37,6 +39,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		000C9B221C900F4E009D6EE0 /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
+		000C9B231C900F8F009D6EE0 /* HNJsonDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNJsonDeserializer.h; sourceTree = "<group>"; };
+		000C9B241C900F8F009D6EE0 /* HNJsonDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNJsonDeserializer.m; sourceTree = "<group>"; };
+		000C9B261C90326C009D6EE0 /* TestNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNetworkDAO.h; sourceTree = "<group>"; };
+		000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestNetworkDAO.m; sourceTree = "<group>"; };
 		000D803F1B4A63B2007DE5AE /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
 		002D862D1B462EA300D1D729 /* Boss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boss.h; sourceTree = "<group>"; };
 		002D862E1B462EA300D1D729 /* Boss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Boss.m; sourceTree = "<group>"; };
@@ -101,6 +108,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000C9B211C900F33009D6EE0 /* Deserialize */ = {
+			isa = PBXGroup;
+			children = (
+				000C9B221C900F4E009D6EE0 /* HNDeserializer.h */,
+				000C9B231C900F8F009D6EE0 /* HNJsonDeserializer.h */,
+				000C9B241C900F8F009D6EE0 /* HNJsonDeserializer.m */,
+			);
+			path = Deserialize;
+			sourceTree = "<group>";
+		};
 		0024389F1C30E0D4003F3CF9 /* dbtest */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +157,8 @@
 			children = (
 				002D86761B46616300D1D729 /* NetworkDaoTestVC.h */,
 				002D86771B46616300D1D729 /* NetworkDaoTestVC.m */,
+				000C9B261C90326C009D6EE0 /* TestNetworkDAO.h */,
+				000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -182,12 +201,12 @@
 		002D86631B465BFA00D1D729 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				00856BC91C867CDE00AC73CD /* HDeserializableObject.h */,
+				00856BCA1C867CDE00AC73CD /* HDeserializableObject.m */,
 				002D86641B465BFA00D1D729 /* HEntity.h */,
 				002D86651B465BFA00D1D729 /* HEntity.m */,
 				00769C0F1BA866980022878B /* HPropertyMgr.h */,
 				00769C101BA866980022878B /* HPropertyMgr.m */,
-				00856BC91C867CDE00AC73CD /* HDeserializableObject.h */,
-				00856BCA1C867CDE00AC73CD /* HDeserializableObject.m */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -195,6 +214,7 @@
 		002D86661B465BFA00D1D729 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				000C9B211C900F33009D6EE0 /* Deserialize */,
 				002D86671B465BFA00D1D729 /* HNetworkDAO.h */,
 				002D86681B465BFA00D1D729 /* HNetworkDAO.m */,
 				002D86691B465BFA00D1D729 /* HNetworkDAOManager.h */,
@@ -381,6 +401,7 @@
 				002D86571B462EA300D1D729 /* User.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
 				002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */,
+				000C9B251C900F8F009D6EE0 /* HNJsonDeserializer.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
 				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
 				002D866F1B465BFA00D1D729 /* HEntity.m in Sources */,
@@ -389,6 +410,7 @@
 				00856BCB1C867CDE00AC73CD /* HDeserializableObject.m in Sources */,
 				002D864F1B462EA300D1D729 /* HDBDatasource.m in Sources */,
 				002D866E1B465BFA00D1D729 /* HDBMgr.m in Sources */,
+				000C9B281C90326C009D6EE0 /* TestNetworkDAO.m in Sources */,
 				002D86551B462EA300D1D729 /* Student.m in Sources */,
 				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
 				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,

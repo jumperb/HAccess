@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "HNetworkDAOManager.h"
 #import <NSObject+annotation.h>
+#import "HNDeserializer.h"
+//in most situation, you use json Deserializer
+#import "HNJsonDeserializer.h"
 
 #pragma mark - file upload object，
 
@@ -41,10 +44,8 @@ typedef enum
     HFileCacheTypeForceRefresh //will not read cache, but will save cache after get requst
 } HFileCacheType;
 
-#pragma mark - 网络访问对象
 
 @class HNetworkDAO;
-@protocol HEDeserializer;
 
 
 typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
@@ -52,8 +53,8 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 //ppx annotation
 #define HPHeader @"header" //if this property is a head attr in request, tag this
-//HPMapto: already defined in HEntity
-//HPIgnore: already defined in HEntity
+//HPMapto: already defined in HDeserializableObject
+//HPIgnore: already defined in HDeserializableObject
 
 
 /**
@@ -81,8 +82,8 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic, strong) NSString* method;
 //what is the queue name
 @property (nonatomic, strong, readonly) NSString* queueName;
-//deserializer object, indicate how to convert data to object
-@property (nonatomic, strong) id<HEDeserializer> deserializer;
+//deserializer object, indicate how to convert data to object, default is 'HNJsonDeserializer'
+@property (nonatomic, strong) id<HNDeserializer> deserializer;
 //deserialize path, indicate which part of data you concern, you can set a key path to it like 'a.b.c'
 @property (nonatomic, strong) NSString *deserializeKeyPath;
 //timeout
@@ -238,47 +239,6 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 - (void)unHoldNetwork;
 
 @end
-
-
-#pragma mark - about deserialize
-
-#import "HEntity.h"
-
-/**
- *  HEDeserialize which target is a HEntity
- */
-@interface HNEntityDeserializer : NSObject <HEDeserializer>
-//create
-+ (instancetype)deserializerWithClass:(Class)aClass;
-@end
-
-/**
- *  HEDeserialize which target is a NSArray
- */
-@interface HNArrayDeserializer : NSObject <HEDeserializer>
-
-//create
-+ (instancetype)deserializerWithClass:(Class)aClass;
-
-/**
- *  decide the class in array
- *
- *  @param dict data
- *
- *  @return class
- */
-- (Class)classForItem:(NSDictionary *)dict;
-@end
-
-
-typedef id (^DeserializeBlock)(id data);
-/**
- * HEDeserializer which is handle by yourself
- */
-@interface HNManualDeserializer : NSObject <HEDeserializer>
-+ (instancetype)deserializerWithBlock:(DeserializeBlock)block;
-@end
-
 
 /**
  *  file download info

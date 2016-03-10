@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HTestVC.h>
 
-@interface NetworkDaoTestVC : UIViewController
+@interface NetworkDaoTestVC : HTestVC
 
 @end
 

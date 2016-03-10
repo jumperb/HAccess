@@ -1,9 +1,6 @@
 {
-    "status": 400,
-    "message": "",
-    "data": {
-        "appkey": "123",
-        "info": "123",
-        "userid": "1123444"
-    }
+    "text": "hehehe",
+    "appkey": "123",
+    "info": "123",
+    "userid": "1123444"
 }

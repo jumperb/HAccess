@@ -84,17 +84,17 @@
         operataionQueue = [self getOperationQueueWithName:queueName];
     else
         operataionQueue = _operationQueue;
-    AFHTTPResponseSerializer *responseSerializer = nil;
-    if (!self.fileDownloadPath)
-    {
-        //use json serializer by default
-        responseSerializer = [AFJSONResponseSerializer serializer];
-        NSMutableSet *acceptableTypes = [[NSMutableSet alloc] initWithSet:responseSerializer.acceptableContentTypes];
-        //add type edit by goingta 2015.12.16
-        [acceptableTypes addObject:@"text/html"];
-        [acceptableTypes addObject:@"text/plain"];
-        responseSerializer.acceptableContentTypes = acceptableTypes;
-    }
+//    AFHTTPResponseSerializer *responseSerializer = nil;
+//    if (!self.fileDownloadPath)
+//    {
+//        //use json serializer by default
+//        responseSerializer = [AFJSONResponseSerializer serializer];
+//        NSMutableSet *acceptableTypes = [[NSMutableSet alloc] initWithSet:responseSerializer.acceptableContentTypes];
+//        //add type edit by goingta 2015.12.16
+//        [acceptableTypes addObject:@"text/html"];
+//        [acceptableTypes addObject:@"text/plain"];
+//        responseSerializer.acceptableContentTypes = acceptableTypes;
+//    }
     //param
     NSMutableDictionary* parametersDict = [NSMutableDictionary new];
     NSMutableDictionary* multiDataDict = [NSMutableDictionary new];
@@ -197,7 +197,7 @@
     }
     NSLog(@" ");
     
-    AFHTTPRequestOperation* operation = [self HTTPRequestOperationWithRequest:request responseSerializer:responseSerializer success:sucess failure:failure];
+    AFHTTPRequestOperation* operation = [self HTTPRequestOperationWithRequest:request responseSerializer:nil success:sucess failure:failure];
     
     if (self.fileDownloadPath)
     {

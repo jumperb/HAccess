@@ -36,21 +36,3 @@
 - (id)hValueForKey:(NSString *)key;
 
 @end
-
-
-
-#pragma mark - deserializer protocal
-
-/**
- *  deserializer protocal
- */
-@protocol HEDeserializer <NSObject>
-/**
- *  do deserialize
- *
- *  @param rudeData
- *
- *  @return entity
- */
-- (id)deserialization:(id)rudeData;
-@end

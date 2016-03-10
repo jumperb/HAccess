@@ -8,15 +8,15 @@
 
 #import "NetworkDaoTestVC.h"
 #import <HTextInput/HTextField.h>
+#import <HTextInput/HTextView.h>
 #import <HTextInput/HTextInputMotherBoard.h>
 #import <HTextInput/HTextAnimationBottom.h>
 #import <HTextInput/HTextAnimationPosition.h>
 #import <HCommon.h>
 
-@interface NetworkDaoTestVC () <UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic) UITableView *tableView;
-@property (nonatomic) NSMutableArray *conversation;
-@property (nonatomic) HNetworkDAO *currentDao;
+#import "TestNetworkDAO.h"
+
+@interface NetworkDaoTestVC ()
 @property (nonatomic) UIView *textBack;
 @property (nonatomic) HTextField *textView;
 @end
@@ -28,50 +28,79 @@
     self = [super init];
     if (self) {
         self.view.backgroundColor = [UIColor whiteColor];
-        self.title = @"Say something";
+        self.title = @"HNetworkDAO TEST";
+        
+        [self addMenu:@"Download File" callback:^(id sender, id data) {
+            HNetworkDAO *dao = [HNetworkDAO new];
+            dao.baseURL = @"http://7xon1u.com1.z0.glb.clouddn.com/IMG_4842.JPG";
+            dao.isFileDownload = YES;
+            [dao startWithQueueName:nil sucess:^(id sender, id data) { //4
+                NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            } failure:^(id sender, NSError *error) {
+                NSLog(@"error: %@", error);
+            }];
+        }];
+        
+        [self addMenu:@"Simple Request" callback:^(id sender, id data) {
+            SimpleNetDAO *dao = [SimpleNetDAO new];
+            dao.mobile = @"18628140435";
+            [dao startWithQueueName:nil finish:^(SimpleNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal: %@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            }];
+        }];
+        
+        [self addMenu:@"Resp is Array" callback:^(id sender, id data) {
+            StockNetDAO *dao = [StockNetDAO new];
+            dao.date = @"2016-01-25";
+            [dao startWithQueueName:nil finish:^(SimpleNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal:%@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            }];
+        }];
+        
+        [self addMenu:@"manual deserializtion" callback:^(id sender, id data) {
+            StockNetDAO *dao = [StockNetDAO2 new];
+            dao.date = @"2016-01-25";
+            [dao startWithQueueName:nil finish:^(SimpleNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal:%@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            }];
+        }];
+        
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    UIImage *img = [UIImage imageNamed:@"bg.jpg"];
-    UIImageView *bg = [[UIImageView alloc] initWithImage:img];
+    UIImageView *bg = [[UIImageView alloc] initWithImage:img(@"bg.jpg")];
     bg.frame = self.view.bounds;
     ALWAYS_FULL(bg);
     bg.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:bg];
+    
+    [super viewDidLoad];
+    self.tableView.backgroundColor = [UIColor clearColor];
 
-    UIImageView *bg2 = [[UIImageView alloc] init];
-    bg2.frame = self.view.bounds;
-    ALWAYS_FULL(bg2);
-    bg2.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:bg2];
-
-    bg2.alpha = 0;
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        UIImage *blur = [img blurImage:0.9];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.3 animations:^{
-                bg2.image = blur;
-                bg2.alpha = 1;
-            }];
-        });
-    });
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-    _tableView.contentInset = UIEdgeInsetsMake(64, 0, 90, 0);
-    _tableView.backgroundColor = [UIColor clearColor];
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    [self.view addSubview:_tableView];
-    ALWAYS_FULL(_tableView);
-
-    _conversation = [NSMutableArray new];
     [self.view addSubview:self.textBack];
+    
+    
+    
 }
 - (UIView *)textBack
 {
@@ -82,7 +111,8 @@
         back.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         if (!_textView)
         {
-            HTextField *textView = [[HTextField alloc] initWithFrame:CGRectMake(10, (back.height - 44)/2, back.width - 20 - 44 - 5, 44)];
+            HTextField *textView = [[HTextField alloc] initWithFrame:CGRectMake(10, (back.height - 44)/2, back.width - 20 - 60 - 5, 44)];
+            textView.placeholder = @"say something";
             textView.font = [UIFont systemFontOfSize:24];
             textView.layer.cornerRadius = 4;
             textView.backgroundColor = [UIColor whiteColor];
@@ -106,7 +136,7 @@
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.layer.cornerRadius = 5;
         btn.backgroundColor = [UIColor colorWithHex:0x0066cc];
-        btn.frame = CGRectMake(back.width - 44 - 10, (back.height - 44)/2, 44, 44);
+        btn.frame = CGRectMake(back.width - 60 - 10, (back.height - 44)/2, 60, 44);
         [btn setTintColor:[UIColor darkGrayColor]];
         [btn setTitle:@"send" forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -128,55 +158,43 @@
 }
 - (void)sendMsg:(NSString *)msg textView:(UITextField *)textView
 {
-    if (_currentDao) return;
-    textView.text = @"";
-    [self.conversation addObject:msg];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.conversation.count - 1 inSection:0]]
-                              withRowAnimation:UITableViewRowAnimationAutomatic];
-
     DemoNetworkDAO *dao = [DemoNetworkDAO new];
     dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
     dao.info = msg;
-    _currentDao = dao;
-    __weak typeof(self) weakSelf = self;
+
+    @weakify(self)
     [dao startWithQueueName:nil sucess:^(id sender, DemoEntity *data) {
-        [weakSelf.conversation addObject:[NSString stringWithFormat:@"lily:%@",data.text]];
-        weakSelf.currentDao = nil;
-        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.conversation.count - 1 inSection:0]]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        @strongify(self)
+        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:self.view.bounds];
+        HTextView *textView = [[HTextView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height)];
+        textView.backgroundColor = [UIColor clearColor];
+        textView.font = [UIFont systemFontOfSize:16];
+        textView.textColor = [UIColor blackColor];
+        textView.text = data.text;
+        textView.contentInset = UIEdgeInsetsMake(20 + 64, 20, 20, 20);
+        [toolBar addSubview:textView];
+        
+        toolBar.alpha = 0;
+        [self.view insertSubview:toolBar belowSubview:self.textBack];
+        [UIView animateWithDuration:0.2 animations:^{
+            toolBar.alpha = 1;
+        }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.2 animations:^{
+                toolBar.alpha = 0;
+            } completion:^(BOOL finished) {
+                [toolBar removeFromSuperview];
+            }];
+        });
+        
     } failure:^(id sender, NSError *error) {
+        
         NSLog(@"error:%@", [error localizedDescription]);
-        weakSelf.currentDao = nil;
+        
     }];
 }
 
-#pragma mark - UITableViewDatasource & UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _conversation.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellID = @"CellID";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
-        cell.textLabel.numberOfLines = 0;
-        cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
-    }
-    cell.textLabel.text = [_conversation[indexPath.row] stringValue];
-    return cell;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *str = [_conversation[indexPath.row] stringValue];
-    CGSize size = [str hSizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(tableView.width - 30, 10000)];
-    float height = size.height + 20;
-    if (height < 44) height = 44;
-    return height;
-}
 @end
 
 
@@ -191,9 +209,9 @@ ppx(appkey, HPMapto(@"key"))
     if (self) {
         self.baseURL = @"http://www.tuling123.com";
         self.pathURL = @"openapi/api";
-#ifdef DEBUG
-        self.isMock = YES;
-#endif
+//#ifdef DEBUG
+//        self.isMock = YES;
+//#endif
         self.deserializer = [HNEntityDeserializer deserializerWithClass:[DemoEntity class]];
     }
     return self;

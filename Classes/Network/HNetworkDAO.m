@@ -7,7 +7,7 @@
 //
 
 #import "HNetworkDAO.h"
-#import "HEntity.h"
+#import "HDeserializableObject.h"
 #import <HFileCache.h>
 #import <HCommon.h>
 
@@ -103,7 +103,14 @@
     return self;
 }
 
-
+- (id<HNDeserializer>)deserializer
+{
+    if (!_deserializer)
+    {
+        _deserializer = [HNJsonDeserializer new];
+    }
+    return _deserializer;
+}
 #pragma mark - request
 
 - (NSString *)fullurl
@@ -285,23 +292,38 @@
 {
 
 }
+- (id)processData:(id)responseInfo
+{
+    [self.deserializer setDeserializeKeyPath:self.deserializeKeyPath];
+    if ([self.deserializer respondsToSelector:@selector(preprocess:)])
+    {
+        responseInfo = [self.deserializer preprocess:responseInfo];
+        if ([responseInfo isKindOfClass:[NSError class]])
+        {
+            NSAssert(NO, [responseInfo description]);
+            [self requestFinishedFailureWithError:responseInfo];
+        }
+    }
+    
+    id responseEntity = [self getOutputEntiy:responseInfo];
+    if (!responseEntity)
+    {
+        NSString *errorStr = [NSString stringWithFormat:@"inner error:%@.getOutputEntiy return nil", NSStringFromClass(self.class)];
+        [self requestFinishedFailureWithError:herr(kInnerErrorCode,  errorStr)];
+        return nil;
+    }
+    if ([responseEntity isKindOfClass:[NSError class]])
+    {
+        [self requestFinishedFailureWithError:responseEntity];
+        return nil;
+    }
+    return responseEntity;
+}
 //output
 - (id)getOutputEntiy:(id)responseObject
 {
-    id rudeData = responseObject;
-    if (self.deserializeKeyPath)
-    {
-        rudeData = [rudeData valueForKeyPath:self.deserializeKeyPath];
-        if (!rudeData)
-        {
-            return herr(kDataFormatErrorCode, ([NSString stringWithFormat:@"target path is not exist%@",self.deserializeKeyPath]));
-        }
-    }
-    if (self.deserializer)
-    {
-        return [self.deserializer deserialization:rudeData];
-    }
-    else return rudeData;
+    if (!self.deserializer) return responseObject;
+    return [self.deserializer deserialization:responseObject];
 }
 
 //local request
@@ -318,18 +340,10 @@
         }
         if (!self.isFileDownload)
         {
-            id jsonValue = [fileData JSONValue];
-            if (!jsonValue)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kDataFormatErrorCode description:[NSString stringWithFormat:@"%@Json decode error", urlString]]];
-                });
-                return;
-            }
             NSLog(@"revc response %@/%@", self.baseURL, self.pathURL);
             self.responseData = fileData;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self requestFinishedSucessWithInfo:jsonValue];
+                [self requestFinishedSucessWithInfo:fileData];
             });
         }
         else
@@ -352,14 +366,17 @@
 }
 
 #ifdef DEBUG
-//local request
+//mock request
 - (void)doMockFileRequest
 {
     NSString *urlString = @"HNetworkDAO.bundle";
     NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]];
     if (mockFileBundle)
     {
-        urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:@"json"];
+        NSString *fileType = nil;
+        if ([self.deserializer respondsToSelector:@selector(mockFileType)]) fileType = [self.deserializer mockFileType];
+            
+        urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:fileType];
         urlString = [NSURL fileURLWithPath:urlString].absoluteString;
         [self doLocalFileRequest:urlString];
     }
@@ -407,22 +424,11 @@
 //get cache
 - (void)loadCache:(NSString *)cacheKey
 {
-    NSData *data = [[HFileCache shareCache] dataForKey:cacheKey];
+    id data = [[HFileCache shareCache] dataForKey:cacheKey];
     if (data)
     {
-        id jsonData = [data JSONValue];
-        id responseEntity = [self getOutputEntiy:jsonData];
-        if (!responseEntity)
-        {
-            NSString *errorStr = [NSString stringWithFormat:@"内部错误:%@.getOutputEntiy返回了空", NSStringFromClass(self.class)];
-            NSAssert(NO, errorStr);
-            if(_failedBlock) _failedBlock(self,  herr(kInnerErrorCode, errorStr));
-        }
-        else if ([responseEntity isKindOfClass:[NSError class]])
-        {
-            NSAssert(NO, [responseEntity description]);
-            if (_failedBlock) _failedBlock(self, responseEntity);
-        }
+        id responseEntity = [self processData:data];
+        if (!responseEntity) return; //has deal all exception
         else if(_sucessBlock) _sucessBlock(nil, responseEntity);
     }
 }
@@ -441,6 +447,10 @@
             if([self isCacheUseable:cacheKey])
             {
                 [self loadCache:cacheKey];
+                //解除保持
+                _failedBlock = nil;
+                _sucessBlock = nil;
+                _holdSelf = nil;
             }
             else
             {
@@ -494,19 +504,8 @@
 
 - (void)requestFinishedSucessWithInfo:(id)responInfo
 {
-    id responseEntity = [self getOutputEntiy:responInfo];
-    if (!responseEntity)
-    {
-        NSString *errorStr = [NSString stringWithFormat:@"inner error:%@.getOutputEntiy return nil", NSStringFromClass(self.class)];
-        [self requestFinishedFailureWithError:herr(kInnerErrorCode,  errorStr)];
-        return;
-    }
-    if ([responseEntity isKindOfClass:[NSError class]])
-    {
-        [self requestFinishedFailureWithError:responseEntity];
-        return;
-    }
-
+    id responseEntity = [self processData:responInfo];
+    if (!responseEntity) return; //has deal all exception
     //record
     if (self.cacheType != HFileCacheTypeNone)
     {
@@ -568,125 +567,6 @@
 - (void)unHoldNetwork
 {
     _holdSelf = nil;
-}
-@end
-
-
-#pragma mark - deserialize
-
-@interface HNEntityDeserializer ()
-@property (nonatomic) Class entityClass;
-@end
-
-@implementation HNEntityDeserializer
-
-+ (instancetype)deserializerWithClass:(Class)aClass
-{
-    HNEntityDeserializer *obj = [self new];
-    obj.entityClass = aClass;
-    return obj;
-}
-- (id)deserialization:(id)rudeData
-{
-    if(self.entityClass == NULL)
-    {
-        NSString *errorMsg = [NSString stringWithFormat:@"%s,无法获取到对应entity类名的类，未能将返回结果处理成entity", __FUNCTION__];
-        return herr(kDataFormatErrorCode, errorMsg);
-    }
-    //create entity
-
-    HEntity *entity = (HEntity *)[[self.entityClass alloc]init];
-    if (![entity isKindOfClass:[HEntity class]])
-    {
-
-        NSString *errorMsg = [NSString stringWithFormat:@"%s, 不是Hentity的子类，未能将返回结果处理成entity", __FUNCTION__];
-        return herr(kDataFormatErrorCode, errorMsg);
-    }
-    [entity setWithDictionary:rudeData];
-    if (entity.format_error)
-    {
-        return herr(kDataFormatErrorCode, entity.format_error);
-    }
-    else return entity;
-
-}
-@end
-
-
-
-
-
-
-@interface HNArrayDeserializer ()
-@property (nonatomic) Class objClass;
-@end
-
-@implementation HNArrayDeserializer
-
-+ (instancetype)deserializerWithClass:(Class)aClass
-{
-    HNArrayDeserializer *obj = [self new];
-    obj.objClass = aClass;
-    return obj;
-}
-- (Class)classForItem:(NSDictionary *)dict
-{
-    return self.objClass;
-}
-- (id)deserialization:(id)rudeData
-{
-    if (![rudeData isKindOfClass:[NSArray class]])
-    {
-        NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), @"expect a NSArray"];
-        return herr(kDataFormatErrorCode, errInfo);
-    }
-    NSArray *dataArray = rudeData;
-    NSMutableArray *res = [NSMutableArray new];
-    for (NSDictionary *dict in dataArray)
-    {
-        Class targetClass = [self classForItem:dict];
-        if(targetClass == NULL)
-        {
-            NSString *errorMsg = [NSString stringWithFormat:@"%@: cannot get entity class", NSStringFromClass(self.class)];
-            return herr(kDataFormatErrorCode, errorMsg);
-        }
-        
-        if (![targetClass isSubclassOfClass:[HEntity class]])
-        {
-            NSString *errorMsg = [NSString stringWithFormat:@"%@: is not subclass of HEntity", NSStringFromClass(self.class)];
-            return herr(kDataFormatErrorCode, errorMsg);
-        }
-        
-        HEntity *entity = (HEntity *)[[targetClass alloc]init];
-        [entity setWithDictionary:dict];
-        if (entity.format_error)
-        {
-            NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), entity.format_error];
-            return herr(kDataFormatErrorCode, errInfo);
-        }
-        [res addObject:entity];
-    }
-    return res;
-}
-
-@end
-
-@interface HNManualDeserializer ()
-@property (nonatomic, copy) DeserializeBlock block;
-@end
-
-@implementation HNManualDeserializer
-
-+ (instancetype)deserializerWithBlock:(DeserializeBlock)block
-{
-    HNManualDeserializer *obj = [self new];
-    obj.block = block;
-    return obj;
-}
-- (id)deserialization:(id)rudeData
-{
-    if (self.block) return self.block(rudeData);
-    else return nil;
 }
 @end
 
