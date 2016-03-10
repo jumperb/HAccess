@@ -109,7 +109,7 @@ ppx(mobile, HPMapto(@"phone"))
         self.deserializer = [HNManualDeserializer deserializerWithBlock:^id(id data) {
             if (![data isKindOfClass:[NSArray class]])
             {
-                NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), @"期望目标路径对应一个数组"];
+                NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), @"expect a array"];
                 return herr(kDataFormatErrorCode, errInfo);
             }
             NSArray *dataArray = data;
