@@ -42,6 +42,7 @@
         }];
         
         [self addMenu:@"Simple Request" callback:^(id sender, id data) {
+            
             SimpleNetDAO *dao = [SimpleNetDAO new];
             dao.mobile = @"18628140435";
             [dao startWithQueueName:nil finish:^(SimpleNetDAO *sender, id data, NSError *error) {
@@ -52,6 +53,9 @@
                 }
                 else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
             }];
+            
+            
+            
         }];
         
         [self addMenu:@"Resp is Array" callback:^(id sender, id data) {
