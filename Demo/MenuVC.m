@@ -14,6 +14,8 @@
 #import <HFileCache.h>
 #import "TestEntity1.h"
 #import <HCommon.h>
+#import "PBNetworkDaoTestVC.h"
+//#import <ProtocolBuffers/ProtocolBuffers.h>
 
 @implementation MenuVC
 - (instancetype)init
@@ -27,6 +29,11 @@
         [self addMenu:@"network test" callback:^(id sender, id data) {
             [weakSelf testNetwork];
         }];
+
+        [self addMenu:@"pbnetwork test" callback:^(id sender, id data) {
+            [weakSelf testPBNetwork];
+        }];
+
         [self addMenu:@"deserialize test" callback:^(id sender, id data) {
             [weakSelf testEntity];
         }];
@@ -177,6 +184,12 @@
 {
     [self.navigationController pushViewController:[NetworkDaoTestVC new] animated:YES];
 }
+
+- (void)testPBNetwork
+{
+    [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
+}
+
 - (void)testEntity
 {
     [self.navigationController pushViewController:[DeserializeDemo new] animated:YES];
