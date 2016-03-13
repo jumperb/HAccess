@@ -64,6 +64,8 @@
 		9EFFCCC31C9454E9008764E8 /* GPBWireFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCA91C9454E9008764E8 /* GPBWireFormat.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9EFFCCC61C94573E008764E8 /* HNPBDeseriralizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC51C94573E008764E8 /* HNPBDeseriralizer.m */; };
 		9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */; };
+		9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CAB5AA2A23FAC518F6E98C /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +196,10 @@
 		9EFFCCC51C94573E008764E8 /* HNPBDeseriralizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNPBDeseriralizer.m; sourceTree = "<group>"; };
 		9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBTestNetworkDAO.h; sourceTree = "<group>"; };
 		9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBTestNetworkDAO.m; sourceTree = "<group>"; };
+		9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.pbobjc.m; sourceTree = "<group>"; };
+		9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.pbobjc.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +398,10 @@
 		9EF847671C92650300202D0E /* PBEntity */ = {
 			isa = PBXGroup;
 			children = (
+				9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */,
+				9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */,
+				9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */,
+				9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */,
 				9EF8476E1C92680400202D0E /* Person.pbobjc.h */,
 				9EF8476F1C92680400202D0E /* Person.pbobjc.m */,
 			);
@@ -649,6 +659,7 @@
 				9EFFCCB81C9454E9008764E8 /* GPBCodedOutputStream.m in Sources */,
 				9EFFCCAB1C9454E9008764E8 /* Any.pbobjc.m in Sources */,
 				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
+				9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */,
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
@@ -657,6 +668,7 @@
 				9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */,
 				9EFFCCBB1C9454E9008764E8 /* GPBExtensionInternals.m in Sources */,
 				9EFFCCC11C9454E9008764E8 /* GPBUtilities.m in Sources */,
+				9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */,
 				9EFFCCB01C9454E9008764E8 /* FieldMask.pbobjc.m in Sources */,
 				9EFFCCB31C9454E9008764E8 /* Timestamp.pbobjc.m in Sources */,
 			);

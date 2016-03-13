@@ -11,6 +11,8 @@
 #import "Person.pbobjc.h"
 #import <NSString+ext.h>
 #import <NSError+ext.h>
+#import "User.pbobjc.h"
+#import "Photo.pbobjc.h"
 
 @implementation PBSimpleNetDAO
 
@@ -41,6 +43,41 @@
     }
     NSString *md5String = [paramsStr md5];
     [params setValue:md5String forKey:@"sign"];
+}
+
+@end
+
+@implementation PBArraryNetDAO
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.baseURL = @"http://apis.baidu.com";
+        self.pathURL = @"apistore/mobilenumber/mobilenumber";
+        self.isMock = YES;
+        self.deserializer = [HNPBDeseriralizer deserializerWithClass:[UserInfo class]];
+    }
+    return self;
+}
+
+@end
+
+@implementation PBManualNetDAO
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.baseURL = @"http://apis.baidu.com";
+        self.pathURL = @"apistore/mobilenumber/mobilenumber";
+        self.isMock = YES;
+        self.deserializer = [HNPBDeseriralizer deserializerWithClass:[PhotoInfo class]];
+    }
+
+    return self;
 }
 
 @end

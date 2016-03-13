@@ -17,6 +17,8 @@
 #import "Person.pbobjc.h"
 #import "HNPBDeseriralizer.h"
 #import "PBTestNetworkDAO.h"
+#import "User.pbobjc.h"
+#import "Photo.pbobjc.h"
 
 
 @interface PBNetworkDaoTestVC()
@@ -47,9 +49,30 @@
                 }
                 else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
             }];
+        }];
 
+        [self addMenu:@"Resp is Array" callback:^(id sender, id data) {
+            PBArraryNetDAO *dao = [PBArraryNetDAO new];
+            [dao startWithQueueName:nil finish:^(PBArraryNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal:%@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            }];
+        }];
 
-
+        [self addMenu:@"manual deserializtion" callback:^(id sender, id data) {
+            PBManualNetDAO *dao = [PBManualNetDAO new];
+            [dao startWithQueueName:nil finish:^(PBManualNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal:%@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+            }];
         }];
 
     }
@@ -130,27 +153,21 @@
 }
 - (void)sendMsg:(NSString *)msg textView:(UITextField *)textView
 {
-    //proto2
-//    Person* person = [[[[[Person builder] setId:123]
-//                        setName:@"Bob"]
-//                       setEmail:@"bob@example.com"] build];
-//    NSData* data = [person data];
-
     //proto3
-
-//    Person *person = [[Person alloc] init];
-//    person.name = @"Zhangsan";
-//    person.email = @"diveinedu@qq.com";
-//    person.uid = 23;
-//    NSData *data = [person data];
-
-//    NSString *path = @"/Users/tanglei/Desktop/person3.data";
+//
+//    PhotoInfo *photo = [[PhotoInfo alloc] init];
+//    photo.pid = @"12344555";
+//    photo.uRL = @"http://b.hiphotos.baidu.com/image/h%3D200/sign=8c8dc382d239b60052ce08b7d9513526/b58f8c5494eef01fa36ad8a4e7fe9925bc317d51.jpg";
+//    photo.width = 230;
+//
+//
+//    NSData *data = [photo data];
+//
+//    NSString *path = @"/Users/tanglei/Desktop/PhotoInfo.pb";
 //    [data writeToFile:path atomically:YES];
-
+//
 //    NSData *ldata = [NSData dataWithContentsOfFile:path];
-//    Person *p = [Person parseFromData:ldata];
-//    Person *p = [Person parseFromData:ldata error:nil];
-//    NSLog(@"\nname:%@\nemail:%@\nuid:%d", p.name, p.email, p.id);
+//    PhotoInfo *p = [PhotoInfo parseFromData:ldata error:nil];
 //    NSLog(@"\nname:%@\nemail:%@\nuid:%d", p.name, p.email, p.uid);
 
 

@@ -12,3 +12,10 @@
 @interface PBSimpleNetDAO : HNetworkDAO
 @property (nonatomic) NSString *mobile;
 @end
+
+@interface PBArraryNetDAO : HNetworkDAO
+@end
+
+@interface PBManualNetDAO : HNetworkDAO
+
+@end
