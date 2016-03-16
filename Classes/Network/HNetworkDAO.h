@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HNetworkDAOManager.h"
 #import <NSObject+annotation.h>
+#import "HEntity.h"
 #import "HNDeserializer.h"
 //in most situation, you use json Deserializer
 #import "HNJsonDeserializer.h"
