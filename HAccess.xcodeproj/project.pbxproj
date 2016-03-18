@@ -34,7 +34,13 @@
 		00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD892B1B462D6600214FD3 /* Images.xcassets */; };
 		00E11AA51C99B9CA0008A26E /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E11AA41C99B9CA0008A26E /* HNJsonDeserializer.m */; };
 		00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E907841BAD11F600E10652 /* DeserializeDemo.m */; };
+		9E58B7901C9AEE23004C74C3 /* HNPBDeseriralizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E58B78F1C9AEE23004C74C3 /* HNPBDeseriralizer.m */; };
+		9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */; };
+		9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF8476F1C92680400202D0E /* Person.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9EF8822A1C8816D300238751 /* HNetworkDAO.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9EF882291C8816D300238751 /* HNetworkDAO.bundle */; };
+		9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */; };
+		9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CAB5AA2A23FAC518F6E98C /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -93,7 +99,19 @@
 		63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		99CAB5AA2A23FAC518F6E98C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E58B78E1C9AEE23004C74C3 /* HNPBDeseriralizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HNPBDeseriralizer.h; path = Deserialize/HNPBDeseriralizer.h; sourceTree = "<group>"; };
+		9E58B78F1C9AEE23004C74C3 /* HNPBDeseriralizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HNPBDeseriralizer.m; path = Deserialize/HNPBDeseriralizer.m; sourceTree = "<group>"; };
+		9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBNetworkDaoTestVC.h; sourceTree = "<group>"; };
+		9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBNetworkDaoTestVC.m; sourceTree = "<group>"; };
+		9EF8476E1C92680400202D0E /* Person.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.pbobjc.h; sourceTree = "<group>"; };
+		9EF8476F1C92680400202D0E /* Person.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.pbobjc.m; sourceTree = "<group>"; };
 		9EF882291C8816D300238751 /* HNetworkDAO.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HNetworkDAO.bundle; sourceTree = "<group>"; };
+		9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBTestNetworkDAO.h; sourceTree = "<group>"; };
+		9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBTestNetworkDAO.m; sourceTree = "<group>"; };
+		9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.pbobjc.m; sourceTree = "<group>"; };
+		9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.pbobjc.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +167,10 @@
 				002D86771B46616300D1D729 /* NetworkDaoTestVC.m */,
 				000C9B261C90326C009D6EE0 /* TestNetworkDAO.h */,
 				000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */,
+				9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */,
+				9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */,
+				9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */,
+				9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -156,6 +178,7 @@
 		002D862C1B462EA300D1D729 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				9EF847671C92650300202D0E /* PBEntity */,
 				002438A11C30E108003F3CF9 /* network */,
 				002438A01C30E0F3003F3CF9 /* deserial */,
 				0024389F1C30E0D4003F3CF9 /* dbtest */,
@@ -257,6 +280,8 @@
 		00E11AA61C99B9CE0008A26E /* Deserializer */ = {
 			isa = PBXGroup;
 			children = (
+				9E58B78E1C9AEE23004C74C3 /* HNPBDeseriralizer.h */,
+				9E58B78F1C9AEE23004C74C3 /* HNPBDeseriralizer.m */,
 				00E11AA21C99B9CA0008A26E /* HNDeserializer.h */,
 				00E11AA31C99B9CA0008A26E /* HNJsonDeserializer.h */,
 				00E11AA41C99B9CA0008A26E /* HNJsonDeserializer.m */,
@@ -279,6 +304,19 @@
 				99CAB5AA2A23FAC518F6E98C /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9EF847671C92650300202D0E /* PBEntity */ = {
+			isa = PBXGroup;
+			children = (
+				9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */,
+				9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */,
+				9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */,
+				9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */,
+				9EF8476E1C92680400202D0E /* Person.pbobjc.h */,
+				9EF8476F1C92680400202D0E /* Person.pbobjc.m */,
+			);
+			path = PBEntity;
 			sourceTree = "<group>";
 		};
 		9EF882261C8814F400238751 /* Mock */ = {
@@ -400,9 +438,11 @@
 				002D864D1B462EA300D1D729 /* Boss.m in Sources */,
 				002D86571B462EA300D1D729 /* User.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
+				9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */,
 				002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
 				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
+				9E58B7901C9AEE23004C74C3 /* HNPBDeseriralizer.m in Sources */,
 				002D866F1B465BFA00D1D729 /* HEntity.m in Sources */,
 				002D86701B465BFA00D1D729 /* HNetworkDAO.m in Sources */,
 				002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */,
@@ -413,12 +453,16 @@
 				002D86551B462EA300D1D729 /* Student.m in Sources */,
 				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
 				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,
+				9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */,
 				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
+				9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */,
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
 				00E11AA51C99B9CA0008A26E /* HNJsonDeserializer.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
+				9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */,
+				9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,10 +557,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Demo/objectivec",
+				);
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/HCache\"",
+					"\"${PODS_ROOT}/Headers/Public/HTestVC\"",
+					"\"${PODS_ROOT}/Headers/Public/HTextInput\"",
+					"\"${PODS_ROOT}/Headers/Public/Hodor\"",
+				);
 				INFOPLIST_FILE = HAccess/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Demo",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -527,10 +590,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Demo/objectivec",
+				);
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/HCache\"",
+					"\"${PODS_ROOT}/Headers/Public/HTestVC\"",
+					"\"${PODS_ROOT}/Headers/Public/HTextInput\"",
+					"\"${PODS_ROOT}/Headers/Public/Hodor\"",
+				);
 				INFOPLIST_FILE = HAccess/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Demo",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

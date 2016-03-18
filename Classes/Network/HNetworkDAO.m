@@ -377,15 +377,21 @@
         if ([self.deserializer respondsToSelector:@selector(mockFileType)]) fileType = [self.deserializer mockFileType];
             
         urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:fileType];
-        urlString = [NSURL fileURLWithPath:urlString].absoluteString;
-        [self doLocalFileRequest:urlString];
+        if (urlString)
+        {
+            urlString = [NSURL fileURLWithPath:urlString].absoluteString;
+            [self doLocalFileRequest:urlString];
+            return;
+        }
+        else
+        {
+            urlString = [NSString stringWithFormat:@"%@.%@",NSStringFromClass([self class]),fileType];
+        }
     }
-    else
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
-        });
-    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
+    });
 }
 #endif
 
