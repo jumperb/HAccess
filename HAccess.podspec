@@ -47,7 +47,7 @@ Pod::Spec.new do |s|
       ss.ios.source_files = 'Classes/Database/*.{h,m,mm,cpp,c}'
   end
 
-  s.subspec 'PB' do |pb|
+  s.subspec 'Network+Protobuf' do |ss|
       ss.dependency 'protocol-for-objectivec'
       ss.ios.source_files = 'Classes/Network+Protobuf/**/*.{h,m,mm,cpp,c}'
   end
