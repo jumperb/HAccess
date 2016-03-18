@@ -15,6 +15,10 @@
 {
     return NSStringFromClass([self class]);
 }
++ (FMDatabaseQueue *)queue
+{
+    return [HDBMgr queue];
+}
 + (HDatabaseDAO *)dao
 {
     HDatabaseDAO *dao = [[HDatabaseDAO alloc] initWithQueue:[HDBMgr queue]];

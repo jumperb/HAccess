@@ -7,12 +7,17 @@
 //
 
 #import "HEntity.h"
+#import <FMDatabaseQueue.h>
 
 @interface HEntity (Persistence)
 
-#pragma mark - you need implement
+#pragma mark - you can implement
+
 //my table name, default is my class name, you can custom it
 + (NSString *)tableName;
+
+//my db access queue, indecate which db file contain the entity, default is [HDBMgr queue], you can custom it
++ (FMDatabaseQueue *)queue;
 
 #pragma mark - create
 
