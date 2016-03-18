@@ -71,9 +71,9 @@
     self = [super init];
     if (self)
     {
-        self.baseURL = @"http://apis.baidu.com";
-        self.pathURL = @"apistore/mobilenumber/mobilenumber";
-        self.isMock = YES;
+        self.baseURL = @"http://netsdk-test.camera360.cn";//http://netsdk-test.camera360.cn/api/demo
+        self.pathURL = @"api/demo";
+        //        self.isMock = YES;
         self.deserializer = [HNPBDeseriralizer deserializerWithClass:[PhotoInfo class]];
     }
 

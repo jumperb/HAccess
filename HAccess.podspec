@@ -49,7 +49,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'PB' do |pb|
       ss.dependency 'protocol-for-objectivec'
-      ss.ios.source_files = 'Classes/Network/Deserialize/*.{h,m,mm,cpp,c}'
+      ss.ios.source_files = 'Classes/Network+Protobuf/**/*.{h,m,mm,cpp,c}'
   end
 
 end
