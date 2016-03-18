@@ -115,8 +115,20 @@
     }
     return self;
 }
+- (void)testNetwork
+{
+    [self.navigationController pushViewController:[NetworkDaoTestVC new] animated:YES];
+}
 
+- (void)testPBNetwork
+{
+    [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
+}
 
+- (void)testEntity
+{
+    [self.navigationController pushViewController:[DeserializeDemo new] animated:YES];
+}
 - (User *)newUser
 {
     User *newUser = [User new];
@@ -126,12 +138,6 @@
     newUser.desc = [NSString stringWithFormat:@"Im desc %d", arc4random()%100];
     return newUser;
 }
-
-- (void)testEntity
-{
-    [self.navigationController pushViewController:[DeserializeDemo new] animated:YES];
-}
-
 - (void)testDBDAO
 {
     NSLog(@"create data access");
@@ -194,15 +200,7 @@
     }
 }
 
-- (void)testNetwork
-{
-    [self.navigationController pushViewController:[NetworkDaoTestVC new] animated:YES];
-}
 
-- (void)testPBNetwork
-{
-    [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
-}
 
 - (void)testDBEntity
 {
