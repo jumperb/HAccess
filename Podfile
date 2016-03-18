@@ -9,4 +9,4 @@ pod "HTestVC"
 pod "HTextInput"
 pod "HCache"
 
-pod "protocol-for-objectivec", :git => 'https://github.com/goingta/protocol-for-objectivec.git'
+pod "protocol-for-objectivec"
