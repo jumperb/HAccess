@@ -41,7 +41,7 @@
 @implementation HDatabaseDAO
 
 #pragma mark - init dealloc
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -51,7 +51,15 @@
     }
     return self;
 }
-
+- (instancetype)initWithQueue:(FMDatabaseQueue *)_queue
+{
+    self = [super init];
+    if (self) {
+        _shouldAddToQueue = YES;
+        queue = _queue;
+    }
+    return self;
+}
 - (void)setupQueue
 {
     queue = [HDBMgr queue];
@@ -169,13 +177,13 @@
 
 - (BOOL)add:(HEntity *)entity
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     __block BOOL res = YES;
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
-         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
+         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
          NSMutableString *values = [[NSMutableString alloc] init];
          int index = 0;
          for (NSString *p in pplist)
@@ -196,7 +204,7 @@
              fields = [fields stringByAppendingString:@",id"];
              [values appendFormat:@",'%@'", [HDatabaseDAO cleanValue:entity.ID]];
          }
-         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", tableName,fields,values];
+         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", _tableName,fields,values];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -210,14 +218,14 @@
 
 - (NSString *)lastInsertedID
 {
-    return [self lastInsertedIDOfTable:tableName];
+    return [self lastInsertedIDOfTable:_tableName];
 }
 
-- (BOOL)remove:(NSString *)key
+- (BOOL)remove:(NSString *)keyppValue
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     __block BOOL res = YES;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
     Class aclass = NSClassFromString(className);
     if (!aclass) return NO;
     HEntity *entity = [[aclass alloc] init];
@@ -228,7 +236,7 @@
     NSString *keypp1 = [entity keyProperty];
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", tableName, keypp1, [HDatabaseDAO cleanValue:key]];
+         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", _tableName, keypp1, [HDatabaseDAO cleanValue:keyppValue]];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -241,12 +249,12 @@
 
 - (BOOL)update:(HEntity *)entity keypp:(NSString *)keypp
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -262,7 +270,7 @@
          [settes appendFormat:@", modified = '%li'", nowtime];
          NSString *IDValue = [HDatabaseDAO cleanValue:entity.ID];
          if (![keypp isEqualToString:@"id"]) IDValue = [entity hValueForKey:keypp];
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'", tableName, settes, keypp, IDValue];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'", _tableName, settes, keypp, IDValue];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -273,12 +281,12 @@
 }
 - (BOOL)update:(HEntity *)entity keyppList:(NSArray *)keyppList
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -301,7 +309,7 @@
              if (![pp isEqualToString:@"id"]) value = [entity hValueForKey:pp];
              [whereStatment appendFormat:@" and %@ = '%@'",pp,[HDatabaseDAO cleanValue:[value stringValue]]];
          }
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE 1 %@", tableName, settes, whereStatment];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE 1 %@", _tableName, settes, whereStatment];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -311,12 +319,12 @@
     return res;
 }
 
-- (HEntity *)get:(NSString *)key
+- (HEntity *)get:(NSString *)keyppValue
 {
     __block HEntity *entity;
-    if (!tableName) return nil;
-    if (!key) return nil;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+    if (!_tableName) return nil;
+    if (!keyppValue) return nil;
+    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
     Class aclass = NSClassFromString(className);
     if (!aclass) return nil;
     HEntity *tempEntity = [[aclass alloc] init];
@@ -325,18 +333,18 @@
         return nil;
     }
     NSString *keypp = [tempEntity keyProperty];
-    key = [HDatabaseDAO cleanValue:key];
+    keyppValue = [HDatabaseDAO cleanValue:keyppValue];
 
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = '%@'", tableName, keypp, key];
+         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = '%@'", _tableName, keypp, keyppValue];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {
              if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
              {
-                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
                  Class aclass = NSClassFromString(className);
                  if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
                  {
@@ -367,9 +375,9 @@
 
 - (HEntity *)getWithCondition:(NSString *)condition
 {
-    if (!tableName) return nil;
+    if (!_tableName) return nil;
     if (!condition) return nil;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
     Class aclass = NSClassFromString(className);
     if (!aclass) return nil;
     HEntity *tempEntity = [[aclass alloc] init];
@@ -380,13 +388,13 @@
     __block HEntity *entity = nil;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, condition];
+         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", _tableName, condition];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {
              if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
              {
-                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
                  Class aclass = NSClassFromString(className);
                  if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
                  {
@@ -421,9 +429,9 @@
 
 - (BOOL)adds:(NSArray *)entities
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     if ([entities count] == 0) return NO;
-    NSString *entityClassName = [[HDBMgr shared] entityNameWithTableName:tableName];
+    NSString *entityClassName = [[HDBMgr shared] entityNameWithTableName:_tableName];
     NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:entityClassName isDepSearch:NO];
     NSString *fields = [[HPropertyMgr shared] entityPropertylistString:entityClassName isDepSearch:NO];
     fields = [fields stringByAppendingString:@",created,modified"];
@@ -456,7 +464,7 @@
              i ++;
          }
 
-         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES %@", tableName,fields,values];
+         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES %@", _tableName,fields,values];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -497,7 +505,7 @@
 
 - (BOOL)updatesWithSetters:(NSDictionary *)setters conditions:(NSString *)conditions
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     __block BOOL res = YES;
     [self inTransaction:^(FMDatabase* db, BOOL *rollback)
      {
@@ -516,7 +524,7 @@
 
          long nowtime = time(NULL);
          [settesString appendFormat:@", modified = '%li'", nowtime];
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@", tableName, settesString, conditions];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@", _tableName, settesString, conditions];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -526,12 +534,12 @@
 
 - (BOOL)removes:(NSString *)conditions
 {
-    if (!tableName) return NO;
+    if (!_tableName) return NO;
     if (!conditions) conditions = @"1";
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", tableName, conditions];
+         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", _tableName, conditions];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -543,10 +551,10 @@
 }
 - (NSArray *)list:(NSString *)conditions;
 {
-    if (!tableName) return nil;
+    if (!_tableName) return nil;
     if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
     {
-        NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:tableName];
+        NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
         Class aclass = NSClassFromString(className);
         if (!class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
         {
@@ -560,7 +568,7 @@
         [self inDatabase:^(FMDatabase* db)
          {
 
-             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, conditions];
+             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", _tableName, conditions];
              FMResultSet* result = [db executeQuery:sql];
              while ([result next])
              {
@@ -587,12 +595,12 @@
 
 - (long)count:(NSString *)conditions
 {
-    if (!tableName) return -1;
+    if (!_tableName) return -1;
     if (!conditions) conditions = @"1";
     __block long res = -1;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT count(*) as cnt FROM %@ WHERE  %@", tableName, conditions];
+         NSString *sql = [NSString stringWithFormat:@"SELECT count(*) as cnt FROM %@ WHERE  %@", _tableName, conditions];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {
@@ -608,13 +616,13 @@
 }
 #pragma mark - other
 
-- (NSString *)lastInsertedIDOfTable:(NSString *)_tableName
+- (NSString *)lastInsertedIDOfTable:(NSString *)tableName
 {
-    if (!_tableName) return @"-1";
+    if (!tableName) return @"-1";
     __block long res = -1;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT seq FROM sqlite_sequence WHERE name = '%@'", _tableName];
+         NSString *sql = [NSString stringWithFormat:@"SELECT seq FROM sqlite_sequence WHERE name = '%@'", tableName];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {

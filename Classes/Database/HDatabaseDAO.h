@@ -19,12 +19,11 @@
 @interface HDatabaseDAO : NSObject
 {
     FMDatabaseQueue *queue;
-    //if this dao is apply to a single table, please set this tableName, then u can use these quick method
-    NSString *tableName;
     //current data base connection
     FMDatabase *currentDB;
 }
-
+//if this dao is apply to a single table, please set this tableName, then u can use these quick method
+@property (nonatomic) NSString *tableName;
 /**
  *  init access queue, u can rewrite it to access other db if you have one more db
  */
@@ -70,7 +69,7 @@
 
 #pragma mark - delete
 //delete
-- (BOOL)remove:(NSString *)key;
+- (BOOL)remove:(NSString *)keyppValue;
 //batch delete
 - (BOOL)removes:(NSString *)conditions;
 
@@ -91,7 +90,7 @@
 
 #pragma mark - read
 //get an entity
-- (HEntity *)get:(NSString *)key;
+- (HEntity *)get:(NSString *)keyppValue;
 //get an entity with conditions, carefully write the quotes
 - (HEntity *)getWithCondition:(NSString *)condition;
 //get an entity with conditions, key is the property
@@ -114,6 +113,15 @@
 
 //auto add quotes
 + (NSString *)cleanValue:(NSString *)value;
+
+/**
+ *  init with queue, but most times u just use init without params
+ *
+ *  @param queue
+ *
+ *  @return
+ */
+- (instancetype)initWithQueue:(FMDatabaseQueue *)queue;
 @end
 
 

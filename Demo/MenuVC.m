@@ -14,6 +14,7 @@
 #import <HFileCache.h>
 #import "TestEntity1.h"
 #import <HCommon.h>
+#import "HEntity+Persistence.h"
 
 @implementation MenuVC
 - (instancetype)init
@@ -21,9 +22,7 @@
     self = [super init];
     if (self) {
         __weak typeof(self) weakSelf = self;
-        [self addMenu:@"db test" subTitle:@"see the demo code" callback:^(id sender, id data) {
-            [weakSelf testDB];
-        }];
+        
         [self addMenu:@"network test" callback:^(id sender, id data) {
             [weakSelf testNetwork];
         }];
@@ -98,11 +97,39 @@
                 else NSLog(@"resp: %@", [data jsonString]);
             }];
         }];
+        
+        [self addMenu:@"DB DAO Test" subTitle:@"see the demo code" callback:^(id sender, id data) {
+            [weakSelf testDBDAO];
+        }];
+        
+        [self addMenu:@"DB Entity Test" subTitle:@"see the demo code" callback:^(id sender, id data) {
+            [weakSelf testDBEntity];
+        }];
     }
     return self;
 }
 
-- (void)testDB
+
+- (User *)newUser
+{
+    User *newUser = [User new];
+    newUser.name = @"lisa";
+    newUser.sex = arc4random()%2;
+    newUser.birth = (long)14554223423;
+    newUser.desc = [NSString stringWithFormat:@"Im desc %d", arc4random()%100];
+    return newUser;
+}
+
+- (void)testNetwork
+{
+    [self.navigationController pushViewController:[NetworkDaoTestVC new] animated:YES];
+}
+- (void)testEntity
+{
+    [self.navigationController pushViewController:[DeserializeDemo new] animated:YES];
+}
+
+- (void)testDBDAO
 {
     NSLog(@"create data access");
     UserLocalDao *userDao = [[UserLocalDao alloc] init];
@@ -114,7 +141,7 @@
     [userDao add:newUser];
     NSString *ID = [userDao lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
-
+    
     NSLog(@"query User by ID:%@",ID);
     User *auser = (User *)[userDao get:ID];
     NSLog(@"User from db:\n%@",[auser jsonString]);
@@ -163,23 +190,65 @@
         NSLog(@"%@",[user jsonString]);
     }
 }
-- (User *)newUser
-{
-    User *newUser = [User new];
-    newUser.name = @"lisa";
-    newUser.sex = arc4random()%2;
-    newUser.birth = (long)14554223423;
-    newUser.desc = [NSString stringWithFormat:@"Im desc %d", arc4random()%100];
-    return newUser;
-}
 
-- (void)testNetwork
+- (void)testDBEntity
 {
-    [self.navigationController pushViewController:[NetworkDaoTestVC new] animated:YES];
-}
-- (void)testEntity
-{
-    [self.navigationController pushViewController:[DeserializeDemo new] animated:YES];
+    NSLog(@"batch delete");
+    [User removes:nil];
+    NSLog(@"create new data model");
+    User *newUser = [self newUser];
+    NSLog(@"I have create a user: \n%@",[newUser jsonString]);
+    [newUser save];
+    NSString *ID = [User lastInsertedID];
+    NSLog(@"last inserted ID is %@",ID);
+    
+    NSLog(@"query User by ID:%@",ID);
+    User *auser = (User *)[User get:ID];
+    NSLog(@"User from db:\n%@",[auser jsonString]);
+    NSLog(@"update the user，change desc to ‘new desc’");
+    auser.desc = @"new desc";
+    [auser update];
+    NSLog(@"query the User after update");
+    User *updatedUser = (User *)[User get:ID];
+    NSLog(@"%@",[updatedUser jsonString]);
+    NSLog(@"the 'desc' and 'modified' of the old object has been changed\n%@",[auser jsonString]);
+    NSLog(@"insert 10 item");
+    for (int i = 0; i < 10; i ++)
+    {
+        [[self newUser] add];
+    }
+    NSLog(@"query all user");
+    NSArray *users = [User list:nil];
+    for (User *auser in users)
+    {
+        NSLog(@"%@", [auser jsonString]);
+    }
+    NSLog(@"condition query: sex=0");
+    users = [User list:@"sex = 0"];
+    for (User *auser in users)
+    {
+        NSLog(@"%@", [auser jsonString]);
+    }
+    NSLog(@"query count");
+    long count = [User count:@"sex = 0"];
+    NSLog(@"there are %li User which sex=0",count);
+    NSLog(@"total count %li",[User count:nil]);
+    NSLog(@"insert 10 more");
+    NSMutableArray *batchUsers = [[NSMutableArray alloc] init];
+    for (int i = 0; i < 10; i ++)
+    {
+        [batchUsers addObject:[self newUser]];
+    }
+    [User adds:batchUsers];
+    NSLog(@"total count %li",[User count:nil]);
+    NSLog(@"update user's name to peter which sex=0");
+    [User updatesWithSetters:@{@"name":@"peter"} conditions:@"sex = 0"];
+    NSLog(@"query user which sex = 0");
+    users = [User list:@"sex = 0"];
+    for (User *user in users)
+    {
+        NSLog(@"%@",[user jsonString]);
+    }
 }
 - (void)viewDidLoad
 {

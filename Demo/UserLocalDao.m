@@ -13,7 +13,7 @@
 {
     self = [super init];
     if (self) {
-        tableName = @"User";
+        self.tableName = @"User";
     }
     return self;
 }
