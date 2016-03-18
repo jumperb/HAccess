@@ -18,7 +18,7 @@
 {
     self = [super init];
     if (self) {
-        tableName = @"Boss";
+        self.tableName = @"Boss";
         _userDao = [[UserLocalDao alloc] init];
     }
     return self;
