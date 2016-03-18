@@ -59,7 +59,11 @@ ppx(modified, HPOptional)
         }
     }
 }
-
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    //do nothing
+    return nil;
+}
 
 - (void)hSetValue:(id)value forKey:(NSString *)key
 {
