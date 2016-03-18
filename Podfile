@@ -8,3 +8,5 @@ pod "Hodor"
 pod "HTestVC"
 pod "HTextInput"
 pod "HCache"
+
+pod "protocol-for-objectivec"

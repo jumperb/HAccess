@@ -22,8 +22,6 @@
 		002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86601B465BFA00D1D729 /* HDatabaseDAO.m */; };
 		002D866E1B465BFA00D1D729 /* HDBMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86621B465BFA00D1D729 /* HDBMgr.m */; };
 		002D866F1B465BFA00D1D729 /* HEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86651B465BFA00D1D729 /* HEntity.m */; };
-		002D86701B465BFA00D1D729 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86681B465BFA00D1D729 /* HNetworkDAO.m */; };
-		002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */; };
 		002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86771B46616300D1D729 /* NetworkDaoTestVC.m */; };
 		00769C111BA866980022878B /* HPropertyMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 00769C101BA866980022878B /* HPropertyMgr.m */; };
 		00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = 00786CFA1B96D0F4005A8247 /* TestEntity1.m */; };
@@ -33,9 +31,17 @@
 		00DD89211B462D6600214FD3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89201B462D6600214FD3 /* main.m */; };
 		00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89231B462D6600214FD3 /* AppDelegate.m */; };
 		00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD892B1B462D6600214FD3 /* Images.xcassets */; };
-		00E11AA51C99B9CA0008A26E /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E11AA41C99B9CA0008A26E /* HNJsonDeserializer.m */; };
 		00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E907841BAD11F600E10652 /* DeserializeDemo.m */; };
+		9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806241C9BEBB700519539 /* HNetworkDAO.m */; };
+		9E68062D1C9BEBB700519539 /* HNetworkDAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */; };
+		9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */; };
+		9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */; };
+		9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */; };
+		9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF8476F1C92680400202D0E /* Person.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9EF8822A1C8816D300238751 /* HNetworkDAO.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9EF882291C8816D300238751 /* HNetworkDAO.bundle */; };
+		9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */; };
+		9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CAB5AA2A23FAC518F6E98C /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -67,10 +73,6 @@
 		002D86621B465BFA00D1D729 /* HDBMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBMgr.m; sourceTree = "<group>"; };
 		002D86641B465BFA00D1D729 /* HEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HEntity.h; sourceTree = "<group>"; };
 		002D86651B465BFA00D1D729 /* HEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HEntity.m; sourceTree = "<group>"; };
-		002D86671B465BFA00D1D729 /* HNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAO.h; sourceTree = "<group>"; };
-		002D86681B465BFA00D1D729 /* HNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAO.m; sourceTree = "<group>"; };
-		002D86691B465BFA00D1D729 /* HNetworkDAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAOManager.h; sourceTree = "<group>"; };
-		002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAOManager.m; sourceTree = "<group>"; };
 		002D86761B46616300D1D729 /* NetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDaoTestVC.h; sourceTree = "<group>"; };
 		002D86771B46616300D1D729 /* NetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDaoTestVC.m; sourceTree = "<group>"; };
 		00769C0F1BA866980022878B /* HPropertyMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPropertyMgr.h; sourceTree = "<group>"; };
@@ -88,15 +90,31 @@
 		00DD89221B462D6600214FD3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		00DD89231B462D6600214FD3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		00DD892B1B462D6600214FD3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		00E11AA21C99B9CA0008A26E /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
-		00E11AA31C99B9CA0008A26E /* HNJsonDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNJsonDeserializer.h; sourceTree = "<group>"; };
-		00E11AA41C99B9CA0008A26E /* HNJsonDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNJsonDeserializer.m; sourceTree = "<group>"; };
 		00E907831BAD11F600E10652 /* DeserializeDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeserializeDemo.h; sourceTree = "<group>"; };
 		00E907841BAD11F600E10652 /* DeserializeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeserializeDemo.m; sourceTree = "<group>"; };
 		63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		99CAB5AA2A23FAC518F6E98C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E6806221C9BEBB700519539 /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
+		9E6806231C9BEBB700519539 /* HNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAO.h; sourceTree = "<group>"; };
+		9E6806241C9BEBB700519539 /* HNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAO.m; sourceTree = "<group>"; };
+		9E6806251C9BEBB700519539 /* HNetworkDAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAOManager.h; sourceTree = "<group>"; };
+		9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAOManager.m; sourceTree = "<group>"; };
+		9E6806271C9BEBB700519539 /* HNJsonDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNJsonDeserializer.h; sourceTree = "<group>"; };
+		9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNJsonDeserializer.m; sourceTree = "<group>"; };
+		9E68062A1C9BEBB700519539 /* HNPBDeseriralizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNPBDeseriralizer.h; sourceTree = "<group>"; };
+		9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNPBDeseriralizer.m; sourceTree = "<group>"; };
+		9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBNetworkDaoTestVC.h; sourceTree = "<group>"; };
+		9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBNetworkDaoTestVC.m; sourceTree = "<group>"; };
+		9EF8476E1C92680400202D0E /* Person.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.pbobjc.h; sourceTree = "<group>"; };
+		9EF8476F1C92680400202D0E /* Person.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.pbobjc.m; sourceTree = "<group>"; };
 		9EF882291C8816D300238751 /* HNetworkDAO.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HNetworkDAO.bundle; sourceTree = "<group>"; };
+		9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBTestNetworkDAO.h; sourceTree = "<group>"; };
+		9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBTestNetworkDAO.m; sourceTree = "<group>"; };
+		9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.pbobjc.m; sourceTree = "<group>"; };
+		9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.pbobjc.h; sourceTree = "<group>"; };
+		9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.pbobjc.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +170,10 @@
 				002D86771B46616300D1D729 /* NetworkDaoTestVC.m */,
 				000C9B261C90326C009D6EE0 /* TestNetworkDAO.h */,
 				000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */,
+				9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */,
+				9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */,
+				9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */,
+				9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -159,6 +181,7 @@
 		002D862C1B462EA300D1D729 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				9EF847671C92650300202D0E /* PBEntity */,
 				002438A11C30E108003F3CF9 /* network */,
 				002438A01C30E0F3003F3CF9 /* deserial */,
 				0024389F1C30E0D4003F3CF9 /* dbtest */,
@@ -173,9 +196,10 @@
 		002D865D1B465BFA00D1D729 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9E6806211C9BEBB700519539 /* Network */,
+				9E6806291C9BEBB700519539 /* Network+Protobuf */,
 				002D865E1B465BFA00D1D729 /* Database */,
 				002D86631B465BFA00D1D729 /* Entity */,
-				002D86661B465BFA00D1D729 /* Network */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -204,18 +228,6 @@
 				00769C101BA866980022878B /* HPropertyMgr.m */,
 			);
 			path = Entity;
-			sourceTree = "<group>";
-		};
-		002D86661B465BFA00D1D729 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				00E11AA61C99B9CE0008A26E /* Deserializer */,
-				002D86671B465BFA00D1D729 /* HNetworkDAO.h */,
-				002D86681B465BFA00D1D729 /* HNetworkDAO.m */,
-				002D86691B465BFA00D1D729 /* HNetworkDAOManager.h */,
-				002D866A1B465BFA00D1D729 /* HNetworkDAOManager.m */,
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		00DD89121B462D6600214FD3 = {
@@ -259,16 +271,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		00E11AA61C99B9CE0008A26E /* Deserializer */ = {
-			isa = PBXGroup;
-			children = (
-				00E11AA21C99B9CA0008A26E /* HNDeserializer.h */,
-				00E11AA31C99B9CA0008A26E /* HNJsonDeserializer.h */,
-				00E11AA41C99B9CA0008A26E /* HNJsonDeserializer.m */,
-			);
-			name = Deserializer;
-			sourceTree = "<group>";
-		};
 		6AB15CECE928247E4185CCCC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,6 +286,42 @@
 				99CAB5AA2A23FAC518F6E98C /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9E6806211C9BEBB700519539 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				9E6806221C9BEBB700519539 /* HNDeserializer.h */,
+				9E6806231C9BEBB700519539 /* HNetworkDAO.h */,
+				9E6806241C9BEBB700519539 /* HNetworkDAO.m */,
+				9E6806251C9BEBB700519539 /* HNetworkDAOManager.h */,
+				9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */,
+				9E6806271C9BEBB700519539 /* HNJsonDeserializer.h */,
+				9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		9E6806291C9BEBB700519539 /* Network+Protobuf */ = {
+			isa = PBXGroup;
+			children = (
+				9E68062A1C9BEBB700519539 /* HNPBDeseriralizer.h */,
+				9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */,
+			);
+			path = "Network+Protobuf";
+			sourceTree = "<group>";
+		};
+		9EF847671C92650300202D0E /* PBEntity */ = {
+			isa = PBXGroup;
+			children = (
+				9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */,
+				9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */,
+				9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */,
+				9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */,
+				9EF8476E1C92680400202D0E /* Person.pbobjc.h */,
+				9EF8476F1C92680400202D0E /* Person.pbobjc.m */,
+			);
+			path = PBEntity;
 			sourceTree = "<group>";
 		};
 		9EF882261C8814F400238751 /* Mock */ = {
@@ -404,12 +442,14 @@
 			files = (
 				002D864D1B462EA300D1D729 /* Boss.m in Sources */,
 				002D86571B462EA300D1D729 /* User.m in Sources */,
+				9E68062D1C9BEBB700519539 /* HNetworkDAOManager.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
-				002D86711B465BFA00D1D729 /* HNetworkDAOManager.m in Sources */,
+				9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
 				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
+				9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */,
+				9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */,
 				002D866F1B465BFA00D1D729 /* HEntity.m in Sources */,
-				002D86701B465BFA00D1D729 /* HNetworkDAO.m in Sources */,
 				002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */,
 				00856BCB1C867CDE00AC73CD /* HDeserializableObject.m in Sources */,
 				002D864F1B462EA300D1D729 /* HDBDatasource.m in Sources */,
@@ -417,14 +457,18 @@
 				000C9B281C90326C009D6EE0 /* TestNetworkDAO.m in Sources */,
 				002D86551B462EA300D1D729 /* Student.m in Sources */,
 				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
+				9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */,
 				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,
+				9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */,
 				00DC44621C9BAD940036282E /* HEntity+Persistence.m in Sources */,
 				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
+				9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */,
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
-				00E11AA51C99B9CA0008A26E /* HNJsonDeserializer.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
+				9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */,
+				9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,10 +563,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Demo/objectivec",
+				);
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/HCache\"",
+					"\"${PODS_ROOT}/Headers/Public/HTestVC\"",
+					"\"${PODS_ROOT}/Headers/Public/HTextInput\"",
+					"\"${PODS_ROOT}/Headers/Public/Hodor\"",
+				);
 				INFOPLIST_FILE = HAccess/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Demo",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -533,10 +596,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Demo/objectivec",
+				);
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/HCache\"",
+					"\"${PODS_ROOT}/Headers/Public/HTestVC\"",
+					"\"${PODS_ROOT}/Headers/Public/HTextInput\"",
+					"\"${PODS_ROOT}/Headers/Public/Hodor\"",
+				);
 				INFOPLIST_FILE = HAccess/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Demo",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
