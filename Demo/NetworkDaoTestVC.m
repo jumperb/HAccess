@@ -15,6 +15,8 @@
 #import <HCommon.h>
 
 #import "TestNetworkDAO.h"
+#import "TestEntity1.h"
+#import "PBNetworkDaoTestVC.h"
 
 @interface NetworkDaoTestVC ()
 @property (nonatomic) UIView *textBack;
@@ -30,17 +32,7 @@
         self.view.backgroundColor = [UIColor whiteColor];
         self.title = @"HNetworkDAO TEST";
         
-        [self addMenu:@"Download File" callback:^(id sender, id data) {
-            HNetworkDAO *dao = [HNetworkDAO new];
-            dao.baseURL = @"http://7xon1u.com1.z0.glb.clouddn.com/IMG_4842.JPG";
-            dao.isFileDownload = YES;
-            [dao startWithQueueName:nil sucess:^(id sender, id data) { //4
-                NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
-            } failure:^(id sender, NSError *error) {
-                NSLog(@"error: %@", error);
-            }];
-        }];
-        
+        @weakify(self)
         [self addMenu:@"Simple Request" callback:^(id sender, id data) {
             
             SimpleNetDAO *dao = [SimpleNetDAO new];
@@ -83,6 +75,80 @@
                 }
                 else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
             }];
+        }];
+        
+        
+        [self addMenu:@"HFileCacheTypeBoth test" callback:^(id sender, id o) {
+            DemoNetworkDAO *dao = [DemoNetworkDAO new];
+            dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
+            dao.info = @"joke";
+            dao.cacheType = HFileCacheTypeBoth;
+            dao.cacheDuration = 60;
+            [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
+                if (error) NSLog(@"%@", error);
+                else NSLog(@"%@", [data jsonString]);
+            }];
+        }];
+        
+        
+        [self addMenu:@"HFileCacheTypeExclusive test" callback:^(id sender, id o) {
+            DemoNetworkDAO *dao = [DemoNetworkDAO new];
+            dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
+            dao.info = @"joke";
+            dao.cacheType = HFileCacheTypeExclusive;
+            dao.cacheDuration = 60;
+            [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
+                if (error) NSLog(@"%@", error);
+                else
+                {
+                    if (sender == nil)
+                    {
+                        NSLog(@"cache callback");
+                    }
+                    else
+                    {
+                        NSLog(@"network callback");
+                    }
+                }
+            }];
+        }];
+        
+        [self addMenu:@"file download test" callback:^(id sender, id data) {
+            HNetworkDAO *dao = [HNetworkDAO new];
+            dao.baseURL = @"http://img.hb.aicdn.com/30e26fbd16eafb928a8c4a4943ab7d0557a67d7714295-uhMVq2_fw658";
+            dao.isFileDownload = YES;
+            [dao setProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite){
+                NSLog(@"progress %lli, %lli", totalBytesWritten, totalBytesExpectedToWrite);
+            }];
+            [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
+                if (error) NSLog(@"%@", error);
+                else NSLog(@"get file: %@", [data jsonString]);
+            }];
+        }];
+        
+        [self addMenu:@"test bundle file fetch" callback:^(id sender, id data) {
+            HNetworkDAO *dao = [HNetworkDAO new];
+            dao.baseURL = @"bundle://bg.jpg";
+            dao.isFileDownload = YES;
+            [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
+                if (error) NSLog(@"%@", error);
+                else NSLog(@"get file: %@", [data jsonString]);
+            }];
+        }];
+        
+        [self addMenu:@"test bundle file deserailzing" callback:^(id sender, id data) {
+            HNetworkDAO *dao = [HNetworkDAO new];
+            dao.baseURL = @"bundle://test.json";
+            dao.deserializer = [HNEntityDeserializer deserializerWithClass:[TestEntity2 class]];
+            [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
+                if (error) NSLog(@"%@", error);
+                else NSLog(@"resp: %@", [data jsonString]);
+            }];
+        }];
+        
+        [self addMenu:@"pbnetwork test" callback:^(id sender, id data) {
+            @strongify(self)
+            [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
         }];
         
     }
