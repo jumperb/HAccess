@@ -7,31 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HNetworkDAOManager.h"
+#import "HNQueueManager.h"
 #import <NSObject+annotation.h>
 #import "HEntity.h"
 #import "HNDeserializer.h"
+#import "HNetworkProvider.h"
+
 //in most situation, you use json Deserializer
 #import "HNJsonDeserializer.h"
-
-#pragma mark - file upload object，
-
-/**
- *  this is a file object ， use for file upload
- *  just use it as a param of any network dao
- */
-@interface HNetworkMultiDataObj : NSObject
-@property (nonatomic, strong) NSString* filePath;
-//default： file.jpg
-@property (nonatomic, strong) NSString* fileName;
-//default： image/jpg
-@property (nonatomic, strong) NSString* mimeType;
-//default：nil. if data is not null it will ignore filePath
-@property (nonatomic, strong) NSData* data;
-//default：nil. if datas is not null it will ignore filePath and data
-@property (nonatomic, strong) NSArray* datas;
-@end
-
+#import "HNetworkMultiDataObj.h"
 
 /**
  *  cache type
@@ -47,8 +31,6 @@ typedef enum
 
 
 @class HNetworkDAO;
-
-
 typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 
@@ -167,6 +149,16 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 - (void)setupHeader:(NSMutableDictionary *)headers;
 
 /**
+ *  config params
+ *  mostly you need not care about this function, except you want post something directly not like a=1&b=2
+ *  default behavior is construct a NSDictionary by properties
+ *  you can return a NSData in subClass, then the data will set into HttpBody directly
+ *
+ *  @return NSDictionary or NSData,
+ */
+- (id)setupParams;
+
+/**
  *  set request params, if method is 'GET', will append to url, if 'POST' will append to request body
  *  default operation is search property (no 'HPHeader' tag), then set the key and value
  *  @param params empty NSMutableDictionary
@@ -181,12 +173,17 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 - (void)didSetupParams:(NSMutableDictionary *)params;
 
 /**
+ *  will Send Request
+ *  you can do some log, encript progress there
+ *  @param request
+ */
+- (void)willSendRequest:(NSMutableURLRequest *)request;
+/**
  *  send request
  *
  *  @param queueName
  */
 - (void)startWithQueueName:(NSString*)queueName;
-
 
 /**
  *  after recv response, default operation is invoke getOutputEntiy and write cache

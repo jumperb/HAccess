@@ -58,31 +58,10 @@
 }
 @end
 
-@implementation HNetworkMultiDataObj
-
-- (id)init
-{
-    self = [super init];
-    if(self)
-    {
-        self.filePath = nil;
-        self.fileName = @"file.jpg";
-        self.mimeType = @"image/jpg";
-        self.data = nil;
-        self.datas = nil;
-    }
-    return self;
-}
-
-@end
-
-
 @interface HNetworkDAO()
-{
-    NSOperation* _operation;
-    HNetworkDAO* _holdSelf;
-}
+@property (nonatomic) HNetworkDAO* holdSelf;
 @property (nonatomic) NSString *fileDownloadPath;
+@property (nonatomic) id<HNetworkProvider> provider;
 @end
 
 @implementation HNetworkDAO
@@ -99,10 +78,14 @@
         _failedBlock = nil;
         _holdSelf = nil;
         self.method = @"GET";
+        self.timeoutInterval = 30;
     }
     return self;
 }
-
+- (void)dealloc
+{
+    [self cancel];
+}
 - (id<HNDeserializer>)deserializer
 {
     if (!_deserializer)
@@ -121,7 +104,10 @@
     if (self.pathURL) urlString =[[NSURL URLWithString:self.pathURL relativeToURL:baseUrl] absoluteString];
     return urlString;
 }
-
+- (void)willSendRequest:(NSMutableURLRequest *)request
+{
+    //do nothing
+}
 - (void)startWithQueueName:(NSString*)queueName
 {
     _queueName = queueName;
@@ -171,57 +157,76 @@
         //set http headers
         NSMutableDictionary *headers = [NSMutableDictionary new];
         [self setupHeader:headers];
-        //set params
-        NSMutableDictionary *params = [NSMutableDictionary new];
-        [self setupParams:params];
-        [self didSetupParams:params];
+        
+        id params = [self setupParams];
+        
         //request
         __weak HNetworkDAO* weakSelf = self;
         _holdSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
             
-            [HNetworkDAOManager instance].timeoutInterval = self.timeoutInterval;
-            [HNetworkDAOManager instance].shouldContinueInBack = self.shouldContinueInBack;
-            [HNetworkDAOManager instance].fileDownloadPath = self.fileDownloadPath;
-            [HNetworkDAOManager instance].headParameters = headers;
-            _operation = [[HNetworkDAOManager instance]
-                          requestWithURLString:urlString
-                          parameters:params
-                          queueName:queueName
-                          mode:self.method
-                          sucess:^(AFHTTPRequestOperation* operation, id responseObject){
-                              
-                              NSLog(@" ");
-                              NSLog(@"#### revc response");
-                              NSLog(@"#### %@", [weakSelf fullurl]);
-                              NSLog(@" ");
-                              if (!weakSelf.fileDownloadPath)
-                              {
-                                  weakSelf.responseData = operation.responseData;
-                                  [weakSelf requestFinishedSucessWithInfo:responseObject];
-                              }
-                              else
-                              {
-                                  HDownloadFileInfo *info = [HDownloadFileInfo new];
-                                  info.filePath = weakSelf.fileDownloadPath;
-                                  info.MIMEType = [operation.response MIMEType];
-                                  info.length = [operation.response expectedContentLength];
-                                  info.suggestedFilename = [operation.response suggestedFilename];
-                                  //delete after 1 min
-                                  [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:60] forFilePath:info.filePath];
-                                  [weakSelf downloadFinished:info];
-                              }
-                              
-                              
-                          }
-                          failure:^(AFHTTPRequestOperation* operation, NSError* error){
-                              
-                              [weakSelf requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
-                              
-                              
-                          }
-                          progressBlock:weakSelf.progressBlock
-                          ];
+            NSString *className = [HClassManager getClassNameForKey:HNetworkProviderRegKey];
+            Class class = NSClassFromString(className);
+            
+            if (!class)
+            {
+                [self requestFinishedFailureWithError:herr(kInnerErrorCode, @"can't find any Class for HNetworkProviderRegKey")];
+                return;
+            }
+            
+            self.provider = [class new];
+            if (![self.provider conformsToProtocol:@protocol(HNetworkProvider)])
+            {
+                [self requestFinishedFailureWithError:herr(kInnerErrorCode, ([NSString stringWithFormat:@"%@ is not a HNetworkProvider", className]))];
+                return;
+            }
+
+            [self.provider setUrlString:urlString];
+            [self.provider setParams:params];
+            [self.provider setMethod:self.method];
+            [self.provider setQueueName:queueName];
+            
+            [self.provider setTimeoutInterval:self.timeoutInterval];
+            [self.provider setShouldContinueInBack:self.shouldContinueInBack];
+            [self.provider setFileDownloadPath:self.fileDownloadPath];
+            [self.provider setHeadParameters:headers];
+            
+            [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *reponse, NSData *data){
+                
+                NSLog(@" ");
+                NSLog(@"#### revc response");
+                NSLog(@"#### %@", [weakSelf fullurl]);
+                NSLog(@" ");
+                
+                if (!weakSelf.fileDownloadPath)
+                {
+                    weakSelf.responseData = data;
+                    [weakSelf requestFinishedSucessWithInfo:data];
+                }
+                else
+                {
+                    HDownloadFileInfo *info = [HDownloadFileInfo new];
+                    info.filePath = weakSelf.fileDownloadPath;
+                    info.MIMEType = [reponse MIMEType];
+                    info.length = [reponse expectedContentLength];
+                    info.suggestedFilename = [reponse suggestedFilename];
+                    //delete after 1 min
+                    [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:60] forFilePath:info.filePath];
+                    [weakSelf downloadFinished:info];
+                }
+            }];
+            
+            [self.provider setFailCallback:^(id sender, NSError *error){
+                [weakSelf requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
+            }];
+            
+            [self.provider setProgressCallback:self.progressBlock];
+            
+            [self.provider setWillSendCallback:^(NSMutableURLRequest *request){
+                [weakSelf willSendRequest:request];
+            }];
+            
+            [self.provider sendRequest];
         });
     }
 }
@@ -249,7 +254,7 @@
 
 - (void)cancel
 {
-    [_operation cancel];
+    [self.provider cancel];
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -264,6 +269,14 @@
             [headers setValue:[self valueForKey:key] forKey:extsObj.keyMapto?:key];
         }
     }
+}
+- (id)setupParams
+{
+    //set params
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [self setupParams:params];
+    [self didSetupParams:params];
+    return params;
 }
 - (void)setupParams:(NSMutableDictionary *)params
 {
@@ -494,14 +507,14 @@
 #pragma mark - queue
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent
 {
-    [HNetworkDAOManager initQueueWithName:queueName maxMaxConcurrent:maxMaxConcurrent];
+    [HNQueueManager initQueueWithName:queueName maxMaxConcurrent:maxMaxConcurrent];
 }
 
 + (BOOL)cancelQueueWithName:(NSString*)queueName
 {
     if(queueName)
     {
-        [[HNetworkDAOManager instance] destoryOperationQueueWithName:queueName];
+        [[HNQueueManager instance] destoryOperationQueueWithName:queueName];
         return YES;
     }
     return NO;

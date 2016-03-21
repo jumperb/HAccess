@@ -23,6 +23,8 @@
 		002D866E1B465BFA00D1D729 /* HDBMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86621B465BFA00D1D729 /* HDBMgr.m */; };
 		002D866F1B465BFA00D1D729 /* HEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86651B465BFA00D1D729 /* HEntity.m */; };
 		002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 002D86771B46616300D1D729 /* NetworkDaoTestVC.m */; };
+		00350FEB1C9FDD7E00CDF06B /* HNProvider_AF2.m in Sources */ = {isa = PBXBuildFile; fileRef = 00350FEA1C9FDD7E00CDF06B /* HNProvider_AF2.m */; };
+		00350FEE1C9FE27300CDF06B /* HNetworkMultiDataObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 00350FED1C9FE27300CDF06B /* HNetworkMultiDataObj.m */; };
 		00769C111BA866980022878B /* HPropertyMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 00769C101BA866980022878B /* HPropertyMgr.m */; };
 		00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = 00786CFA1B96D0F4005A8247 /* TestEntity1.m */; };
 		00856BCB1C867CDE00AC73CD /* HDeserializableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 00856BCA1C867CDE00AC73CD /* HDeserializableObject.m */; };
@@ -33,7 +35,7 @@
 		00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD892B1B462D6600214FD3 /* Images.xcassets */; };
 		00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E907841BAD11F600E10652 /* DeserializeDemo.m */; };
 		9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806241C9BEBB700519539 /* HNetworkDAO.m */; };
-		9E68062D1C9BEBB700519539 /* HNetworkDAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */; };
+		9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806261C9BEBB700519539 /* HNQueueManager.m */; };
 		9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */; };
 		9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */; };
 		9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */; };
@@ -75,6 +77,11 @@
 		002D86651B465BFA00D1D729 /* HEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HEntity.m; sourceTree = "<group>"; };
 		002D86761B46616300D1D729 /* NetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDaoTestVC.h; sourceTree = "<group>"; };
 		002D86771B46616300D1D729 /* NetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDaoTestVC.m; sourceTree = "<group>"; };
+		00350FE81C9FD61A00CDF06B /* HNetworkProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkProvider.h; sourceTree = "<group>"; };
+		00350FE91C9FDD7E00CDF06B /* HNProvider_AF2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNProvider_AF2.h; sourceTree = "<group>"; };
+		00350FEA1C9FDD7E00CDF06B /* HNProvider_AF2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNProvider_AF2.m; sourceTree = "<group>"; };
+		00350FEC1C9FE27300CDF06B /* HNetworkMultiDataObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkMultiDataObj.h; sourceTree = "<group>"; };
+		00350FED1C9FE27300CDF06B /* HNetworkMultiDataObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkMultiDataObj.m; sourceTree = "<group>"; };
 		00769C0F1BA866980022878B /* HPropertyMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPropertyMgr.h; sourceTree = "<group>"; };
 		00769C101BA866980022878B /* HPropertyMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPropertyMgr.m; sourceTree = "<group>"; };
 		00786CF91B96D0F4005A8247 /* TestEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestEntity1.h; sourceTree = "<group>"; };
@@ -98,8 +105,8 @@
 		9E6806221C9BEBB700519539 /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
 		9E6806231C9BEBB700519539 /* HNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAO.h; sourceTree = "<group>"; };
 		9E6806241C9BEBB700519539 /* HNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAO.m; sourceTree = "<group>"; };
-		9E6806251C9BEBB700519539 /* HNetworkDAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAOManager.h; sourceTree = "<group>"; };
-		9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAOManager.m; sourceTree = "<group>"; };
+		9E6806251C9BEBB700519539 /* HNQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNQueueManager.h; sourceTree = "<group>"; };
+		9E6806261C9BEBB700519539 /* HNQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNQueueManager.m; sourceTree = "<group>"; };
 		9E6806271C9BEBB700519539 /* HNJsonDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNJsonDeserializer.h; sourceTree = "<group>"; };
 		9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNJsonDeserializer.m; sourceTree = "<group>"; };
 		9E68062A1C9BEBB700519539 /* HNPBDeseriralizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNPBDeseriralizer.h; sourceTree = "<group>"; };
@@ -291,13 +298,18 @@
 		9E6806211C9BEBB700519539 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				9E6806221C9BEBB700519539 /* HNDeserializer.h */,
 				9E6806231C9BEBB700519539 /* HNetworkDAO.h */,
 				9E6806241C9BEBB700519539 /* HNetworkDAO.m */,
-				9E6806251C9BEBB700519539 /* HNetworkDAOManager.h */,
-				9E6806261C9BEBB700519539 /* HNetworkDAOManager.m */,
+				00350FEC1C9FE27300CDF06B /* HNetworkMultiDataObj.h */,
+				00350FED1C9FE27300CDF06B /* HNetworkMultiDataObj.m */,
+				9E6806251C9BEBB700519539 /* HNQueueManager.h */,
+				9E6806261C9BEBB700519539 /* HNQueueManager.m */,
+				9E6806221C9BEBB700519539 /* HNDeserializer.h */,
 				9E6806271C9BEBB700519539 /* HNJsonDeserializer.h */,
 				9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */,
+				00350FE81C9FD61A00CDF06B /* HNetworkProvider.h */,
+				00350FE91C9FDD7E00CDF06B /* HNProvider_AF2.h */,
+				00350FEA1C9FDD7E00CDF06B /* HNProvider_AF2.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -442,7 +454,8 @@
 			files = (
 				002D864D1B462EA300D1D729 /* Boss.m in Sources */,
 				002D86571B462EA300D1D729 /* User.m in Sources */,
-				9E68062D1C9BEBB700519539 /* HNetworkDAOManager.m in Sources */,
+				00350FEB1C9FDD7E00CDF06B /* HNProvider_AF2.m in Sources */,
+				9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
 				9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
@@ -466,6 +479,7 @@
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
+				00350FEE1C9FE27300CDF06B /* HNetworkMultiDataObj.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
 				9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */,
 				9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */,
