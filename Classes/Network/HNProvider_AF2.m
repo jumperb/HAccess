@@ -121,6 +121,12 @@ HReg(HNetworkProviderRegKey)
     {
         request = [requestSerializer requestWithMethod:self.method URLString:urlString parameters:parametersDict error:nil];
     }
+    
+    //set to body directly
+    if ([self.params isKindOfClass:[NSData class]])
+    {
+        request.HTTPBody = self.params;
+    }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     //print param
     NSMutableString *paramString = [NSMutableString new];
