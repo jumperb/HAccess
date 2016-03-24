@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HAccess"
-  s.version      = "1.8.4"
+  s.version      = "1.8.8"
   s.summary      = "A short description of HAccess."
 
   s.description  = <<-DESC
@@ -47,7 +47,8 @@ Pod::Spec.new do |s|
       ss.ios.source_files = 'Classes/Database/*.{h,m,mm,cpp,c}'
   end
 
-  s.subspec 'PB' do |pb|
+  s.subspec 'Network+Protobuf' do |ss|
+      ss.dependency 'HAccess/Network'
       ss.dependency 'protocol-for-objectivec'
       ss.ios.source_files = 'Classes/Network+Protobuf/**/*.{h,m,mm,cpp,c}'
   end

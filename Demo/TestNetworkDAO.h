@@ -15,6 +15,7 @@
 
 @interface SimpleNetDAO : HNetworkDAO
 @property (nonatomic) NSString *mobile;
+@property (nonatomic) NSString *apikey;
 @end
 
 @interface SimpleEntity : HEntity
