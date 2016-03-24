@@ -463,19 +463,8 @@
         }
         case HFileCacheTypeBoth:
         {
-            if([self isCacheUseable:cacheKey])
-            {
-                [self loadCache:cacheKey];
-                //解除保持
-                _failedBlock = nil;
-                _sucessBlock = nil;
-                _holdSelf = nil;
-            }
-            else
-            {
-                [self loadCache:cacheKey];
-                [self startWithQueueName:queueName];
-            }
+            [self loadCache:cacheKey];
+            [self startWithQueueName:queueName];
             break;
         }
         case HFileCacheTypeExclusive:
