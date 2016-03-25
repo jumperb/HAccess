@@ -26,6 +26,7 @@
 @synthesize shouldContinueInBack;
 @synthesize fileDownloadPath;
 @synthesize headParameters;
+@synthesize cachePolicy;
 
 @synthesize successCallback;
 @synthesize failCallback;
@@ -34,6 +35,15 @@
 
 
 HReg(HNetworkProviderRegKey)
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    }
+    return self;
+}
 
 - (NSOperation *)sendRequest
 {
@@ -127,7 +137,7 @@ HReg(HNetworkProviderRegKey)
     {
         request.HTTPBody = self.params;
     }
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    request.cachePolicy = self.cachePolicy;
     //print param
     NSMutableString *paramString = [NSMutableString new];
     for (NSString *key in parametersDict)

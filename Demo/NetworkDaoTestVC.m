@@ -82,8 +82,7 @@
             DemoNetworkDAO *dao = [DemoNetworkDAO new];
             dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
             dao.info = @"joke";
-            dao.cacheType = HFileCacheTypeBoth;
-            dao.cacheDuration = 60;
+            dao.cacheType = [HNCacheTypeBoth createWtihCacheDuration:60];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
                 else NSLog(@"%@", [data jsonString]);
@@ -91,12 +90,11 @@
         }];
         
         
-        [self addMenu:@"HFileCacheTypeExclusive test" callback:^(id sender, id o) {
+        [self addMenu:@"HFileCacheTypeAlternative test" callback:^(id sender, id o) {
             DemoNetworkDAO *dao = [DemoNetworkDAO new];
             dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
             dao.info = @"joke";
-            dao.cacheType = HFileCacheTypeExclusive;
-            dao.cacheDuration = 60;
+            dao.cacheType = [HNCacheTypeAlternative createWtihCacheDuration:60 nextRequstInterval:40];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
                 else

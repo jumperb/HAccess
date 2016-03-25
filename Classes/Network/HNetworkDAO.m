@@ -59,6 +59,8 @@
 @end
 
 @interface HNetworkDAO()
+@property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
+@property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
 @property (nonatomic) HNetworkDAO* holdSelf;
 @property (nonatomic) NSString *fileDownloadPath;
 @property (nonatomic) id<HNetworkProvider> provider;
@@ -190,7 +192,10 @@
             [self.provider setShouldContinueInBack:self.shouldContinueInBack];
             [self.provider setFileDownloadPath:self.fileDownloadPath];
             [self.provider setHeadParameters:headers];
-            
+            if ([self.cacheType isKindOfClass:[HNSystemCacheStrategy class]])
+            {
+                [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
+            }
             [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *reponse, NSData *data){
                 
                 NSLog(@" ");
@@ -414,83 +419,71 @@
 {
     return [NSString stringWithFormat:@"%@%@",self.baseURL, self.pathURL];
 }
-- (BOOL)isCacheUseable
-{
-    return [self isCacheUseable:[self cacheKey]];
-}
-- (BOOL)isCacheUseable:(NSString *)cacheKey
-{
-    BOOL cacheUsable = NO;
-    if (self.cacheDuration > 0)
-    {
-        NSString *cachePath = [[HFileCache shareCache] cachePathForKey:cacheKey];
-        if (cachePath)
-        {
-            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:cachePath error:nil];
-            if (fileAttributes)
-            {
-                NSDate *createDate = fileAttributes[NSFileCreationDate];
-                long interval = [[NSDate date] timeIntervalSinceDate:createDate];
-                if (interval < self.cacheDuration)
-                {
-                    cacheUsable = YES;
-                }
-            }
-        }
-    }
-    return cacheUsable;
-}
-//get cache
-- (void)loadCache:(NSString *)cacheKey
-{
-    id data = [[HFileCache shareCache] dataForKey:cacheKey];
-    if (data)
-    {
-        id responseEntity = [self processData:data];
-        if (!responseEntity) return; //has deal all exception
-        else if(_sucessBlock) _sucessBlock(nil, responseEntity);
-    }
-}
 
 - (void)cacheLogic:(NSString *)queueName
 {
-    NSString *cacheKey = [self cacheKey];
-    switch (self.cacheType) {
-        case HFileCacheTypeNone:
-        {
-            [self startWithQueueName:queueName];
-            break;
-        }
-        case HFileCacheTypeBoth:
-        {
-            [self loadCache:cacheKey];
-            [self startWithQueueName:queueName];
-            break;
-        }
-        case HFileCacheTypeExclusive:
-        {
-            if (![self isCacheUseable:cacheKey])
+    if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
+    {
+        HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
+        customCacheStrategy.cacheKey = self.cacheKey;
+        __weak typeof(self) weakSelf = self;
+        [customCacheStrategy cacheLogic:^(BOOL shouldRequest, NSData *cachedData) {
+            if (cachedData)
             {
-                [self startWithQueueName:queueName];
+                id responseEntity = [weakSelf processData:cachedData];
+                if (!responseEntity) return; //has deal all exception
+                else if(weakSelf.sucessBlock) weakSelf.sucessBlock(nil, responseEntity);
+            }
+            if (shouldRequest)
+            {
+                [weakSelf startWithQueueName:queueName];
             }
             else
             {
-                [self loadCache:cacheKey];
-                //解除保持
-                _failedBlock = nil;
-                _sucessBlock = nil;
-                _holdSelf = nil;
+                weakSelf.failedBlock = nil;
+                weakSelf.sucessBlock = nil;
+                weakSelf.holdSelf = nil;
             }
-            break;
-        }
-        case HFileCacheTypeForceRefresh:
-        {
-            [self startWithQueueName:queueName];
-            break;
-        }
-        default:
-            break;
+        }];
     }
+    else [self startWithQueueName:queueName];
+//    NSString *cacheKey = [self cacheKey];
+//    switch (self.cacheType) {
+//        case HFileCacheTypeNone:
+//        {
+//            [self startWithQueueName:queueName];
+//            break;
+//        }
+//        case HFileCacheTypeBoth:
+//        {
+//            [self loadCache:cacheKey];
+//            [self startWithQueueName:queueName];
+//            break;
+//        }
+//        case HFileCacheTypeExclusive:
+//        {
+//            if (![self isCacheUseable:cacheKey])
+//            {
+//                [self startWithQueueName:queueName];
+//            }
+//            else
+//            {
+//                [self loadCache:cacheKey];
+//                //解除保持
+//                _failedBlock = nil;
+//                _sucessBlock = nil;
+//                _holdSelf = nil;
+//            }
+//            break;
+//        }
+//        case HFileCacheTypeForceRefresh:
+//        {
+//            [self startWithQueueName:queueName];
+//            break;
+//        }
+//        default:
+//            break;
+//    }
 }
 
 #pragma mark - queue
@@ -514,15 +507,13 @@
 {
     id responseEntity = [self processData:responInfo];
     if (!responseEntity) return; //has deal all exception
-    //record
-    if (self.cacheType != HFileCacheTypeNone)
+    
+    if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
     {
-        NSData *orignalData = self.responseData;
-        [[HFileCache shareCache] setData:orignalData forKey:[self cacheKey]
-                               expire:[NSDate dateWithTimeInterval:self.cacheDuration sinceDate:[NSDate date]]];
+        HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
+        [customCacheStrategy writeCache:self.responseData];
     }
-
-
+    
     if(_sucessBlock)
         _sucessBlock(self, responseEntity);
     

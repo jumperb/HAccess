@@ -26,6 +26,7 @@ typedef void (^HNPWillSendCallback)(NSMutableURLRequest *request);
 @property (nonatomic) BOOL shouldContinueInBack;
 @property (nonatomic) NSString *fileDownloadPath;
 @property (nonatomic) NSDictionary *headParameters;
+@property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
 @property (nonatomic, strong) HNPSuccessCallback successCallback;
 @property (nonatomic, strong) HNPFailCallback failCallback;

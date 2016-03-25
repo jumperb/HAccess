@@ -12,22 +12,12 @@
 #import "HEntity.h"
 #import "HNDeserializer.h"
 #import "HNetworkProvider.h"
-
+#import "HNetworkMultiDataObj.h"
+#import "HNCacheStrategy.h"
+#import "HNSystemCacheStrategy.h"
+#import "HNCustomCacheStrategy.h"
 //in most situation, you use json Deserializer
 #import "HNJsonDeserializer.h"
-#import "HNetworkMultiDataObj.h"
-
-/**
- *  cache type
- *  it is not the same as NSURLRequestCachePolicy
- */
-typedef enum
-{
-    HFileCacheTypeNone = 0, //no cache, directly and no cache result
-    HFileCacheTypeBoth,     //if has cache read cache and callback then request and callback, this type will callback twice if has cache
-    HFileCacheTypeExclusive, //if has cache read cache and callback , if not request and callback
-    HFileCacheTypeForceRefresh //will not read cache, but will save cache after get requst
-} HFileCacheType;
 
 
 @class HNetworkDAO;
@@ -51,10 +41,6 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *          use 'cache type' with some special 'cacheDuration' will get more flexable
  */
 @interface HNetworkDAO : NSObject
-{
-    HNetworkDAOFinishBlock _sucessBlock;
-    HNetworkDAOFinishBlock _failedBlock;
-}
 //set URL , it support these prefix: 'http://', 'https://', 'file://', 'bundle://'
 @property (nonatomic, strong) NSString* baseURL;
 @property (nonatomic, strong) NSString* pathURL;
@@ -82,12 +68,9 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //rude data, if the request is file download ,it will not work
 @property (nonatomic, strong) NSData *responseData;
 //cache type
-@property (nonatomic) HFileCacheType cacheType;
-//how long the cache lives, default is a week
-@property (nonatomic) long cacheDuration;
+@property (nonatomic) id<HNCacheStrategy> cacheType;
 //if it is file download request, set the to YES.
 @property (nonatomic) BOOL isFileDownload;
-
 /**
  *  begin request
  *
@@ -131,13 +114,6 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *  @return is success
  */
 + (BOOL)cancelQueueWithName:(NSString*)queueName;
-
-/**
- *  is my cache usable, if not exist or cache is too old return NO
- */
-- (BOOL)isCacheUseable;
-
-
 
 
 #pragma mark - extention
