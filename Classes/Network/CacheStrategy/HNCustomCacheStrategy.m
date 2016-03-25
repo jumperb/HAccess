@@ -8,9 +8,17 @@
 
 #import "HNCustomCacheStrategy.h"
 #import <HFileCache.h>
+#import <NSDate+ext.h>
 
 @implementation HNCustomCacheStrategy
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _cacheDuration = 60*60*24*7;
+    }
+    return self;
+}
 - (BOOL)isCacheUseable:(NSString *)cacheKey
 {
     BOOL cacheUsable = NO;
@@ -33,7 +41,14 @@
     }
     return cacheUsable;
 }
-
+- (void)setCacheDuration:(long long)cacheDuration
+{
+    _cacheDuration = cacheDuration;
+    if (cacheDuration > 60*60*24*30)
+    {
+        NSLog(@"#warning#: you set a too long duration, do you want a cache really ?");
+    }
+}
 - (void)cacheLogic:(HNCustomCacheCallback)cacheCallback
 {
     
