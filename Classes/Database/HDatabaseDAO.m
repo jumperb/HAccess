@@ -51,18 +51,21 @@
     }
     return self;
 }
-- (instancetype)initWithQueue:(FMDatabaseQueue *)_queue
+- (instancetype)initWithDbKey:(NSString *)dbkey tableName:(NSString *)tableName
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _shouldAddToQueue = YES;
-        queue = _queue;
+        _databaseKey = dbkey;
+        _tableName = tableName;
+        [self setupQueue];
     }
     return self;
 }
 - (void)setupQueue
 {
-    queue = [HDBMgr queue];
+    queue = [HDBMgr queueWithKey:[self databaseKey]];
 }
 
 #pragma mark - queue wapping
@@ -177,13 +180,13 @@
 
 - (BOOL)add:(HEntity *)entity
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     __block BOOL res = YES;
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
-         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
+         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:NSStringFromClass([entity class]) isDepSearch:NO];
          NSMutableString *values = [[NSMutableString alloc] init];
          int index = 0;
          for (NSString *p in pplist)
@@ -204,7 +207,7 @@
              fields = [fields stringByAppendingString:@",id"];
              [values appendFormat:@",'%@'", [HDatabaseDAO cleanValue:entity.ID]];
          }
-         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", _tableName,fields,values];
+         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", [self tableName], fields, values];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -218,14 +221,14 @@
 
 - (NSString *)lastInsertedID
 {
-    return [self lastInsertedIDOfTable:_tableName];
+    return [self lastInsertedIDOfTable:[self tableName]];
 }
 
 - (BOOL)remove:(NSString *)keyppValue
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     __block BOOL res = YES;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
+    NSString *className = [[HDBMgr shared] entityClassNameForTable:[self tableName] dbkey:[self databaseKey]];
     Class aclass = NSClassFromString(className);
     if (!aclass) return NO;
     HEntity *entity = [[aclass alloc] init];
@@ -236,7 +239,7 @@
     NSString *keypp1 = [entity keyProperty];
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", _tableName, keypp1, [HDatabaseDAO cleanValue:keyppValue]];
+         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", [self tableName], keypp1, [HDatabaseDAO cleanValue:keyppValue]];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -249,12 +252,12 @@
 
 - (BOOL)update:(HEntity *)entity keypp:(NSString *)keypp
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -270,7 +273,7 @@
          [settes appendFormat:@", modified = '%li'", nowtime];
          NSString *IDValue = [HDatabaseDAO cleanValue:entity.ID];
          if (![keypp isEqualToString:@"id"]) IDValue = [entity hValueForKey:keypp];
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'", _tableName, settes, keypp, IDValue];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'", [self tableName], settes, keypp, IDValue];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -281,12 +284,12 @@
 }
 - (BOOL)update:(HEntity *)entity keyppList:(NSArray *)keyppList
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:[[HDBMgr shared] entityNameWithTableName:_tableName] isDepSearch:NO];
+         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -309,7 +312,7 @@
              if (![pp isEqualToString:@"id"]) value = [entity hValueForKey:pp];
              [whereStatment appendFormat:@" and %@ = '%@'",pp,[HDatabaseDAO cleanValue:[value stringValue]]];
          }
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE 1 %@", _tableName, settes, whereStatment];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE 1 %@", [self tableName], settes, whereStatment];
          res = [db executeUpdate:sql];
          if (res)
          {
@@ -322,9 +325,9 @@
 - (HEntity *)get:(NSString *)keyppValue
 {
     __block HEntity *entity;
-    if (!_tableName) return nil;
+    if (![self tableName]) return nil;
     if (!keyppValue) return nil;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
+    NSString *className = [[HDBMgr shared] entityClassNameForTable:[self tableName] dbkey:[self databaseKey]];
     Class aclass = NSClassFromString(className);
     if (!aclass) return nil;
     HEntity *tempEntity = [[aclass alloc] init];
@@ -338,33 +341,23 @@
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = '%@'", _tableName, keypp, keyppValue];
+         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = '%@'", [self tableName], keypp, keyppValue];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {
-             if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
+             if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
              {
-                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
-                 Class aclass = NSClassFromString(className);
-                 if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
-                 {
-                     if (!entity) entity = (HEntity *)[[aclass alloc] init];
-                     if (![entity isKindOfClass:[HEntity class]])
-                     {
-                         NSLog(@"this class does not a subclass of HEntity");
-                         abort();
-                     }
-                     [entity setWithResultSet:result];
-                 }
-                 else
+                 if (!entity) entity = (HEntity *)[[aclass alloc] init];
+                 if (![entity isKindOfClass:[HEntity class]])
                  {
                      NSLog(@"this class does not a subclass of HEntity");
                      abort();
                  }
+                 [entity setWithResultSet:result];
              }
              else
              {
-                 NSLog(@"you need set the mapping between entity class name and table name in datasource, if you want use quick method");
+                 NSLog(@"this class does not a subclass of HEntity");
                  abort();
              }
          }
@@ -375,9 +368,9 @@
 
 - (HEntity *)getWithCondition:(NSString *)condition
 {
-    if (!_tableName) return nil;
+    if (![self tableName]) return nil;
     if (!condition) return nil;
-    NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
+    NSString *className = [[HDBMgr shared] entityClassNameForTable:[self tableName] dbkey:[self databaseKey]];
     Class aclass = NSClassFromString(className);
     if (!aclass) return nil;
     HEntity *tempEntity = [[aclass alloc] init];
@@ -388,35 +381,27 @@
     __block HEntity *entity = nil;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", _tableName, condition];
+         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], condition];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {
-             if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
+             
+             if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
              {
-                 NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
-                 Class aclass = NSClassFromString(className);
-                 if (class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
-                 {
-                     entity = (HEntity *)[[aclass alloc] init];
-                     if (![entity isKindOfClass:[HEntity class]])
-                     {
-                         NSLog(@"this class does not a subclass of HEntity");
-                         abort();
-                     }
-                     [entity setWithResultSet:result];
-                 }
-                 else
+                 entity = (HEntity *)[[aclass alloc] init];
+                 if (![entity isKindOfClass:[HEntity class]])
                  {
                      NSLog(@"this class does not a subclass of HEntity");
                      abort();
                  }
+                 [entity setWithResultSet:result];
              }
              else
              {
-                 NSLog(@"you need set the mapping between entity class name and table name in datasource, if you want use quick method");
+                 NSLog(@"this class does not a subclass of HEntity");
                  abort();
              }
+             
          }
          [result close];
      }];
@@ -429,9 +414,9 @@
 
 - (BOOL)adds:(NSArray *)entities
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     if ([entities count] == 0) return NO;
-    NSString *entityClassName = [[HDBMgr shared] entityNameWithTableName:_tableName];
+    NSString *entityClassName = NSStringFromClass([entities.lastObject class]);
     NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:entityClassName isDepSearch:NO];
     NSString *fields = [[HPropertyMgr shared] entityPropertylistString:entityClassName isDepSearch:NO];
     fields = [fields stringByAppendingString:@",created,modified"];
@@ -464,7 +449,7 @@
              i ++;
          }
 
-         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES %@", _tableName,fields,values];
+         NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES %@", [self tableName],fields,values];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -505,7 +490,7 @@
 
 - (BOOL)updatesWithSetters:(NSDictionary *)setters conditions:(NSString *)conditions
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     __block BOOL res = YES;
     [self inTransaction:^(FMDatabase* db, BOOL *rollback)
      {
@@ -524,7 +509,7 @@
 
          long nowtime = time(NULL);
          [settesString appendFormat:@", modified = '%li'", nowtime];
-         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@", _tableName, settesString, conditions];
+         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@", [self tableName], settesString, conditions];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -534,12 +519,12 @@
 
 - (BOOL)removes:(NSString *)conditions
 {
-    if (!_tableName) return NO;
+    if (![self tableName]) return NO;
     if (!conditions) conditions = @"1";
     __block BOOL res = YES;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", _tableName, conditions];
+         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", [self tableName], conditions];
          res = [db executeUpdate:sql];
      }];
     return res;
@@ -551,56 +536,49 @@
 }
 - (NSArray *)list:(NSString *)conditions;
 {
-    if (!_tableName) return nil;
-    if ([[HDBMgr shared].datasource respondsToSelector:@selector(entityClassNameForTable:)])
+    if (![self tableName]) return nil;
+
+    NSString *className = [[HDBMgr shared] entityClassNameForTable:[self tableName] dbkey:[self databaseKey]];
+    Class aclass = NSClassFromString(className);
+    if (!class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
     {
-        NSString *className = [[HDBMgr shared].datasource entityClassNameForTable:_tableName];
-        Class aclass = NSClassFromString(className);
-        if (!class_getInstanceMethod(aclass, @selector(setWithResultSet:)))
-        {
-            NSLog(@"this class does not a subclass of HEntity");
-            abort();
-        }
-
-
-        if (!conditions) conditions = @"1";
-        __block NSMutableArray *res = [[NSMutableArray alloc] init];
-        [self inDatabase:^(FMDatabase* db)
-         {
-
-             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", _tableName, conditions];
-             FMResultSet* result = [db executeQuery:sql];
-             while ([result next])
-             {
-                 HEntity *entity = (HEntity *)[[aclass alloc] init];
-                 if (![entity isKindOfClass:[HEntity class]])
-                 {
-                     NSLog(@"this class does not a subclass of HEntity");
-                     abort();
-                 }
-                 [entity setWithResultSet:result];
-                 [res addObject:entity];
-             }
-             [result close];
-         }];
-        return res;
-    }
-    else
-    {
-        NSLog(@"you need set the mapping between entity class name and table name in datasource, if you want use quick method");
+        NSLog(@"this class does not a subclass of HEntity");
         abort();
     }
+
+
+    if (!conditions) conditions = @"1";
+    __block NSMutableArray *res = [[NSMutableArray alloc] init];
+    [self inDatabase:^(FMDatabase* db)
+     {
+
+         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], conditions];
+         FMResultSet* result = [db executeQuery:sql];
+         while ([result next])
+         {
+             HEntity *entity = (HEntity *)[[aclass alloc] init];
+             if (![entity isKindOfClass:[HEntity class]])
+             {
+                 NSLog(@"this class does not a subclass of HEntity");
+                 abort();
+             }
+             [entity setWithResultSet:result];
+             [res addObject:entity];
+         }
+         [result close];
+     }];
+    return res;
 }
 
 
 - (long)count:(NSString *)conditions
 {
-    if (!_tableName) return -1;
+    if (![self tableName]) return -1;
     if (!conditions) conditions = @"1";
     __block long res = -1;
     [self inDatabase:^(FMDatabase* db)
      {
-         NSString *sql = [NSString stringWithFormat:@"SELECT count(*) as cnt FROM %@ WHERE  %@", _tableName, conditions];
+         NSString *sql = [NSString stringWithFormat:@"SELECT count(*) as cnt FROM %@ WHERE  %@", [self tableName], conditions];
          FMResultSet* result = [db executeQuery:sql];
          if([result next])
          {

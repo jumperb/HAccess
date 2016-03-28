@@ -35,14 +35,6 @@
         _queuesDict = [[NSMutableDictionary alloc] init];
         _tableToEntityClassNameCache = [[NSMutableDictionary alloc] init];
         _operateQueue = dispatch_queue_create("HDBMgr", 0);
-        
-        NSString *datasourceClassName = [HClassManager getClassNameForKey:HDBMgrDatasourceRegKey];
-        NSAssert(datasourceClassName, @"need reg HDBMgrDatasource");
-        Class klass = NSClassFromString(datasourceClassName);
-        NSAssert(klass, @"need reg HDBMgrDatasource");
-        id obj = [[klass alloc] init];
-        NSAssert([obj conformsToProtocol:@protocol(HDBMgrDatasource)], @"must implement HDBMgrDatasource");
-        self.datasource = obj;
     }
     return self;
 }
@@ -73,34 +65,57 @@
     });
     return res;
 }
-- (FMDatabaseQueue *)defaultQueue
-{
-    dispatch_sync(self.operateQueue, ^{
-        if (!_defaultQueue)
-        {
-            _defaultQueue = [self queueInitWithKey:[self defaultDatabaseKey]];
-        }
-    });
-    return _defaultQueue;
-}
+//- (FMDatabaseQueue *)defaultQueue
+//{
+//    dispatch_sync(self.operateQueue, ^{
+//        if (!_defaultQueue)
+//        {
+//            _defaultQueue = [self queueInitWithKey:[self defaultDatabaseKey]];
+//        }
+//    });
+//    return _defaultQueue;
+//}
 
 
 #pragma mark - db connect
-
+- (id<HDBMgrDatasource>)getDBSourceWithKey:(NSString *)key
+{
+    __block id<HDBMgrDatasource> dataSource = nil;
+    [HClassManager scanClassForKey:HDBMgrDatasourceRegKey fetchblock:^(__unsafe_unretained Class aclass, id userInfo) {
+        if ([userInfo isEqualToString:key])
+        {
+            dataSource = (id<HDBMgrDatasource>) [aclass new];
+        }
+    }];
+    if (!dataSource)
+    {
+        NSAssert(NO, @"must give me a db source 'HDBMgrDatasource'");
+        abort();
+    }
+    if (![dataSource conformsToProtocol:@protocol(HDBMgrDatasource)])
+    {
+        NSAssert(NO, @"%@ must conform HDBMgrDatasource", NSStringFromClass([dataSource class]));
+        abort();
+    }
+    return dataSource;
+}
 //init db file: unzip db to target directory
 - (FMDatabaseQueue *)queueInitWithKey:(NSString *)key
 {
-    NSString *setupPath =[self setupPathForKey:key];
+    id<HDBMgrDatasource> dataSource = [self getDBSourceWithKey:key];
+    
+    NSString *setupPath =[dataSource setupPath];
     if (!setupPath)
     {
-        NSLog(@"%@ db setup path is not exist",key);
+        NSAssert(NO, @"%@ db setup path is not exist",key);
         abort();
     }
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL find = [fileManager fileExistsAtPath:setupPath];
     if (!find) {
 
-        NSString *sourcePath = [self databasePathInBundleForKey:key];
+        NSString *sourcePath = [dataSource databasePathInBundle];
         [self safeCopyItemAtPath:sourcePath toPath:setupPath atomically:YES isOverwrite:YES error:nil];
     }
     FMDatabaseQueue *dbQueue = [FMDatabaseQueue databaseQueueWithPath:setupPath];
@@ -109,49 +124,23 @@
         return nil;
     }
     [_queuesDict setObject:dbQueue forKey:key];
-    [self databaseQueueSetuped:key  dbqueue:dbQueue isNew:!find];
+    if ([dataSource respondsToSelector:@selector(databaseQueueSetupedAtDBQueue:isNew:)])
+    {
+        [dataSource databaseQueueSetupedAtDBQueue:dbQueue isNew:!find];
+    }
     return dbQueue;
 }
-
-#pragma mark - config
-
-
-- (NSString *)defaultDatabaseKey
+- (NSString *)entityClassNameForTable:(NSString *)tableName dbkey:(NSString *)dbkey
 {
-    if (!_datasource) abort();
-    return [_datasource defaultDatabaseKey];
-}
-
-- (NSString *)databasePathInBundleForKey:(NSString *)key
-{
-    if (!_datasource) abort();
-    return [_datasource databasePathInBundleForKey:key];
-}
-
-- (NSString *)setupPathForKey:(NSString *)key
-{
-    if (!_datasource) abort();
-    return [_datasource setupPathForKey:key];
-}
-
-- (void)databaseQueueSetuped:(NSString *)key dbqueue:(FMDatabaseQueue *)dbqueue isNew:(BOOL)isNew
-{
-    if (!_datasource) abort();
-    return [_datasource databaseQueueSetuped:key dbqueue:dbqueue isNew:isNew];
-}
-
-
-- (NSString *)entityNameWithTableName:(NSString *)tableName
-{
+    id<HDBMgrDatasource> dataSource = [self getDBSourceWithKey:dbkey];
     NSString *entityClassName = _tableToEntityClassNameCache[tableName];
     if (!entityClassName)
     {
-        entityClassName = [_datasource entityClassNameForTable:tableName];
+        entityClassName = [dataSource entityClassNameForTable:tableName];
         [_tableToEntityClassNameCache setObject:entityClassName forKey:tableName];
     }
     return entityClassName;
 }
-
 #pragma mark - helper method
 - (BOOL)safeCopyItemAtPath:(NSString *)srcPath
                 toPath:(NSString *)dstPath

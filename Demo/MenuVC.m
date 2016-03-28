@@ -8,6 +8,7 @@
 
 #import "MenuVC.h"
 #import "User.h"
+#import "Student.h"
 #import "UserLocalDao.h"
 #import "NetworkDaoTestVC.h"
 #import "DeserializeDemo.h"
@@ -39,6 +40,10 @@
         [self addMenu:@"DB Entity Test" subTitle:@"see the demo code" callback:^(id sender, id data) {
             [weakSelf testDBEntity];
         }];
+        
+        [self addMenu:@"Another DB Test" subTitle:@"see the demo code" callback:^(id sender, id data) {
+            [weakSelf testDBEntity2];
+        }];
     }
     return self;
 }
@@ -58,6 +63,13 @@
     newUser.sex = arc4random()%2;
     newUser.birth = (long)14554223423;
     newUser.desc = [NSString stringWithFormat:@"Im desc %d", arc4random()%100];
+    return newUser;
+}
+- (Student *)newStudent
+{
+    Student *newUser = [Student new];
+    newUser.name = @"lisa";
+    newUser.level = arc4random()%6 + 1;
     return newUser;
 }
 - (void)testDBDAO
@@ -182,6 +194,24 @@
     {
         NSLog(@"%@",[user jsonString]);
     }
+}
+
+- (void)testDBEntity2
+{
+    NSLog(@"batch delete");
+    [Student removes:nil];
+    NSLog(@"create new data model");
+    Student *newStudent = [self newStudent];
+    NSLog(@"I have create a user: \n%@",[newStudent jsonString]);
+    [newStudent save];
+    NSString *ID = [Student lastInsertedID];
+    NSLog(@"last inserted ID is %@",ID);
+    
+    NSLog(@"query User by ID:%@",ID);
+    Student *aStudent = (Student *)[Student get:ID];
+    NSLog(@"User from db:\n%@",[aStudent jsonString]);
+    
+    NSLog(@"total Student count : %li", [Student count:nil]);
 }
 - (void)viewDidLoad
 {

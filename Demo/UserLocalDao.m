@@ -9,12 +9,13 @@
 #import "UserLocalDao.h"
 
 @implementation UserLocalDao
-- (instancetype)init
+
+- (NSString *)databaseKey
 {
-    self = [super init];
-    if (self) {
-        self.tableName = @"User";
-    }
-    return self;
+    return @"HAccess1";
+}
+- (NSString *)tableName
+{
+    return @"User";
 }
 @end

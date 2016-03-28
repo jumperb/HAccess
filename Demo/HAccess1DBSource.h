@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 #import "HDBMgr.h"
 
-@interface HDBDatasource : NSObject <HDBMgrDatasource>
+@interface HAccess1DBSource : NSObject <HDBMgrDatasource>
 @end

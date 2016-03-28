@@ -18,12 +18,18 @@
 {
     self = [super init];
     if (self) {
-        self.tableName = @"Boss";
         _userDao = [[UserLocalDao alloc] init];
     }
     return self;
 }
-
+- (NSString *)tableName
+{
+    return @"Boss";
+}
+- (NSString *)databaseKey
+{
+    return @"HAccess1";
+}
 - (HEntity *)getWithCondition:(NSString *)condition
 {
     abort();

@@ -10,17 +10,13 @@
 
 @implementation StudentLocalDao
 
-- (void)setupQueue
+- (NSString *)databaseKey
 {
-    queue = [HDBMgr queueWithKey:@"HAccess2"];
+    return @"HAccess2";
+}
+- (NSString *)tableName
+{
+    return @"student";
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.tableName = @"student";
-    }
-    return self;
-}
 @end

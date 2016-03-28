@@ -23,7 +23,8 @@
     FMDatabase *currentDB;
 }
 //if this dao is apply to a single table, please set this tableName, then u can use these quick method
-@property (nonatomic) NSString *tableName;
+@property (nonatomic, readonly) NSString *tableName;
+@property (nonatomic, readonly) NSString *databaseKey;
 /**
  *  init access queue, u can rewrite it to access other db if you have one more db
  */
@@ -115,13 +116,14 @@
 + (NSString *)cleanValue:(NSString *)value;
 
 /**
- *  init with queue, but most times u just use init without params
+ *  init with dbkey and tableName, but most times u just use init without params
  *
- *  @param queue
+ *  @param dbkey: which db
+ *  @param tableName: which table
  *
  *  @return
  */
-- (instancetype)initWithQueue:(FMDatabaseQueue *)queue;
+- (instancetype)initWithDbKey:(NSString *)dbkey tableName:(NSString *)tableName;
 @end
 
 

@@ -15,14 +15,14 @@
 {
     return NSStringFromClass([self class]);
 }
-+ (FMDatabaseQueue *)queue
+
++ (NSString *)databaseKey
 {
-    return [HDBMgr queue];
+    return @"default";
 }
 + (HDatabaseDAO *)dao
 {
-    HDatabaseDAO *dao = [[HDatabaseDAO alloc] initWithQueue:[HDBMgr queue]];
-    dao.tableName = [self tableName];
+    HDatabaseDAO *dao = [[HDatabaseDAO alloc] initWithDbKey:[self.class databaseKey] tableName:[self.class tableName]];
     return dao;
 }
 #pragma mark - create

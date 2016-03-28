@@ -9,5 +9,9 @@
 #import "Student.h"
 
 @implementation Student
-
+//which db
++ (NSString *)databaseKey
+{
+    return @"HAccess2";
+}
 @end

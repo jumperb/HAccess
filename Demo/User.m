@@ -9,5 +9,9 @@
 #import "User.h"
 
 @implementation User
-
+//which db
++ (NSString *)databaseKey
+{
+    return @"HAccess1";
+}
 @end

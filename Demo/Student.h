@@ -9,5 +9,6 @@
 #import "HEntity.h"
 
 @interface Student : HEntity
-
+@property (nonatomic) NSString *name;
+@property (nonatomic) int level;
 @end
