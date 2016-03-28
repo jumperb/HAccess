@@ -9,5 +9,10 @@
 #import "HNSystemCacheStrategy.h"
 
 @implementation HNSystemCacheStrategy
-
++ (instancetype)create:(NSURLRequestCachePolicy)systemCachePolicy
+{
+    HNSystemCacheStrategy *cacheStrategy = [HNSystemCacheStrategy new];
+    cacheStrategy.policy = systemCachePolicy;
+    return cacheStrategy;
+}
 @end
