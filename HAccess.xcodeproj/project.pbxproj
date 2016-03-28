@@ -29,8 +29,8 @@
 		00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = 00786CFA1B96D0F4005A8247 /* TestEntity1.m */; };
 		00856BCB1C867CDE00AC73CD /* HDeserializableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 00856BCA1C867CDE00AC73CD /* HDeserializableObject.m */; };
 		00A005691CA90D6400C1E213 /* HAccess2DBSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A005681CA90D6400C1E213 /* HAccess2DBSource.m */; };
-		00AB00A21CA4DDF700D28CDA /* HNSystemCacheStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AB00A11CA4DDF700D28CDA /* HNSystemCacheStrategy.m */; };
-		00AB00A51CA4DE2A00D28CDA /* HNCustomCacheStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AB00A41CA4DE2A00D28CDA /* HNCustomCacheStrategy.m */; };
+		00A0056F1CA9149800C1E213 /* HNCustomCacheStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A0056C1CA9149800C1E213 /* HNCustomCacheStrategy.m */; };
+		00A005701CA9149800C1E213 /* HNSystemCacheStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A0056E1CA9149800C1E213 /* HNSystemCacheStrategy.m */; };
 		00BC95CF1C27D3C30036B322 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 00BC95CE1C27D3C30036B322 /* test.json */; };
 		00DC44621C9BAD940036282E /* HEntity+Persistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DC44611C9BAD940036282E /* HEntity+Persistence.m */; };
 		00DD89211B462D6600214FD3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89201B462D6600214FD3 /* main.m */; };
@@ -93,11 +93,11 @@
 		00856BCA1C867CDE00AC73CD /* HDeserializableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDeserializableObject.m; sourceTree = "<group>"; };
 		00A005671CA90D6400C1E213 /* HAccess2DBSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAccess2DBSource.h; sourceTree = "<group>"; };
 		00A005681CA90D6400C1E213 /* HAccess2DBSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HAccess2DBSource.m; sourceTree = "<group>"; };
-		00AB009F1CA4DDD200D28CDA /* HNCacheStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HNCacheStrategy.h; sourceTree = "<group>"; };
-		00AB00A01CA4DDF700D28CDA /* HNSystemCacheStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNSystemCacheStrategy.h; sourceTree = "<group>"; };
-		00AB00A11CA4DDF700D28CDA /* HNSystemCacheStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNSystemCacheStrategy.m; sourceTree = "<group>"; };
-		00AB00A31CA4DE2A00D28CDA /* HNCustomCacheStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNCustomCacheStrategy.h; sourceTree = "<group>"; };
-		00AB00A41CA4DE2A00D28CDA /* HNCustomCacheStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNCustomCacheStrategy.m; sourceTree = "<group>"; };
+		00A0056A1CA9149800C1E213 /* HNCacheStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNCacheStrategy.h; sourceTree = "<group>"; };
+		00A0056B1CA9149800C1E213 /* HNCustomCacheStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNCustomCacheStrategy.h; sourceTree = "<group>"; };
+		00A0056C1CA9149800C1E213 /* HNCustomCacheStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNCustomCacheStrategy.m; sourceTree = "<group>"; };
+		00A0056D1CA9149800C1E213 /* HNSystemCacheStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNSystemCacheStrategy.h; sourceTree = "<group>"; };
+		00A0056E1CA9149800C1E213 /* HNSystemCacheStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNSystemCacheStrategy.m; sourceTree = "<group>"; };
 		00BC95CE1C27D3C30036B322 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		00DC44601C9BAD940036282E /* HEntity+Persistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HEntity+Persistence.h"; sourceTree = "<group>"; };
 		00DC44611C9BAD940036282E /* HEntity+Persistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HEntity+Persistence.m"; sourceTree = "<group>"; };
@@ -249,16 +249,16 @@
 			path = Entity;
 			sourceTree = "<group>";
 		};
-		00AB009E1CA4DDC300D28CDA /* CacheStrategy */ = {
+		00A005711CA9149F00C1E213 /* HNCacheStrategy */ = {
 			isa = PBXGroup;
 			children = (
-				00AB009F1CA4DDD200D28CDA /* HNCacheStrategy.h */,
-				00AB00A01CA4DDF700D28CDA /* HNSystemCacheStrategy.h */,
-				00AB00A11CA4DDF700D28CDA /* HNSystemCacheStrategy.m */,
-				00AB00A31CA4DE2A00D28CDA /* HNCustomCacheStrategy.h */,
-				00AB00A41CA4DE2A00D28CDA /* HNCustomCacheStrategy.m */,
+				00A0056A1CA9149800C1E213 /* HNCacheStrategy.h */,
+				00A0056B1CA9149800C1E213 /* HNCustomCacheStrategy.h */,
+				00A0056C1CA9149800C1E213 /* HNCustomCacheStrategy.m */,
+				00A0056D1CA9149800C1E213 /* HNSystemCacheStrategy.h */,
+				00A0056E1CA9149800C1E213 /* HNSystemCacheStrategy.m */,
 			);
-			path = CacheStrategy;
+			name = HNCacheStrategy;
 			sourceTree = "<group>";
 		};
 		00DD89121B462D6600214FD3 = {
@@ -322,7 +322,7 @@
 		9E6806211C9BEBB700519539 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				00AB009E1CA4DDC300D28CDA /* CacheStrategy */,
+				00A005711CA9149F00C1E213 /* HNCacheStrategy */,
 				9E6806231C9BEBB700519539 /* HNetworkDAO.h */,
 				9E6806241C9BEBB700519539 /* HNetworkDAO.m */,
 				00350FEC1C9FE27300CDF06B /* HNetworkMultiDataObj.h */,
@@ -483,8 +483,8 @@
 				9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
 				9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */,
-				00AB00A51CA4DE2A00D28CDA /* HNCustomCacheStrategy.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
+				00A005701CA9149800C1E213 /* HNSystemCacheStrategy.m in Sources */,
 				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
 				9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */,
 				9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */,
@@ -498,7 +498,6 @@
 				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
 				9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */,
 				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,
-				00AB00A21CA4DDF700D28CDA /* HNSystemCacheStrategy.m in Sources */,
 				9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */,
 				00DC44621C9BAD940036282E /* HEntity+Persistence.m in Sources */,
 				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
@@ -506,6 +505,7 @@
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00A005691CA90D6400C1E213 /* HAccess2DBSource.m in Sources */,
+				00A0056F1CA9149800C1E213 /* HNCustomCacheStrategy.m in Sources */,
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
 				00350FEE1C9FE27300CDF06B /* HNetworkMultiDataObj.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
