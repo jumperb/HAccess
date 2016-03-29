@@ -59,8 +59,6 @@
 @end
 
 @interface HNetworkDAO()
-@property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
-@property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
 @property (nonatomic) HNetworkDAO* holdSelf;
 @property (nonatomic) NSString *fileDownloadPath;
 @property (nonatomic) id<HNetworkProvider> provider;

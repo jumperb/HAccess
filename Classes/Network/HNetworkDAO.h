@@ -71,6 +71,11 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic) id<HNCacheStrategy> cacheType;
 //if it is file download request, set the to YES.
 @property (nonatomic) BOOL isFileDownload;
+
+//only use for subclass
+@property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
+@property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
+
 /**
  *  begin request
  *
