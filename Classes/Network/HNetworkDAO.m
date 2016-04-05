@@ -194,7 +194,7 @@
             {
                 [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
             }
-            [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *reponse, NSData *data){
+            [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *response, NSData *data){
                 
                 NSLog(@" ");
                 NSLog(@"#### revc response");
@@ -204,15 +204,15 @@
                 if (!weakSelf.fileDownloadPath)
                 {
                     weakSelf.responseData = data;
-                    [weakSelf requestFinishedSucessWithInfo:data];
+                    [weakSelf requestFinishedSucessWithInfo:data response:response];
                 }
                 else
                 {
                     HDownloadFileInfo *info = [HDownloadFileInfo new];
                     info.filePath = weakSelf.fileDownloadPath;
-                    info.MIMEType = [reponse MIMEType];
-                    info.length = [reponse expectedContentLength];
-                    info.suggestedFilename = [reponse suggestedFilename];
+                    info.MIMEType = [response MIMEType];
+                    info.length = [response expectedContentLength];
+                    info.suggestedFilename = [response suggestedFilename];
                     //delete after 1 min
                     [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:60] forFilePath:info.filePath];
                     [weakSelf downloadFinished:info];
@@ -359,7 +359,7 @@
             NSLog(@"revc response %@/%@", self.baseURL, self.pathURL);
             self.responseData = fileData;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self requestFinishedSucessWithInfo:fileData];
+                [self requestFinishedSucessWithInfo:fileData response:nil];
             });
         }
         else
@@ -501,7 +501,7 @@
 }
 #pragma mark - netWorking finished
 
-- (void)requestFinishedSucessWithInfo:(id)responInfo
+- (void)requestFinishedSucessWithInfo:(id)responInfo response:(NSHTTPURLResponse *)response
 {
     id responseEntity = [self processData:responInfo];
     if (!responseEntity) return; //has deal all exception

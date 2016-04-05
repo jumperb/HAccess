@@ -170,7 +170,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *  after recv response, default operation is invoke getOutputEntiy and write cache
  *  u can do some status code examlation there
  */
-- (void)requestFinishedSucessWithInfo:(id)responInfo;
+- (void)requestFinishedSucessWithInfo:(id)responInfo response:(NSHTTPURLResponse *)response;
 
 /**
  *  deal response data and convert to a object as new response, if return NSError, it will route to fail callback
