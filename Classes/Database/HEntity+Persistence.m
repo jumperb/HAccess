@@ -7,7 +7,6 @@
 //
 
 #import "HEntity+Persistence.h"
-#import "HDatabaseDAO.h"
 
 @implementation HEntity (Persistence)
 

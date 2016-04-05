@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  property desc
+ */
+@interface HPropertyDetail : NSObject
+@property (nonatomic) NSString *name;
+@property (nonatomic) BOOL isObj;
+@property (nonatomic) char typeCode;
+@property (nonatomic) NSString *typeString;
+@property (nonatomic) NSString *protocalString;
+@end
+
 @interface HPropertyMgr : NSObject
 //singleton
 + (instancetype)shared;
@@ -21,22 +32,11 @@
 
 //deepSearch: should search iteratively by inherit relation
 - (NSArray *)entityPropertylist:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
-- (NSArray *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
+- (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
 
-//get property list string, like "field1,field2,field3"
-- (NSString *)entityPropertylistString:(NSString *)entityClassName;
-- (NSString *)entityPropertylistString:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
+
 @end
 
-/**
- *  property desc
- */
-@interface HPropertyDetail : NSObject
-@property (nonatomic) NSString *name;
-@property (nonatomic) BOOL isObj;
-@property (nonatomic) char typeCode;
-@property (nonatomic) NSString *typeString;
-@property (nonatomic) NSString *protocalString;
-@end
+
 
 

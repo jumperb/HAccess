@@ -11,6 +11,44 @@
 #import <objc/runtime.h>
 #import <HCommon.h>
 
+
+/**
+ *  propert extend attr
+ */
+
+@interface HDBEntityPPExt : NSObject
+@property (nonatomic) BOOL isIgnore;
+@end
+
+@implementation HDBEntityPPExt
++ (HDBEntityPPExt *)extWithObjs:(id)objs
+{
+    HDBEntityPPExt *ext = [[HDBEntityPPExt alloc] initWithObjs:objs];
+    return ext;
+}
+- (instancetype)initWithObjs:(id)objs
+{
+    self = [super init];
+    if (self) {
+        if ([objs isKindOfClass:[NSArray class]])
+        {
+            for (id obj in (NSArray *)objs)
+            {
+                [self setWithObj:obj];
+            }
+        }
+    }
+    return self;
+}
+- (void)setWithObj:(id)obj
+{
+    if ([obj isEqualToString:HPIgnoreInDB])
+    {
+        self.isIgnore = YES;
+    }
+}
+
+@end
 @implementation HEntity (DBExtend)
 
 - (void)setWithResultSet:(FMResultSet*)result
@@ -21,6 +59,9 @@
     NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
     for (NSString *p in pplist)
     {
+        NSArray *exts = [[self class] annotations:p];
+        if ([HDBEntityPPExt extWithObjs:exts].isIgnore) continue;
+        
         if(result.columnNameToIndexMap[p])
         {
             id value = [result objectForColumnName:p];
@@ -185,8 +226,8 @@
 
     [self inDatabase:^(FMDatabase* db)
      {
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
-         NSString *fields = [[HPropertyMgr shared] entityPropertylistString:NSStringFromClass([entity class]) isDepSearch:NO];
+         NSArray *pplist = [self entityPropertylist:[entity class] isDepSearch:NO];
+         NSString *fields = [self entityPropertylistString:[entity class] isDepSearch:NO];
          NSMutableString *values = [[NSMutableString alloc] init];
          int index = 0;
          for (NSString *p in pplist)
@@ -257,7 +298,7 @@
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
+         NSArray *pplist = [self entityPropertylist:[entity class] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -289,7 +330,7 @@
     [self inDatabase:^(FMDatabase* db)
      {
          NSMutableString *settes =[[NSMutableString alloc] init];
-         NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass([entity class]) isDepSearch:NO];
+         NSArray *pplist = [self entityPropertylist:[entity class] isDepSearch:NO];
          int index = 0;
          for (NSString *p in pplist)
          {
@@ -416,9 +457,9 @@
 {
     if (![self tableName]) return NO;
     if ([entities count] == 0) return NO;
-    NSString *entityClassName = NSStringFromClass([entities.lastObject class]);
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:entityClassName isDepSearch:NO];
-    NSString *fields = [[HPropertyMgr shared] entityPropertylistString:entityClassName isDepSearch:NO];
+    Class entityClass = [entities.lastObject class];
+    NSArray *pplist = [self entityPropertylist:entityClass isDepSearch:NO];
+    NSString *fields = [self entityPropertylistString:entityClass isDepSearch:NO];
     fields = [fields stringByAppendingString:@",created,modified"];
 
     __block BOOL res = YES;
@@ -661,6 +702,60 @@
         index ++;
     }
     return str;
+}
+
+
+
+- (NSArray *)entityPropertylist:(Class)entityClass isDepSearch:(BOOL)deepSearch
+{
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(entityClass) isDepSearch:deepSearch];
+    NSMutableArray *newPPlist = [NSMutableArray new];
+    for (NSString *p in pplist)
+    {
+        NSArray *exts = [entityClass annotations:p];
+        if ([HDBEntityPPExt extWithObjs:exts].isIgnore) continue;
+        
+        [newPPlist addObject:p];
+    }
+    return newPPlist;
+}
+- (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(Class)entityClass isDepSearch:(BOOL)deepSearch
+{
+    NSArray<HPropertyDetail *> *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(entityClass) isDepSearch:deepSearch];
+    NSMutableArray<HPropertyDetail *> *newPPDetaillist = [NSMutableArray new];
+    for (HPropertyDetail *p in pplist)
+    {
+        NSArray *exts = [entityClass annotations:p.name];
+        if ([HDBEntityPPExt extWithObjs:exts].isIgnore) continue;
+        
+        [newPPDetaillist addObject:p];
+    }
+    return newPPDetaillist;
+}
+
+- (NSString *)entityPropertylistString:(Class)entityClass
+{
+    return [self entityPropertylistString:entityClass isDepSearch:YES];
+}
+- (NSString *)entityPropertylistString:(Class)entityClass isDepSearch:(BOOL)deepSearch;
+{
+    NSArray *pplist = [self entityPropertylist:entityClass isDepSearch:deepSearch];
+    NSMutableString *fields = [[NSMutableString alloc] init];
+    int index = 0;
+    for (NSString *p in pplist)
+    {
+        NSArray *exts = [entityClass annotations:p];
+        if ([HDBEntityPPExt extWithObjs:exts].isIgnore) continue;
+        
+        if (index != 0)
+        {
+            [fields appendString:@","];
+        }
+        [fields appendString:p];
+        index ++;
+    }
+    
+    return fields;
 }
 @end
 

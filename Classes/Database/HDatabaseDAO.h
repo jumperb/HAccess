@@ -127,6 +127,9 @@
 @end
 
 
+//ignore property in DB
+#define HPIgnoreInDB @"ignoreInDB"
+
 @interface HEntity (DBExtend)
 
 //set data with query result

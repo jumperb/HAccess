@@ -14,7 +14,7 @@
 @interface HPropertyStructCacheData : NSObject
 @property (nonatomic) NSArray *pplist;
 @property (nonatomic) NSString *pplistString;
-@property (nonatomic) NSArray *ppDetailList;
+@property (nonatomic) NSArray<HPropertyDetail *> *ppDetailList;
 @end
 
 @implementation HPropertyStructCacheData
@@ -96,42 +96,7 @@
 }
 
 
-- (NSString *)entityPropertylistString:(NSString *)entityClassName
-{
-    return [self entityPropertylistString:entityClassName isDepSearch:YES];
-}
-- (NSString *)entityPropertylistString:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
-{
-    NSString *key = entityClassName;
-    if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
-    HPropertyStructCacheData *cacheData = _propertyStructCache[key];
-    if (!cacheData)
-    {
-        cacheData = [[HPropertyStructCacheData alloc] init];
-        [_propertyStructCache setObject:cacheData forKey:key];
-    }
-    if (!cacheData.pplistString)
-    {
-        NSArray *pplist = [self entityPropertylist:entityClassName isDepSearch:deepSearch];
-        NSMutableString *fields = [[NSMutableString alloc] init];
-        int index = 0;
-        for (NSString *p in pplist)
-        {
-            if (index != 0)
-            {
-                [fields appendString:@","];
-            }
-            [fields appendString:p];
-            index ++;
-        }
-        cacheData.pplistString = fields;
-    }
-    return cacheData.pplistString;
-}
-
-
-
-- (NSArray *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch
+- (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];

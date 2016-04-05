@@ -9,6 +9,9 @@
 #import "User.h"
 
 @implementation User
+
+ppx(groups, HPIgnoreInDB)
+
 //which db
 + (NSString *)databaseKey
 {

@@ -200,16 +200,16 @@
 {
     NSLog(@"batch delete");
     [Student removes:nil];
-    NSLog(@"create new data model");
+    NSLog(@"create new Student model");
     Student *newStudent = [self newStudent];
-    NSLog(@"I have create a user: \n%@",[newStudent jsonString]);
+    NSLog(@"I have create a Student: \n%@",[newStudent jsonString]);
     [newStudent save];
     NSString *ID = [Student lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
     
-    NSLog(@"query User by ID:%@",ID);
+    NSLog(@"query Student by ID:%@",ID);
     Student *aStudent = (Student *)[Student get:ID];
-    NSLog(@"User from db:\n%@",[aStudent jsonString]);
+    NSLog(@"Student from db:\n%@",[aStudent jsonString]);
     
     NSLog(@"total Student count : %li", [Student count:nil]);
 }
