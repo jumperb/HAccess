@@ -42,7 +42,7 @@
 }
 - (void)setWithObj:(id)obj
 {
-    if ([obj isEqualToString:HPIgnoreInDB])
+    if ([obj isKindOfClass:[NSString class]] && [obj isEqualToString:HPIgnoreInDB])
     {
         self.isIgnore = YES;
     }
