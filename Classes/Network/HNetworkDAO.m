@@ -318,6 +318,7 @@
         {
             NSAssert(NO, [responseInfo description]);
             [self requestFinishedFailureWithError:responseInfo];
+            return nil;
         }
     }
     
@@ -349,18 +350,14 @@
         NSData *fileData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
         if (!fileData)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
-            });
+            [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
             return ;
         }
         if (!self.isFileDownload)
         {
             NSLog(@"revc response %@/%@", self.baseURL, self.pathURL);
             self.responseData = fileData;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self requestFinishedSucessWithInfo:fileData response:nil];
-            });
+            [self requestFinishedSucessWithInfo:fileData response:nil];
         }
         else
         {
@@ -374,9 +371,7 @@
             //设置为1小时后删除
             [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:3600] forFilePath:info.filePath];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self downloadFinished:info];
-            });
+            [self downloadFinished:info];
         }
     });
 }
@@ -405,9 +400,7 @@
         }
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
-    });
+    [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
 }
 #endif
 
@@ -512,38 +505,43 @@
         [customCacheStrategy writeCache:self.responseData];
     }
     
-    if(_sucessBlock)
-        _sucessBlock(self, responseEntity);
-    
-    //clear
-    _failedBlock = nil;
-    _sucessBlock = nil;
-    _holdSelf = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(_sucessBlock)
+            _sucessBlock(self, responseEntity);
+        
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+    });
 }
 
 
 - (void)requestFinishedFailureWithError:(NSError*)error
 {
     NSLog(@"error:%li,%@,%@ url = %@/%@", (long)error.code,error.domain,error.localizedDescription, self.baseURL, self.pathURL);
-    
-    if(_failedBlock)
-        _failedBlock(self,  error);
-    
-    //clear
-    _failedBlock = nil;
-    _sucessBlock = nil;
-    _holdSelf = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(_failedBlock)
+            _failedBlock(self,  error);
+        
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+    });
 }
 
 - (void)downloadFinished:(HDownloadFileInfo *)info
 {
-    if(_sucessBlock)
-        _sucessBlock(self, info);
-    
-    //clear
-    _failedBlock = nil;
-    _sucessBlock = nil;
-    _holdSelf = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(_sucessBlock)
+            _sucessBlock(self, info);
+        
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+    });
 }
 
 
