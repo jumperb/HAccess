@@ -62,7 +62,7 @@
         NSArray *exts = [[self class] annotations:p];
         if ([HDBEntityPPExt extWithObjs:exts].isIgnore) continue;
 
-        NSString lowerCaseP = [p lowercaseString];
+        NSString *lowerCaseP = [p lowercaseString];
         if(result.columnNameToIndexMap[lowerCaseP])
         {
             id value = [result objectForColumnName:p];
