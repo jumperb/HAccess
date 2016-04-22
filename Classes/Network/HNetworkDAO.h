@@ -44,8 +44,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //set URL , it support these prefix: 'http://', 'https://', 'file://', 'bundle://'
 @property (nonatomic, strong) NSString* baseURL;
 @property (nonatomic, strong) NSString* pathURL;
-@property (nonatomic) BOOL isMock;
-@property (nonatomic, strong) NSString* mockBundleUrl;
+
 //GET|POST default is GET
 @property (nonatomic, strong) NSString* method;
 //what is the queue name
@@ -74,6 +73,12 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //only use for subclass
 @property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
 @property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
+
+
+//mock request
+@property (nonatomic) BOOL isMock;
+//default bundle is HNetworkDAO.bundle
+@property (nonatomic, strong) NSString* mockBundlePath;
 
 /**
  *  begin request
