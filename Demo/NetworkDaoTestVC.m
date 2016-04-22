@@ -278,9 +278,10 @@ ppx(appkey, HPMapto(@"key"))
     if (self) {
         self.baseURL = @"http://www.tuling123.com";
         self.pathURL = @"openapi/api";
-//#ifdef DEBUG
+#ifdef DEBUG
 //        self.isMock = YES;
-//#endif
+//        self.mockBundleUrl = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]] bundlePath];
+#endif
         self.deserializer = [HNEntityDeserializer deserializerWithClass:[DemoEntity class]];
     }
     return self;

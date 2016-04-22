@@ -382,6 +382,12 @@
 {
     NSString *urlString = @"HNetworkDAO.bundle";
     NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]];
+
+    if (self.mockBundleUrl)
+    {
+        mockFileBundle = [NSBundle bundleWithPath:self.mockBundleUrl];
+    }
+
     if (mockFileBundle)
     {
         NSString *fileType = nil;

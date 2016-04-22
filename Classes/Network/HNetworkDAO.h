@@ -45,6 +45,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic, strong) NSString* baseURL;
 @property (nonatomic, strong) NSString* pathURL;
 @property (nonatomic) BOOL isMock;
+@property (nonatomic, strong) NSString* mockBundleUrl;
 //GET|POST default is GET
 @property (nonatomic, strong) NSString* method;
 //what is the queue name
