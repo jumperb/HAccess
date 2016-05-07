@@ -109,3 +109,9 @@
 @property (nonatomic) id pp;
 @property (nonatomic) NSArray *arr;
 @end
+
+
+@interface TestEntity11 : HEntity
+@property (nonatomic) long server_created;
+@property (nonatomic) long server_modified;
+@end

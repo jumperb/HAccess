@@ -273,6 +273,16 @@
             else NSLog(@"deserialize success:%@", [entity jsonString]);
         }];
 
+        [self addMenu:@"Reserved works test" callback:^(id sender, id data) {
+            NSDictionary *dict = @{@"created":@(1231241),@"modified":@(443434)};
+            TestEntity11 *entity = [TestEntity11 new];
+            [entity setWithDictionary:dict];
+            if (entity.format_error)
+            {
+                NSLog(@"%@",entity.format_error);
+            }
+            else NSLog(@"deserialize success:%@", [entity jsonString]);
+        }];
     }
     return self;
 }

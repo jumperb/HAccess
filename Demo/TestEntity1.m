@@ -102,3 +102,11 @@ ppx(b, HPInnerType([TestProtocalIMP class]));
 ppx(pp, HPDivideType(@"type", @"TestEntity", [TestEntity class], @(4), [TestProtocalIMP class]));
 ppx(arr, HPDivideType(@"type", @"TestEntity", [TestEntity class], @(4), [TestProtocalIMP class]));
 @end
+
+
+@implementation TestEntity11
+ppx(server_created, HPMapto(@"created"))
+ppx(server_modified, HPMapto(@"modified"))
+ppx(created, HPIgnore)
+ppx(modified, HPIgnore)
+@end
