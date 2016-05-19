@@ -36,6 +36,18 @@
 
 HReg(HNetworkProviderRegKey)
 
+
+
+static dispatch_queue_t HNProviderProcessingQueue() {
+    static dispatch_queue_t HNProviderProcessingQueue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        HNProviderProcessingQueue = dispatch_queue_create("com.hnetwork.processing", DISPATCH_QUEUE_CONCURRENT);
+    });
+
+    return HNProviderProcessingQueue;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -162,11 +174,11 @@ HReg(HNetworkProviderRegKey)
     __weak typeof(self) weakSelf = self;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(HNProviderProcessingQueue(), ^{
             if (weakSelf.successCallback) weakSelf.successCallback(operation, operation.response, responseObject);
         });
     } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(HNProviderProcessingQueue(), ^{
             if (weakSelf.failCallback) weakSelf.failCallback(operation, error);
         });
     }];
