@@ -173,14 +173,15 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     
     __weak typeof(self) weakSelf = self;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.completionQueue = HNProviderProcessingQueue();
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        dispatch_async(HNProviderProcessingQueue(), ^{
-            if (weakSelf.successCallback) weakSelf.successCallback(operation, operation.response, responseObject);
-        });
+
+        if (weakSelf.successCallback) weakSelf.successCallback(operation, operation.response, responseObject);
+
     } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-        dispatch_async(HNProviderProcessingQueue(), ^{
-            if (weakSelf.failCallback) weakSelf.failCallback(operation, error);
-        });
+
+        if (weakSelf.failCallback) weakSelf.failCallback(operation, error);
+
     }];
     
     self.myOperation = operation;
