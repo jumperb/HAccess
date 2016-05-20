@@ -23,6 +23,7 @@
 
 @interface HPropertyMgr ()
 @property (nonatomic) NSMutableDictionary *propertyStructCache;
+@property (nonatomic) dispatch_queue_t queue;
 @end
 
 
@@ -41,7 +42,8 @@
     self = [super init];
     if (self) {
         _propertyStructCache = [[NSMutableDictionary alloc] init];
-        self.strictModle = YES;
+        _queue = dispatch_queue_create("hpropertymgr.queue", DISPATCH_QUEUE_SERIAL);
+        _strictModle = YES;
     }
     return self;
 }
@@ -51,8 +53,15 @@
 {
     return [self entityPropertylist:entityClassName isDepSearch:NO];
 }
-
-- (NSArray *)entityPropertylist:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
+- (NSArray *)entityPropertylist:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch
+{
+    __block NSArray<HPropertyDetail *> *res = nil;
+    dispatch_sync(self.queue, ^{
+        res = [self _entityPropertylist:entityClassName isDepSearch:deepSearch];
+    });
+    return res;
+}
+- (NSArray *)_entityPropertylist:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
@@ -95,8 +104,15 @@
     return cacheData.pplist;
 }
 
-
 - (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch
+{
+    __block NSArray<HPropertyDetail *> *res = nil;
+    dispatch_sync(self.queue, ^{
+        res = [self _entityPropertyDetailList:entityClassName isDepSearch:deepSearch];
+    });
+    return res;
+}
+- (NSArray<HPropertyDetail *> *)_entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch
 {
     NSString *key = entityClassName;
     if (deepSearch) key = [entityClassName stringByAppendingString:@"nodeep"];
@@ -111,7 +127,7 @@
         NSMutableArray *detailList = [NSMutableArray new];
         Class theClass = NSClassFromString(entityClassName);
         if (!theClass) return nil;
-        NSArray *pplist = [self entityPropertylist:entityClassName isDepSearch:deepSearch];
+        NSArray *pplist = [self _entityPropertylist:entityClassName isDepSearch:deepSearch];
         for (NSString *p in pplist)
         {
             //get properties
