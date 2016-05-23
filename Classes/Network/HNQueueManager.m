@@ -11,6 +11,7 @@
 @interface HNQueueManager()
 //queue index
 @property (nonatomic) NSMutableDictionary* queueDict;
+@property (nonatomic) dispatch_queue_t myQueue;
 @end
 
 @implementation HNQueueManager
@@ -22,6 +23,7 @@
     {
         _globalQueue = [[NSOperationQueue alloc] init];
         _queueDict = [[NSMutableDictionary alloc] init];
+        _myQueue = dispatch_queue_create("HNQueueManager.queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -40,17 +42,21 @@
 
 - (void)destoryOperationQueueWithName:(NSString *)name
 {
-    NSOperationQueue* operationQueue = [self.queueDict valueForKey:name];
-    if(operationQueue)
-    {
-        [operationQueue cancelAllOperations];
-        [self.queueDict setValue:nil forKey:name];
-    }
+    dispatch_sync(self.myQueue, ^{
+        NSOperationQueue* operationQueue = [self.queueDict valueForKey:name];
+        if(operationQueue)
+        {
+            [operationQueue cancelAllOperations];
+            [self.queueDict setValue:nil forKey:name];
+        }
+    });
 }
 
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent
 {
-    [[self instance] getOperationQueueWithName:queueName maxMaxConcurrent:maxMaxConcurrent];
+    dispatch_sync([HNQueueManager instance].myQueue, ^{
+        [[self instance] getOperationQueueWithName:queueName maxMaxConcurrent:maxMaxConcurrent];
+    });
 }
 
 //get a queue by queue name
@@ -68,6 +74,10 @@
 
 - (NSOperationQueue*)getOperationQueueWithName:(NSString*)name
 {
-    return [self getOperationQueueWithName:name maxMaxConcurrent:1];
+    __block NSOperationQueue* operationQueue;
+    dispatch_sync(self.myQueue, ^{
+        operationQueue = [self getOperationQueueWithName:name maxMaxConcurrent:1];
+    });
+    return operationQueue;
 }
 @end
