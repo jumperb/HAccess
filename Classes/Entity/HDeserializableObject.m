@@ -395,6 +395,7 @@
         }
         else
         {
+            NSAssert(NO, @"you did not specified a type in array");
             return [item class];
         }
     }
@@ -421,6 +422,7 @@
     {
         if ([ppDetail.typeString isEqualToString:@""])
         {
+            NSAssert(NO, @"you did not specified a type of a dictionary");
             return [item class];
         }
         else
