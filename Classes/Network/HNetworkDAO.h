@@ -83,6 +83,13 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 /**
  *  begin request
  *
+ *  @param sucess  callback when request success
+ *  @param failure callback when request fail
+ */
+- (void)start:(void(^)(id sender, id data))sucess failure:(void(^)(id sender, NSError *error))failure;
+/**
+ *  begin request
+ *
  *  @param queueName queue name, if you don't care about serail/concurrent set 'nil', 
  *         if you set a name ,it will create a serail queue automaticly if queue not exsit.
  *  @param sucess    callback when request success
@@ -92,6 +99,13 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
                     sucess:(void(^)(id sender, id data))sucess
                    failure:(void(^)(id sender, NSError *error))failure;
 
+
+
+/**
+ *  begin request
+ *  @param finish    callback when success or fail
+ */
+- (void)start:(void(^)(id sender, id data, NSError *error))finish;
 
 /**
  *  begin request

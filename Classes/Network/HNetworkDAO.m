@@ -233,7 +233,10 @@
         });
     }
 }
-
+- (void)start:(void(^)(id sender, id data))sucess failure:(void(^)(id sender, NSError *error))failure
+{
+    [self startWithQueueName:nil sucess:sucess failure:failure];
+}
 - (void)startWithQueueName:(NSString *)queueName
                     sucess:(void (^)(id, id))sucess
                    failure:(void (^)(id, NSError *))failure
@@ -242,6 +245,10 @@
     _failedBlock = failure;
     [self cacheLogic:queueName];
 
+}
+- (void)start:(void(^)(id sender, id data, NSError *error))finish
+{
+    [self startWithQueueName:nil finish:finish];
 }
 - (void)startWithQueueName:(NSString *)queueName
                     finish:(void(^)(id sender, id data, NSError *error))finish
