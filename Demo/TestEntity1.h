@@ -75,6 +75,7 @@
 @property (nonatomic) int a;
 @property (nonatomic) NSString *b;
 @property (nonatomic) NSUInteger c;
+@property (nonatomic) NSDate *d;
 @end
 
 @protocol TestProtocal <NSObject>

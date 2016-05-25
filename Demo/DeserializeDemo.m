@@ -224,14 +224,14 @@
         }];
 
         [self addMenu:@"autocast test2" callback:^(id sender, id data) {
-            NSDictionary *dict = @{@"a":@"1",@"b":@(2),@"c":@"c"};
+            NSDictionary *dict = @{@"a":@"1",@"b":@(2),@"c":@"c", @"d":@(1464142086)};
             TestEntity8 *entity = [TestEntity8 new];
             [entity setWithDictionary:dict];
             if (entity.format_error)
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@ date = %@", [entity jsonString], [entity.d displayDesc]);
         }];
         
         [self addMenu:@"entity with protocal test" callback:^(id sender, id data) {

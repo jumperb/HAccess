@@ -47,6 +47,19 @@ return;\
 //you can write like ppx(@"type", @(1), Aclass, @(2), Bclass)
 #define HPDivideType(typekey, type1, class1, ...) @{@"dividetype":@[typekey, type1, class1, __VA_ARGS__]}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 @interface HDeserializableObject : NSObject
 @property (nonatomic, strong) NSString *format_error;
 

@@ -18,6 +18,7 @@ ppx(b, HPScope(1, 10));
 @end
 
 @implementation TestEntity2
+ppx(b, HPInnerType([NSDictionary class]))
 @end
 
 @implementation TestEntity3
@@ -58,6 +59,7 @@ ppx(b, HPOptional, HPMapto(@"cc"))
 ppx(a, HPAutoCast)
 ppx(b, HPAutoCast)
 ppx(c, HPAutoCast)
+ppx(d, HPAutoCast)
 @end
 
 
