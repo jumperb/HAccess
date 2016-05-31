@@ -441,7 +441,7 @@
         }
         else
         {
-            NSAssert(NO, @"you did not specified a type in array");
+//            NSAssert(NO, @"you did not specified a type in array");
             return [item class];
         }
     }
