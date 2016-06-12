@@ -22,8 +22,8 @@ typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
 @property (nonatomic) long long cacheDuration;
 //excute cache logic
 - (void)cacheLogic:(HNCustomCacheCallback)cacheCallback;
-//write
-- (void)writeCache:(NSData *)data;
+//handle response, mostly we just write cache
+- (NSData *)handleRespInfo:(NSData *)respInfo;
 //is my cache usable, if not exist or cache is too old return NO
 - (BOOL)isCacheUseable:(NSString *)cacheKey;
 @end

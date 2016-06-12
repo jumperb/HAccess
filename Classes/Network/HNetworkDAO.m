@@ -315,16 +315,16 @@
 {
 
 }
-- (id)processData:(id)responseInfo
+- (id)processData:(NSData *)responseInfo
 {
     [self.deserializer setDeserializeKeyPath:self.deserializeKeyPath];
     if ([self.deserializer respondsToSelector:@selector(preprocess:)])
     {
-        responseInfo = [self.deserializer preprocess:responseInfo];
-        if ([responseInfo isKindOfClass:[NSError class]])
+        id processRes = [self.deserializer preprocess:responseInfo];
+        if ([processRes isKindOfClass:[NSError class]])
         {
-            NSAssert(NO, [responseInfo description]);
-            [self requestFinishedFailureWithError:responseInfo];
+            NSAssert(NO, [processRes description]);
+            [self requestFinishedFailureWithError:processRes];
             return nil;
         }
     }
@@ -507,16 +507,16 @@
 }
 #pragma mark - netWorking finished
 
-- (void)requestFinishedSucessWithInfo:(id)responInfo response:(NSHTTPURLResponse *)response
+- (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSHTTPURLResponse *)response
 {
-    id responseEntity = [self processData:responInfo];
-    if (!responseEntity) return; //has deal all exception
-    
     if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
     {
         HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
-        [customCacheStrategy writeCache:self.responseData];
+        responInfo = [customCacheStrategy handleRespInfo:responInfo];
     }
+    id responseEntity = [self processData:responInfo];
+    if (!responseEntity) return; //has deal all exception
+
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_sucessBlock)

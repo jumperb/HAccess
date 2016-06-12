@@ -53,6 +53,11 @@
 {
     
 }
+- (NSData *)handleRespInfo:(id)respInfo
+{
+    [self writeCache:respInfo];
+    return respInfo;
+}
 - (void)writeCache:(NSData *)data
 {
     [[HFileCache shareCache] setData:data forKey:self.cacheKey
