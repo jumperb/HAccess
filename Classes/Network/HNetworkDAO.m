@@ -318,9 +318,11 @@
 - (id)processData:(NSData *)responseInfo
 {
     [self.deserializer setDeserializeKeyPath:self.deserializeKeyPath];
+
+    id processRes = responseInfo;
     if ([self.deserializer respondsToSelector:@selector(preprocess:)])
     {
-        id processRes = [self.deserializer preprocess:responseInfo];
+        processRes = [self.deserializer preprocess:responseInfo];
         if ([processRes isKindOfClass:[NSError class]])
         {
             NSAssert(NO, [processRes description]);
@@ -329,7 +331,7 @@
         }
     }
     
-    id responseEntity = [self getOutputEntiy:responseInfo];
+    id responseEntity = [self getOutputEntiy:processRes];
     if (!responseEntity)
     {
         NSString *errorStr = [NSString stringWithFormat:@"inner error:%@.getOutputEntiy return nil", NSStringFromClass(self.class)];
