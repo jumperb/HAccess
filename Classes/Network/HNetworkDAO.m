@@ -394,7 +394,7 @@
 
     if (self.mockBundlePath)
     {
-        mockFileBundle = [NSBundle bundleWithPath:self.mockBundlePath];
+        mockFileBundle = [NSBundle bundleWithURL:[NSURL URLWithString:self.mockBundlePath]];
     }
 
     if (mockFileBundle)
