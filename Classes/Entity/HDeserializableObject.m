@@ -126,7 +126,7 @@
         if (enableKeyMap) mappedKey = propertyExts.keyMapto;
         if (!mappedKey) mappedKey = ppDetail.name;
         
-        id value = [dict valueForKey:mappedKey];
+        id value = [dict valueForKeyPath:mappedKey];
         if (value)
         {
             id oldValue = value;
