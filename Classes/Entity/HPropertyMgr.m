@@ -13,7 +13,6 @@
 
 @interface HPropertyStructCacheData : NSObject
 @property (nonatomic) NSArray *pplist;
-@property (nonatomic) NSString *pplistString;
 @property (nonatomic) NSArray<HPropertyDetail *> *ppDetailList;
 @end
 

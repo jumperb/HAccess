@@ -63,6 +63,11 @@
     [[HFileCache shareCache] setData:data forKey:self.cacheKey
                               expire:[NSDate dateWithTimeInterval:self.cacheDuration sinceDate:[NSDate date]]];
 }
+
+- (void)deleteCache
+{
+    [[HFileCache shareCache] removeFileForKey:self.cacheKey];
+}
 @end
 
 @implementation HNCacheTypeOnlyWrite

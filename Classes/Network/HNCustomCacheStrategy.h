@@ -26,6 +26,8 @@ typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
 - (NSData *)handleRespInfo:(NSData *)respInfo;
 //is my cache usable, if not exist or cache is too old return NO
 - (BOOL)isCacheUseable:(NSString *)cacheKey;
+//deleteCache
+- (void)deleteCache;
 @end
 
 

@@ -517,7 +517,16 @@
         responInfo = [customCacheStrategy handleRespInfo:responInfo];
     }
     id responseEntity = [self processData:responInfo];
-    if (!responseEntity) return; //has deal all exception
+    if (!responseEntity)
+    {
+        //delete cache
+        if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
+        {
+            HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
+            [customCacheStrategy deleteCache];
+        }
+        return; //has deal all exception
+    }
 
     
     dispatch_async(dispatch_get_main_queue(), ^{
