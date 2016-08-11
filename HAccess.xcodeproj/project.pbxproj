@@ -628,6 +628,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Demo",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vstudio.HAccess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -661,6 +662,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Demo",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vstudio.HAccess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

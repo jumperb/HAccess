@@ -9,6 +9,7 @@
 #import "TestNetworkDAO.h"
 #import <NSString+ext.h>
 #import <NSError+ext.h>
+#import "HCommon.h"
 
 @implementation SimpleNetDAO
 
@@ -106,7 +107,9 @@ ppx(mobile, HPMapto(@"phone"))
     self = [super init];
     if (self) {
         self.deserializeKeyPath = @"rows";
+        @weakify(self)
         self.deserializer = [HNManualDeserializer deserializerWithBlock:^id(id data) {
+            @strongify(self)
             if (![data isKindOfClass:[NSArray class]])
             {
                 NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), @"expect a array"];
