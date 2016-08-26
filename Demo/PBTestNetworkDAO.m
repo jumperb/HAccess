@@ -9,8 +9,8 @@
 #import "PBTestNetworkDAO.h"
 #import "HNPBDeseriralizer.h"
 #import "Person.pbobjc.h"
-#import <NSString+ext.h>
-#import <NSError+ext.h>
+#import "NSString+ext.h"
+#import "NSError+ext.h"
 #import "User.pbobjc.h"
 #import "Photo.pbobjc.h"
 

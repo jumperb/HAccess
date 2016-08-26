@@ -7,8 +7,8 @@
 //
 
 #import "HNJsonDeserializer.h"
-#import <NSError+ext.h>
-#import <NSData+ext.h>
+#import "NSError+ext.h"
+#import "NSData+ext.h"
 
 @implementation HNJsonDeserializer
 @synthesize deserializeKeyPath;
@@ -22,7 +22,9 @@
     id jsonValue = [rudeData JSONValue];
     if (!jsonValue)
     {
-        return herr(kDataFormatErrorCode, @"HNJsonDeserializer: json decode fail");
+        return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer"
+                                   code:kDataFormatErrorCode
+                            description:@"HNJsonDeserializer: json decode fail"];
     }
     
     return jsonValue;
@@ -35,7 +37,9 @@
         jsonValue = [jsonValue valueForKeyPath:self.deserializeKeyPath];
         if (!jsonValue)
         {
-            return herr(kDataFormatErrorCode, ([NSString stringWithFormat:@"target path is not exist%@",self.deserializeKeyPath]));
+            return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer"
+                                       code:kDataFormatErrorCode
+                                description:[NSString stringWithFormat:@"target path is not exist%@",self.deserializeKeyPath]];
         }
     }
     return jsonValue;
@@ -70,7 +74,7 @@
     if(self.entityClass == NULL)
     {
         NSString *errorMsg = [NSString stringWithFormat:@"%s, can't get the entity class", __FUNCTION__];
-        return herr(kDataFormatErrorCode, errorMsg);
+        return herr(kInnerErrorCode, errorMsg);
     }
     //create entity
     
@@ -79,14 +83,14 @@
     {
         
         NSString *errorMsg = [NSString stringWithFormat:@"%s, %@ is not a subclass of HDeserializableObject", __FUNCTION__, NSStringFromClass(self.entityClass)];
-        return herr(kDataFormatErrorCode, errorMsg);
+        return herr(kInnerErrorCode, errorMsg);
     }
     
     
     [entity setWithDictionary:rudeData];
     if (entity.format_error)
     {
-        return herr(kDataFormatErrorCode, entity.format_error);
+        return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer.HNEntityDeserializer" code:kDataFormatErrorCode description:entity.format_error];
     }
     else return entity;
     
@@ -122,7 +126,7 @@
     if (![rudeData isKindOfClass:[NSArray class]])
     {
         NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), @"expect a NSArray"];
-        return herr(kDataFormatErrorCode, errInfo);
+        return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer.HNArrayDeserializer" code:kDataFormatErrorCode description:errInfo];
     }
     NSArray *dataArray = rudeData;
     NSMutableArray *res = [NSMutableArray new];
@@ -132,13 +136,13 @@
         if(targetClass == NULL)
         {
             NSString *errorMsg = [NSString stringWithFormat:@"%@: cannot get entity class", NSStringFromClass(self.class)];
-            return herr(kDataFormatErrorCode, errorMsg);
+            return herr(kInnerErrorCode, errorMsg);
         }
         
         if (![targetClass isSubclassOfClass:[HDeserializableObject class]])
         {
             NSString *errorMsg = [NSString stringWithFormat:@"%@: is not subclass of HDeserializableObject", NSStringFromClass(self.class)];
-            return herr(kDataFormatErrorCode, errorMsg);
+            return herr(kInnerErrorCode, errorMsg);
         }
         
         HDeserializableObject *entity = (HDeserializableObject *)[[targetClass alloc]init];
@@ -146,7 +150,7 @@
         if (entity.format_error)
         {
             NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), entity.format_error];
-            return herr(kDataFormatErrorCode, errInfo);
+            return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer.HNArrayDeserializer" code:kDataFormatErrorCode description:errInfo];
         }
         [res addObject:entity];
     }

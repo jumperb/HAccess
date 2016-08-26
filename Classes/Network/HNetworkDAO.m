@@ -8,8 +8,8 @@
 
 #import "HNetworkDAO.h"
 #import "HDeserializableObject.h"
-#import <HFileCache.h>
-#import <HCommon.h>
+#import "HFileCache.h"
+#import "HCommon.h"
 
 /**
  *  property desc
@@ -415,7 +415,7 @@
         }
     }
     
-    [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kNetWorkErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
+    [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kInnerErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
 }
 #endif
 

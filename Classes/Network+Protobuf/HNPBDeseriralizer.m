@@ -7,8 +7,8 @@
 //
 
 #import "HNPBDeseriralizer.h"
-#import <NSError+ext.h>
-#import <NSData+ext.h>
+#import "NSError+ext.h"
+#import "NSData+ext.h"
 #import "GPBMessage.h"
 
 @interface HNPBDeseriralizer ()
@@ -30,7 +30,7 @@
     if (![rudeData isKindOfClass:[NSData class]])
     {
         NSString *errorMsg = [NSString stringWithFormat:@"HNPBDeseriralizer: need NSData as input but your data is '%@'", NSStringFromClass([rudeData class])];
-        return herr(kDataFormatErrorCode, errorMsg);
+        return herr(kInnerErrorCode, errorMsg);
     }
 
     return rudeData;
@@ -41,16 +41,16 @@
     if(self.entityClass == NULL)
     {
         NSString *errorMsg = [NSString stringWithFormat:@"%s, can't get the entity class", __FUNCTION__];
-        return herr(kDataFormatErrorCode, errorMsg);
+        return herr(kInnerErrorCode, errorMsg);
     }
 
-    NSError *err = [NSError new];
+    NSError *err = nil;
 
     id entity = [self.entityClass parseFromData:rudeData error:&err];
 
     if (err)
     {
-        return herr(kDataFormatErrorCode, err.description);
+        return [NSError errorWithDomain:@"com.haccess.HNPBDeseriralizer" code:kDataFormatErrorCode description:err.description];
     }
 
     return entity;

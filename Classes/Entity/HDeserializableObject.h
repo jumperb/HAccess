@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HPropertyMgr.h"
-#import <NSObject+annotation.h>
+#import "NSObject+annotation.h"
 #pragma mark - defines
 
 //safe get property name
