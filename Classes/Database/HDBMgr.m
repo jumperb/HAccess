@@ -8,6 +8,7 @@
 
 #import "HDBMgr.h"
 #import "HClassManager.h"
+#import "HGCDext.h"
 
 @interface HDBMgr ()
 @property (nonatomic, strong) FMDatabaseQueue *defaultQueue;
@@ -132,13 +133,16 @@
 }
 - (NSString *)entityClassNameForTable:(NSString *)tableName dbkey:(NSString *)dbkey
 {
-    id<HDBMgrDatasource> dataSource = [self getDBSourceWithKey:dbkey];
-    NSString *entityClassName = _tableToEntityClassNameCache[tableName];
-    if (!entityClassName)
-    {
-        entityClassName = [dataSource entityClassNameForTable:tableName];
-        [_tableToEntityClassNameCache setObject:entityClassName forKey:tableName];
-    }
+    __block NSString *entityClassName = nil;
+    syncAtQueue(self.operateQueue, ^{
+        id<HDBMgrDatasource> dataSource = [self getDBSourceWithKey:dbkey];
+        entityClassName = _tableToEntityClassNameCache[tableName];
+        if (!entityClassName)
+        {
+            entityClassName = [dataSource entityClassNameForTable:tableName];
+            [_tableToEntityClassNameCache setObject:entityClassName forKey:tableName];
+        }
+    });
     return entityClassName;
 }
 #pragma mark - helper method

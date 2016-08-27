@@ -59,7 +59,7 @@
 - (User *)newUser
 {
     User *newUser = [User new];
-    newUser.name = @"lisa";
+    newUser.name = @"lisa's";
     newUser.sex = arc4random()%2;
     newUser.birth = (long)14554223423;
     newUser.desc = [NSString stringWithFormat:@"Im desc %d", arc4random()%100];
@@ -125,7 +125,7 @@
     [userDao adds:batchUsers];
     NSLog(@"total count %li",[userDao count:nil]);
     NSLog(@"update user's name to peter which sex=0");
-    [userDao updatesWithSetters:@{@"name":@"peter"} conditions:@"sex = 0"];
+    [userDao updatesWithSetters:@{@"name":@"DG.t's peter"} conditions:@"sex = 0"];
     NSLog(@"query user which sex = 0");
     users = [userDao list:@"sex = 0"];
     for (User *user in users)

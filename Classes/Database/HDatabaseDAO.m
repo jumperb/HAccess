@@ -678,7 +678,25 @@
         switch (current) {
             case '\'':
             {
-                [newValue appendString:@"\""];
+                BOOL hasEscape = NO;
+                if (i > 0)
+                {
+                    unichar before = [valueStr characterAtIndex:i - 1];
+                    if (before == '\'')
+                    {
+                        hasEscape = YES;
+                    }
+                }
+                else if (i < length - 1)
+                {
+                    unichar after = [valueStr characterAtIndex:i + 1];
+                    if (after)
+                    {
+                        hasEscape = YES;
+                        i ++;
+                    }
+                }
+                [newValue appendString:@"''"];
                 break;
             }
             default:
