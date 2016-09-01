@@ -137,4 +137,14 @@
 {
     return [[self dao] count2:conditions];
 }
+
++ (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block
+{
+    [[self dao] inTransaction:block];
+}
++ (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block
+{
+    [[self dao] inDeferredTransaction:block];
+}
+
 @end

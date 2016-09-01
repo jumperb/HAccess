@@ -71,5 +71,8 @@
 + (long)count:(NSString *)conditions;
 + (long)count2:(NSDictionary *)conditions;
 
+#pragma mark - transaction
 
++ (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
++ (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 @end
