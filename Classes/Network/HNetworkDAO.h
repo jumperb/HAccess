@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HNQueueManager.h"
-#import "NSObject+annotation.h"
+#import <Hodor/NSObject+annotation.h>
 #import "HEntity.h"
 #import "HNDeserializer.h"
 #import "HNetworkProvider.h"

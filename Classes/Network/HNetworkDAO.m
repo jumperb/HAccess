@@ -8,8 +8,8 @@
 
 #import "HNetworkDAO.h"
 #import "HDeserializableObject.h"
-#import "HFileCache.h"
-#import "HCommon.h"
+#import <HCache/HFileCache.h>
+#import <Hodor/HCommon.h>
 
 /**
  *  property desc

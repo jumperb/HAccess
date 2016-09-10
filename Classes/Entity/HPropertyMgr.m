@@ -8,7 +8,7 @@
 
 #import "HPropertyMgr.h"
 #import <objc/runtime.h>
-#import "HCommon.h"
+#import <Hodor/HCommon.h>
 #import "HDeserializableObject.h"
 
 @interface HPropertyStructCacheData : NSObject

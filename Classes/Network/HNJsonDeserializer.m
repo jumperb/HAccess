@@ -7,8 +7,8 @@
 //
 
 #import "HNJsonDeserializer.h"
-#import "NSError+ext.h"
-#import "NSData+ext.h"
+#import <Hodor/NSError+ext.h>
+#import <Hodor/NSData+ext.h>
 
 @implementation HNJsonDeserializer
 @synthesize deserializeKeyPath;

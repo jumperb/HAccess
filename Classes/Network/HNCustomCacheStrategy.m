@@ -7,8 +7,8 @@
 //
 
 #import "HNCustomCacheStrategy.h"
-#import "HFileCache.h"
-#import "NSDate+ext.h"
+#import <HCache/HFileCache.h>
+#import <Hodor/NSDate+ext.h>
 
 @implementation HNCustomCacheStrategy
 - (instancetype)init

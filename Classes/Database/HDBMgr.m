@@ -7,8 +7,8 @@
 //
 
 #import "HDBMgr.h"
-#import "HClassManager.h"
-#import "HGCDext.h"
+#import <Hodor/HClassManager.h>
+#import <Hodor/HGCDext.h>
 
 @interface HDBMgr ()
 @property (nonatomic, strong) FMDatabaseQueue *defaultQueue;

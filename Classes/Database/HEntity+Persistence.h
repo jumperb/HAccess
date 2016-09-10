@@ -7,7 +7,7 @@
 //
 
 #import "HEntity.h"
-#import "FMDatabaseQueue.h"
+#import <FMDB/FMDatabaseQueue.h>
 #import "HDatabaseDAO.h"
 
 @interface HEntity (Persistence)

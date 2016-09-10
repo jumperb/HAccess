@@ -9,8 +9,8 @@
 #import "HNProvider_AF2.h"
 #import "HNQueueManager.h"
 #import "HNetworkMultiDataObj.h"
-#import "AFNetworking.h"
-#import "HClassManager.h"
+#import <AFNetworking/AFNetworking.h>
+#import <Hodor/HClassManager.h>
 
 @interface HNProvider_AF2 ()
 @property (nonatomic) NSOperation *myOperation;

@@ -7,9 +7,9 @@
 //
 
 #import "HNPBDeseriralizer.h"
-#import "NSError+ext.h"
-#import "NSData+ext.h"
-#import "GPBMessage.h"
+#import <Hodor/NSError+ext.h>
+#import <Hodor/NSData+ext.h>
+#import <protocol-for-objectivec/GPBMessage.h>
 
 @interface HNPBDeseriralizer ()
 @property (nonatomic) Class entityClass;
