@@ -1,6 +1,5 @@
 platform :ios, :deployment_target => "7.0"
-#source 'https://github.com/CocoaPods/Specs.git'
-source 'ssh://git@mobiledev.camera360.com:7999/coc/specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
 
 target 'HAccess' do
 	pod "AFNetworking",'~>2.0'
