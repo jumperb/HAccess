@@ -325,7 +325,8 @@
         processRes = [self.deserializer preprocess:responseInfo];
         if ([processRes isKindOfClass:[NSError class]])
         {
-            NSAssert(NO, [processRes description]);
+            assert(NO);
+            NSLog(@"parse data error %@", [processRes description]);
             [self requestFinishedFailureWithError:processRes];
             return nil;
         }
