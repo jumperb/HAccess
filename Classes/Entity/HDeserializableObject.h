@@ -72,6 +72,9 @@ return;\
 //enableKeyMap: enable key mapping feature in deserialize progress?
 - (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap;
 
+//set with anothor obj, just shallow copy
+- (void)setWithDObj:(HDeserializableObject *)obj;
+
 //before data examlation and value setting, you can pre-processing data there, if some error occured, please record to self.format_error and return nil
 - (id)preMapValue:(id)value forKey:(NSString *)key;
 

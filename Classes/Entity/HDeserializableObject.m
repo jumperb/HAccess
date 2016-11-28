@@ -371,6 +371,32 @@
         }
     }
 }
+
+- (void)setWithDObj:(HDeserializableObject *)obj
+{
+    if (![obj isKindOfClass:[HDeserializableObject class]]) return;
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+    for (NSString *p in pplist)
+    {
+        id v = [obj valueForKey:p];
+        //if has to property
+        if(v)
+        {
+            id oldV = [self valueForKey:p];
+            if ([oldV isEqual:v]) continue;
+
+            if([v isKindOfClass:[NSString class]])
+            {
+                [self setValue:[v stringValue] forKey:p];
+            }
+            else
+            {
+                [self setValue:v forKey:p];
+            }
+        }
+    }
+}
+
 - (id)preMapValue:(id)value forKey:(NSString *)key
 {
     return value;
