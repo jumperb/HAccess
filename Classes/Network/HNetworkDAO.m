@@ -512,24 +512,18 @@
 
 - (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSHTTPURLResponse *)response
 {
-    if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
-    {
-        HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
-        responInfo = [customCacheStrategy handleRespInfo:responInfo];
-    }
     id responseEntity = [self processData:responInfo];
     if (!responseEntity)
     {
-        //delete cache
-        if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
-        {
-            HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
-            [customCacheStrategy deleteCache];
-        }
         return; //has deal all exception
     }
 
-    
+    if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
+    {
+        HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
+        [customCacheStrategy handleRespInfo:responInfo];
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_sucessBlock)
             _sucessBlock(self, responseEntity);
