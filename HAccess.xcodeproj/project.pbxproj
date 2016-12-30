@@ -47,8 +47,7 @@
 		9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */; };
 		9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CAB5AA2A23FAC518F6E98C /* libPods.a */; };
-		CC2B65C4C3A52CEA191D0E0A /* libPods-HAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603FF90984091327174E3B6 /* libPods-HAccess.a */; };
+		AB73FA1E1B2DF049FECC1E41 /* libPods-HAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A193E4158595155F021CF283 /* libPods-HAccess.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,11 +109,8 @@
 		00DD892B1B462D6600214FD3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		00E907831BAD11F600E10652 /* DeserializeDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeserializeDemo.h; sourceTree = "<group>"; };
 		00E907841BAD11F600E10652 /* DeserializeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeserializeDemo.m; sourceTree = "<group>"; };
-		2EE6650205A1F6B0AFE04968 /* Pods-HAccess.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.debug.xcconfig"; sourceTree = "<group>"; };
-		63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		6603FF90984091327174E3B6 /* libPods-HAccess.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HAccess.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		99CAB5AA2A23FAC518F6E98C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0413D743DE52FC56EE813F8C /* Pods-HAccess.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.debug.xcconfig"; sourceTree = "<group>"; };
+		0E64B8DBCAB9BDE77B441E0F /* Pods-HAccess.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.release.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.release.xcconfig"; sourceTree = "<group>"; };
 		9E6806221C9BEBB700519539 /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
 		9E6806231C9BEBB700519539 /* HNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNetworkDAO.h; sourceTree = "<group>"; };
 		9E6806241C9BEBB700519539 /* HNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNetworkDAO.m; sourceTree = "<group>"; };
@@ -135,7 +131,7 @@
 		9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.pbobjc.m; sourceTree = "<group>"; };
 		9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.pbobjc.h; sourceTree = "<group>"; };
 		9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.pbobjc.m; sourceTree = "<group>"; };
-		A8703F6331B0159074372311 /* Pods-HAccess.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.release.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.release.xcconfig"; sourceTree = "<group>"; };
+		A193E4158595155F021CF283 /* libPods-HAccess.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HAccess.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,8 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B233A7CDA81ACF4EA36DFB69 /* libPods.a in Frameworks */,
-				CC2B65C4C3A52CEA191D0E0A /* libPods-HAccess.a in Frameworks */,
+				AB73FA1E1B2DF049FECC1E41 /* libPods-HAccess.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,8 +269,8 @@
 				002D862C1B462EA300D1D729 /* Demo */,
 				00DD891D1B462D6600214FD3 /* HAccess */,
 				00DD891C1B462D6600214FD3 /* Products */,
-				6AB15CECE928247E4185CCCC /* Pods */,
-				77E818DC0ADCB480589DA6AE /* Frameworks */,
+				C18AB030D5136AF45B6F8EB0 /* Pods */,
+				4D2A90F8734D5929AB2B9B9A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -307,22 +302,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		6AB15CECE928247E4185CCCC /* Pods */ = {
+		4D2A90F8734D5929AB2B9B9A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8B3F5E34E5262575100D707F /* Pods.debug.xcconfig */,
-				63DFD70F3DB6B40DCC91924E /* Pods.release.xcconfig */,
-				2EE6650205A1F6B0AFE04968 /* Pods-HAccess.debug.xcconfig */,
-				A8703F6331B0159074372311 /* Pods-HAccess.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		77E818DC0ADCB480589DA6AE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				99CAB5AA2A23FAC518F6E98C /* libPods.a */,
-				6603FF90984091327174E3B6 /* libPods-HAccess.a */,
+				A193E4158595155F021CF283 /* libPods-HAccess.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -377,6 +360,15 @@
 			path = Mock;
 			sourceTree = "<group>";
 		};
+		C18AB030D5136AF45B6F8EB0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0413D743DE52FC56EE813F8C /* Pods-HAccess.debug.xcconfig */,
+				0E64B8DBCAB9BDE77B441E0F /* Pods-HAccess.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -384,12 +376,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00DD893E1B462D6600214FD3 /* Build configuration list for PBXNativeTarget "HAccess" */;
 			buildPhases = (
-				C710932FBCB45639246F26F9 /* [CP] Check Pods Manifest.lock */,
+				92E4E7FA8231818972F6277D /* [CP] Check Pods Manifest.lock */,
 				00DD89171B462D6600214FD3 /* Sources */,
 				00DD89181B462D6600214FD3 /* Frameworks */,
 				00DD89191B462D6600214FD3 /* Resources */,
-				1D0782E0E2B469A1C4C0A3E5 /* [CP] Copy Pods Resources */,
-				0D08BA5C7287FA781D90C7FF /* [CP] Embed Pods Frameworks */,
+				309D185F96CF268151DAE35D /* [CP] Embed Pods Frameworks */,
+				4D859408206F3295706BED92 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -449,7 +441,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0D08BA5C7287FA781D90C7FF /* [CP] Embed Pods Frameworks */ = {
+		309D185F96CF268151DAE35D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -464,7 +456,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HAccess/Pods-HAccess-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1D0782E0E2B469A1C4C0A3E5 /* [CP] Copy Pods Resources */ = {
+		4D859408206F3295706BED92 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -479,7 +471,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HAccess/Pods-HAccess-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C710932FBCB45639246F26F9 /* [CP] Check Pods Manifest.lock */ = {
+		92E4E7FA8231818972F6277D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -625,7 +617,7 @@
 		};
 		00DD893F1B462D6600214FD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EE6650205A1F6B0AFE04968 /* Pods-HAccess.debug.xcconfig */;
+			baseConfigurationReference = 0413D743DE52FC56EE813F8C /* Pods-HAccess.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -659,7 +651,7 @@
 		};
 		00DD89401B462D6600214FD3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8703F6331B0159074372311 /* Pods-HAccess.release.xcconfig */;
+			baseConfigurationReference = 0E64B8DBCAB9BDE77B441E0F /* Pods-HAccess.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

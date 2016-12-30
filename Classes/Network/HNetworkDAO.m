@@ -195,11 +195,8 @@
                 [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
             }
             [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *response, NSData *data){
-                
-                NSLog(@" ");
-                NSLog(@"#### revc response");
-                NSLog(@"#### %@", [weakSelf fullurl]);
-                NSLog(@" ");
+
+                NSLog(@"#### revc response:\n%@", [weakSelf fullurl]);
                 
                 if (!weakSelf.fileDownloadPath)
                 {
@@ -325,8 +322,6 @@
         processRes = [self.deserializer preprocess:responseInfo];
         if ([processRes isKindOfClass:[NSError class]])
         {
-            assert(NO);
-            NSLog(@"parse data error %@", [processRes description]);
             [self requestFinishedFailureWithError:processRes];
             return nil;
         }
@@ -365,7 +360,7 @@
         }
         if (!self.isFileDownload)
         {
-            NSLog(@"revc response %@/%@", self.baseURL, self.pathURL);
+            NSLog(@"\n\n#### revc response \n%@", [self fullurl]);
             self.responseData = fileData;
             [self requestFinishedSucessWithInfo:fileData response:nil];
         }
@@ -538,7 +533,8 @@
 
 - (void)requestFinishedFailureWithError:(NSError*)error
 {
-    NSLog(@"error:%li,%@,%@ url = %@/%@", (long)error.code,error.domain,error.localizedDescription, self.baseURL, self.pathURL);
+    NSLog(@"\n\n#### request error:\n%li,%@,%@ url = %@/%@", (long)error.code,error.domain,error.localizedDescription, self.baseURL, self.pathURL);
+    if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_failedBlock)
             _failedBlock(self,  error);

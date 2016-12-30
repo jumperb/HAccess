@@ -157,19 +157,12 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         if (paramString.length > 0) [paramString appendFormat:@"&"];
         [paramString appendFormat:@"%@=%@", key, [parametersDict[key] stringValue]];
     }
-    
-    NSLog(@" ");
-    NSLog(@"#### send request");
-    NSLog(@"#### %@ %@",self.method, urlString);
-    if (paramString.length > 0)
-    {
-        NSLog(@"#### param: %@", paramString);
-    }
+
+    NSLog(@"\n\n#### send request:\n%@ %@\n%@",self.method, urlString, paramString.length>0?paramString:@"");
     if (multiDataDict.count > 0)
     {
-        NSLog(@"#### multiData: %@", paramString);
+        NSLog(@"\n\n#### multiData: %@", paramString);
     }
-    NSLog(@" ");
     
     __weak typeof(self) weakSelf = self;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
