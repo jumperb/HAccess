@@ -283,6 +283,24 @@
             }
             else NSLog(@"deserialize success:%@", [entity jsonString]);
         }];
+
+        [self addMenu:@"NSCopying" callback:^(id sender, id data) {
+            NSDictionary *dict = @{@"a":@"a",@"b":@[
+                                           @{@"c":@(1),
+                                             @"d":@{@"x":@(3),@"y":@(4.2),@"z":@(5.5)},
+                                             @"e":@[
+                                                     @{@"a":@(1),@"b":@"1##",@"c":@{@"x":@(3),@"y":@(4.2),@"z":@(5.5)}},
+                                                     @{@"a":@(1),@"b":@"2##",@"c":@{@"x":@(3),@"y":@(4.2),@"z":@(5.5)}},
+                                                     @{@"a":@(1),@"b":@"3##",@"c":@{@"x":@(3),@"y":@(4.2),@"z":@(5.5)}}
+                                                     ]}
+                                           ]};
+
+            TestEntity5 *entity = [TestEntity5 new];
+            [entity setWithDictionary:dict];
+
+            TestEntity5 *copy = [entity copy];
+            NSLog(@"%@", [copy jsonString]);
+        }];
     }
     return self;
 }
@@ -295,5 +313,6 @@
     [self.view addSubview:bg];
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor clearColor];
+
 }
 @end

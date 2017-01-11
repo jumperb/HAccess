@@ -60,7 +60,7 @@ return;\
 
 
 
-@interface HDeserializableObject : NSObject
+@interface HDeserializableObject : NSObject <NSCopying>
 @property (nonatomic, strong) NSString *format_error;
 
 #pragma mark - basic method

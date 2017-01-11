@@ -509,4 +509,69 @@
         }
     }
 }
+
+
+#pragma mark - NSCoping
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    id copy = [[self class] new];
+    if (copy) {
+        NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+        for (NSString *p in pplist)
+        {
+            id v = [self valueForKey:p];
+            if(v)
+            {
+
+                if([v isKindOfClass:[NSString class]])
+                {
+                    [copy setValue:[[v stringValue] copyWithZone:zone] forKey:p];
+                }
+                else if ([v isKindOfClass:[NSArray class]]) //default array cannot deep copy
+                {
+                    NSMutableArray *newArr = [NSMutableArray new];
+                    for (id o in (NSArray *)v)
+                    {
+                        if ([o conformsToProtocol:@protocol(NSCopying)])
+                        {
+                            [newArr addObject:[o copyWithZone:zone]];
+                        }
+                        else
+                        {
+                            [newArr addObject:o];
+                        }
+                    }
+                    [copy setValue:newArr forKey:p];
+                }
+                else if ([v isKindOfClass:[NSDictionary class]])
+                {
+                    NSMutableDictionary *newDict = [NSMutableDictionary new];
+                    for (id key in (NSDictionary *)v)
+                    {
+                        id o = [(NSDictionary *)v objectForKey:key];
+                        if ([o conformsToProtocol:@protocol(NSCopying)])
+                        {
+                            [newDict setObject:[o copyWithZone:zone] forKey:key];
+                        }
+                        else
+                        {
+                            [newDict setObject:o forKey:key];
+                        }
+                    }
+                    [copy setValue:newDict forKey:p];
+                }
+                else if ([v conformsToProtocol:@protocol(NSCopying)])
+                {
+                    [copy setValue:[v copyWithZone:zone] forKey:p];
+                }
+                else
+                {
+                    [copy setValue:v forKey:p];
+                }
+            }
+        }
+    }
+
+    return copy;
+}
 @end

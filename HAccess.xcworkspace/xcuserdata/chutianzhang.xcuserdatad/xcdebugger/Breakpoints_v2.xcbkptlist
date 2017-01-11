@@ -27,38 +27,6 @@
             endingLineNumber = "240"
             landmarkName = "-clearExpire:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__33-[HFileCache backgroundCleanDisk]_block_invoke"
-                  moduleName = "HAccess"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chutianzhang/Documents/github_pods/HAccess/Pods/HCache/Classes/HFileCache.m"
-                  timestampString = "493982376.828783"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "240"
-                  endingLineNumber = "240"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.168"
-                  moduleName = "HAccess"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chutianzhang/Documents/github_pods/HAccess/Pods/HCache/Classes/HFileCache.m"
-                  timestampString = "493982376.829042"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "240"
-                  endingLineNumber = "240"
-                  offsetFromSymbolStart = "74">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
