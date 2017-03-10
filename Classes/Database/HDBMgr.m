@@ -66,18 +66,36 @@
     });
     return res;
 }
-//- (FMDatabaseQueue *)defaultQueue
-//{
-//    dispatch_sync(self.operateQueue, ^{
-//        if (!_defaultQueue)
-//        {
-//            _defaultQueue = [self queueInitWithKey:[self defaultDatabaseKey]];
-//        }
-//    });
-//    return _defaultQueue;
-//}
 
-
+//close queue
++ (void)closeQueue:(NSString *)key
+{
+    dispatch_sync([HDBMgr shared].operateQueue, ^{
+        FMDatabaseQueue *queue = [HDBMgr shared].queuesDict[key];
+        [queue close];
+        [[HDBMgr shared].queuesDict removeObjectForKey:key];
+    });
+}
++ (void)closeAllQueue
+{
+    dispatch_sync([HDBMgr shared].operateQueue, ^{
+        for (NSString *key in [HDBMgr shared].queuesDict)
+        {
+            FMDatabaseQueue *queue = [HDBMgr shared].queuesDict[key];
+            [queue close];
+        }
+        [[HDBMgr shared].queuesDict removeAllObjects];
+    });
+}
+//reload queue
++ (void)reloadQueue:(NSString *)key
+{
+    [self closeQueue:key];
+}
++ (void)reloadAllQueue
+{
+    [self closeAllQueue];
+}
 #pragma mark - db connect
 - (id<HDBMgrDatasource>)getDBSourceWithKey:(NSString *)key
 {

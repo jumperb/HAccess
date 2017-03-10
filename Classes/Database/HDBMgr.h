@@ -53,6 +53,15 @@
 //name: name of db, config in HDBMgrDatasource
 + (FMDatabaseQueue *)queueWithKey:(NSString *)key;
 
+//close queue
++ (void)closeQueue:(NSString *)key;
++ (void)closeAllQueue;
+
+
+
+//reload queue
++ (void)reloadQueue:(NSString *)key;
++ (void)reloadAllQueue;
 
 @end
 
