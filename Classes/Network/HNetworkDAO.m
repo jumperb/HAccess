@@ -211,7 +211,7 @@
                     info.length = [response expectedContentLength];
                     info.suggestedFilename = [response suggestedFilename];
                     //delete after 1 min
-                    [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:60] forFilePath:info.filePath];
+                    [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:3600] forFilePath:info.filePath];
                     [weakSelf downloadFinished:info];
                 }
             }];
