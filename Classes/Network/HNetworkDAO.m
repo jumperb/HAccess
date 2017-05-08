@@ -536,14 +536,6 @@
     NSLog(@"\n\n#### request error:\n%li,%@,%@ \n url = %@", (long)error.code,error.domain,error.localizedDescription, [self fullurl]);
     if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
 
-    if (error.code == kDataFormatErrorCode)
-    {
-#ifdef DEBUG
-        NSAssert(NO, error.localizedDescription);
-#else
-        NSAssert(NO, ([NSString stringWithFormat:@"request error:\n%li,%@,%@ \n url = %@ \n data:\n%@", (long)error.code,error.domain,error.localizedDescription, [self fullurl],  [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]]));
-#endif
-    }
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_failedBlock)
             _failedBlock(self,  error);
