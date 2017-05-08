@@ -207,8 +207,7 @@
 - (BOOL)save:(HEntity *)entity keypp:(NSString *)keypp
 {
     if (keypp.length == 0) return NO;
-    NSString *IDValue = [HDatabaseDAO cleanValue:entity.ID];
-    if (![keypp isEqualToString:@"id"]) IDValue = [entity hValueForKey:keypp];
+    NSString *IDValue = [HDatabaseDAO cleanValue:[entity hValueForKey:keypp]];
     if(nil == [self get:IDValue])
     {
         return [self add:entity];
@@ -313,8 +312,7 @@
 
          long nowtime = time(NULL);
          [settes appendFormat:@", modified = '%li'", nowtime];
-         NSString *IDValue = [HDatabaseDAO cleanValue:entity.ID];
-         if (![keypp isEqualToString:@"id"]) IDValue = [entity hValueForKey:keypp];
+         NSString *IDValue = [HDatabaseDAO cleanValue:[entity hValueForKey:keypp]];
          NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'", [self tableName], settes, keypp, IDValue];
          res = [db executeUpdate:sql];
          if (res)
@@ -350,8 +348,7 @@
          NSMutableString *whereStatment = [[NSMutableString alloc] init];
          for (NSString *pp in keyppList)
          {
-             id value = [HDatabaseDAO cleanValue:entity.ID];
-             if (![pp isEqualToString:@"id"]) value = [entity hValueForKey:pp];
+             id value = [HDatabaseDAO cleanValue:[entity hValueForKey:pp]];
              [whereStatment appendFormat:@" and %@ = '%@'",pp,[HDatabaseDAO cleanValue:[value stringValue]]];
          }
          NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE 1 %@", [self tableName], settes, whereStatment];

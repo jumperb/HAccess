@@ -71,6 +71,7 @@ ppx(modified, HPOptional)
 }
 - (id)hValueForKey:(NSString *)key
 {
-    return [super valueForKey:key];
+    if ([key isEqualToString:@"id"]) return self.ID;
+    else return [super valueForKey:key];
 }
 @end

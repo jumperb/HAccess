@@ -57,15 +57,7 @@
 - (BOOL)remove
 {
     NSString *keyPP = [self keyProperty];
-    id value = nil;
-    if ([keyPP isEqualToString:@"id"])
-    {
-        value = [HDatabaseDAO cleanValue:self.ID];
-    }
-    else
-    {
-        value = [self hValueForKey:keyPP];
-    }
+    id value = [HDatabaseDAO cleanValue:[self hValueForKey:keyPP]];
     return [[self.class dao] remove:[HDatabaseDAO cleanValue:value]];
 }
 - (BOOL)remove:(NSString *)keyppValue
