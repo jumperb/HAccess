@@ -196,11 +196,13 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     }
     
 
-    NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress *progress) {
+    NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress * _Nullable progress) {
+        
         @strongify(self)
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.progressCallback) self.progressCallback(self, progress.fractionCompleted);
         });
+        
     } completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         @strongify(self)
         
@@ -227,7 +229,7 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     
     return self.myTask;
 }
-- (NSURLSessionTask *)requestTask:(NSMutableURLRequest *)request progress:(void (^)(NSProgress *progress))progress completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completion {
+- (NSURLSessionTask *)requestTask:(NSMutableURLRequest *)request progress:(void (^)(NSProgress * _Nullable progress))progress completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completion {
     
     __block NSURLSessionTask *task = nil;
     
