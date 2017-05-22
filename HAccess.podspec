@@ -29,12 +29,16 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Network'
 
   s.subspec 'Entity' do |ss|
-      ss.dependency 'Hodor'
+      ss.dependency "Hodor/Defines"
+      ss.dependency "Hodor/Feature"
+	  ss.dependency "Hodor/NS-Category"
       ss.ios.source_files = 'Classes/Entity/*.{h,m,mm,cpp,c}'
   end
 
   s.subspec 'Network' do |ss|
-      ss.dependency 'Hodor'
+      ss.dependency "Hodor/Defines"
+      ss.dependency "Hodor/Feature"
+	  ss.dependency "Hodor/NS-Category"
       ss.dependency 'AFNetworking' ,'~>2.0'
       ss.dependency 'HCache'
       ss.dependency 'HAccess/Entity'
@@ -42,7 +46,9 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Database' do |ss|
-      ss.dependency 'Hodor'
+      ss.dependency "Hodor/Defines"
+      ss.dependency "Hodor/Feature"
+	  ss.dependency "Hodor/NS-Category"
       ss.dependency 'FMDB'
       ss.dependency 'HAccess/Entity'
       ss.ios.source_files = 'Classes/Database/*.{h,m,mm,cpp,c}'

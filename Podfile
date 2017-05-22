@@ -4,7 +4,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'HAccess' do
 	pod "AFNetworking",'~>2.0'
 	pod "FMDB"
-	pod "Hodor"
+	pod "Hodor/Defines"
+    pod "Hodor/Feature"
+    pod "Hodor/NS-Category"
 	pod "HTestVC"
 	pod "HTextInput"
 	pod "HCache"
