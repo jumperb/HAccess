@@ -11,6 +11,7 @@
 #import <HCache/HFileCache.h>
 #import <Hodor/NSObject+ext.h>
 #import <Hodor/NSError+ext.h>
+#import <Hodor/HDefines.h>
 #import <Hodor/HClassManager.h>
 
 /**
@@ -163,7 +164,7 @@
         id params = [self setupParams];
         
         //request
-        __weak HNetworkDAO* weakSelf = self;
+        @weakify(self)
         _holdSelf = self;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             
@@ -196,36 +197,41 @@
             {
                 [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
             }
-            [self.provider setSuccessCallback:^(id sender, NSHTTPURLResponse *response, NSData *data){
-
-                NSLog(@"#### revc response:\n%@", [weakSelf fullurl]);
+            [self.provider setSuccessCallback:^(id sender, NSURLResponse *response, NSData *data){
+                @strongify(self)
+                NSLog(@"#### revc response:\n%@", [self fullurl]);
                 
-                if (!weakSelf.fileDownloadPath)
+                if (!self.fileDownloadPath)
                 {
-                    weakSelf.responseData = data;
-                    [weakSelf requestFinishedSucessWithInfo:data response:response];
+                    self.responseData = data;
+                    [self requestFinishedSucessWithInfo:data response:response];
                 }
                 else
                 {
                     HDownloadFileInfo *info = [HDownloadFileInfo new];
-                    info.filePath = weakSelf.fileDownloadPath;
+                    info.filePath = self.fileDownloadPath;
                     info.MIMEType = [response MIMEType];
                     info.length = [response expectedContentLength];
                     info.suggestedFilename = [response suggestedFilename];
                     //delete after 1 min
                     [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:3600] forFilePath:info.filePath];
-                    [weakSelf downloadFinished:info];
+                    [self downloadFinished:info];
                 }
             }];
             
             [self.provider setFailCallback:^(id sender, NSError *error){
-                [weakSelf requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
+                @strongify(self)
+                [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
             }];
             
-            [self.provider setProgressCallback:self.progressBlock];
+            [self.provider setProgressCallback:^(id sender, double progress){
+                @strongify(self)
+                if (self.progressBlock) self.progressBlock(self, progress);
+            }];
             
             [self.provider setWillSendCallback:^(NSMutableURLRequest *request){
-                [weakSelf willSendRequest:request];
+                @strongify(self)
+                [self willSendRequest:request];
             }];
             
             [self.provider sendRequest];
@@ -264,6 +270,10 @@
 - (void)cancel
 {
     [self.provider cancel];
+        //clear
+    _failedBlock = nil;
+    _sucessBlock = nil;
+    _holdSelf = nil;
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -430,64 +440,28 @@
     {
         HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
         customCacheStrategy.cacheKey = self.cacheKey;
-        __weak typeof(self) weakSelf = self;
+        @weakify(self)
         [customCacheStrategy cacheLogic:^(BOOL shouldRequest, NSData *cachedData) {
+            @strongify(self)
             if (cachedData)
             {
-                id responseEntity = [weakSelf processData:cachedData];
+                id responseEntity = [self processData:cachedData];
                 if (!responseEntity) return; //has deal all exception
-                else if(weakSelf.sucessBlock) weakSelf.sucessBlock(nil, responseEntity);
+                else if(self.sucessBlock) self.sucessBlock(nil, responseEntity);
             }
             if (shouldRequest)
             {
-                [weakSelf startWithQueueName:queueName];
+                [self startWithQueueName:queueName];
             }
             else
             {
-                weakSelf.failedBlock = nil;
-                weakSelf.sucessBlock = nil;
-                weakSelf.holdSelf = nil;
+                self.failedBlock = nil;
+                self.sucessBlock = nil;
+                self.holdSelf = nil;
             }
         }];
     }
     else [self startWithQueueName:queueName];
-//    NSString *cacheKey = [self cacheKey];
-//    switch (self.cacheType) {
-//        case HFileCacheTypeNone:
-//        {
-//            [self startWithQueueName:queueName];
-//            break;
-//        }
-//        case HFileCacheTypeBoth:
-//        {
-//            [self loadCache:cacheKey];
-//            [self startWithQueueName:queueName];
-//            break;
-//        }
-//        case HFileCacheTypeExclusive:
-//        {
-//            if (![self isCacheUseable:cacheKey])
-//            {
-//                [self startWithQueueName:queueName];
-//            }
-//            else
-//            {
-//                [self loadCache:cacheKey];
-//                //解除保持
-//                _failedBlock = nil;
-//                _sucessBlock = nil;
-//                _holdSelf = nil;
-//            }
-//            break;
-//        }
-//        case HFileCacheTypeForceRefresh:
-//        {
-//            [self startWithQueueName:queueName];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
 }
 
 #pragma mark - queue
@@ -507,7 +481,7 @@
 }
 #pragma mark - netWorking finished
 
-- (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSHTTPURLResponse *)response
+- (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSURLResponse *)response
 {
     id responseEntity = [self processData:responInfo];
     if (!responseEntity)

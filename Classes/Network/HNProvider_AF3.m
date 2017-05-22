@@ -1,22 +1,23 @@
 //
-//  HNProvider_AF2.m
+//  HNProvider_AF3.m
 //  HAccess
 //
-//  Created by zhangchutian on 16/3/21.
-//  Copyright © 2016年 zhangchutian. All rights reserved.
+//  Created by zct on 2017/5/22.
+//  Copyright © 2017年 zhangchutian. All rights reserved.
 //
 
-#import "HNProvider_AF2.h"
-#import "HNQueueManager.h"
-#import "HNetworkMultiDataObj.h"
-#import <AFNetworking/AFNetworking.h>
+#import "HNProvider_AF3.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
 #import <Hodor/HClassManager.h>
+#import <Hodor/HDefines.h>
+#import "HNetworkMultiDataObj.h"
+#import "HNQueueManager.h"
 
-@interface HNProvider_AF2 ()
-@property (nonatomic) NSOperation *myOperation;
+@interface HNProvider_AF3 ()
+@property (nonatomic) NSURLSessionTask *myTask;
 @end
 
-@implementation HNProvider_AF2
+@implementation HNProvider_AF3
 @synthesize urlString;
 @synthesize params;
 @synthesize method;
@@ -44,10 +45,34 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     dispatch_once(&onceToken, ^{
         HNProviderProcessingQueue = dispatch_queue_create("com.hnetwork.processing", DISPATCH_QUEUE_CONCURRENT);
     });
-
+    
     return HNProviderProcessingQueue;
 }
-
+- (AFHTTPSessionManager *)sessionManager {
+    
+    if (!self.shouldContinueInBack)
+    {
+        static AFHTTPSessionManager *manager1;
+        static dispatch_once_t onceToken1;
+        dispatch_once(&onceToken1, ^{
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            configuration.timeoutIntervalForRequest = 30;
+            manager1 = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+        });
+        return manager1;
+    }
+    else
+    {
+        static AFHTTPSessionManager *manager2;
+        static dispatch_once_t onceToken2;
+        dispatch_once(&onceToken2, ^{
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"com.hnetwork.provider"];
+            configuration.timeoutIntervalForRequest = 30;
+            manager2 = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+        });
+        return manager2;
+    }
+}
 - (instancetype)init
 {
     self = [super init];
@@ -57,7 +82,7 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     return self;
 }
 
-- (NSOperation *)sendRequest
+- (NSURLSessionTask *)sendRequest
 {
     NSMutableDictionary* parametersDict = nil;
     NSMutableDictionary* multiDataDict = nil;
@@ -90,11 +115,15 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     }
     //2.get an Operation
     NSMutableURLRequest* request = nil;
+    
+    @weakify(self)
     //multi Data
     if(multiDataDict.allKeys.count > 0)
     {
+        
         request = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:parametersDict constructingBodyWithBlock:^(id <AFMultipartFormData> multipartFormData)
                    {
+                       @strongify(self)
                        //get file
                        for(NSString* key in multiDataDict.allKeys)
                        {
@@ -150,6 +179,8 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         request.HTTPBody = self.params;
     }
     request.cachePolicy = self.cachePolicy;
+    
+    
     //print param
     NSMutableString *paramString = [NSMutableString new];
     for (NSString *key in parametersDict)
@@ -157,54 +188,76 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         if (paramString.length > 0) [paramString appendFormat:@"&"];
         [paramString appendFormat:@"%@=%@", key, [parametersDict[key] stringValue]];
     }
-
+    
     NSLog(@"\n\n#### send request:\n%@ %@\n%@",self.method, urlString, paramString.length>0?paramString:@"");
     if (multiDataDict.count > 0)
     {
         NSLog(@"\n\n#### multiData: %@", paramString);
     }
     
-    __weak typeof(self) weakSelf = self;
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.completionQueue = HNProviderProcessingQueue();
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
 
-        if (weakSelf.successCallback) weakSelf.successCallback(operation, operation.response, responseObject);
-
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-
-        if (weakSelf.failCallback) weakSelf.failCallback(operation, error);
-
+    NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress *progress) {
+        @strongify(self)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.progressCallback) self.progressCallback(self, progress.fractionCompleted);
+        });
+    } completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self)
+        
+        dispatch_async(HNProviderProcessingQueue(), ^{
+            if (!error)
+            {
+                if (self.successCallback) self.successCallback(self, response, responseObject);
+            }
+            else
+            {
+                if (self.failCallback) self.failCallback(self, error);
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+        });
     }];
     
-    self.myOperation = operation;
+    self.myTask = task;
+    if (self.willSendCallback) self.willSendCallback(request);
+    
+    HNQueue *operataionQueue;
+    if(self.queueName) operataionQueue = [[HNQueueManager instance] getOperationQueueWithName:queueName];
+    else operataionQueue = [HNQueueManager instance].globalQueue;
+    [operataionQueue addTask:self.myTask];
+    
+    return self.myTask;
+}
+- (NSURLSessionTask *)requestTask:(NSMutableURLRequest *)request progress:(void (^)(NSProgress *progress))progress completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completion {
+    
+    __block NSURLSessionTask *task = nil;
     
     if (self.fileDownloadPath)
     {
-        [operation setDownloadProgressBlock:self.progressCallback];
-        [operation setOutputStream:[NSOutputStream outputStreamToFileAtPath:self.fileDownloadPath append:NO]];
+        @weakify(self)
+        task = [[self sessionManager] downloadTaskWithRequest:request progress:progress destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            @strongify(self)
+            return [NSURL fileURLWithPath:self.fileDownloadPath];
+        } completionHandler:completion];
     }
-    else if (multiDataDict.count > 0)
+    else
     {
-        [operation setUploadProgressBlock:self.progressCallback];
+        if ([self.method isEqualToString:@"POST"])
+        {
+            task = [[self sessionManager] uploadTaskWithStreamedRequest:request
+                                                               progress:progress
+                                                      completionHandler:completion];
+        }
+        else {
+            task = [[self sessionManager] dataTaskWithRequest:request
+                                            completionHandler:completion];
+        }
     }
     
-    if (self.shouldContinueInBack)
-    {
-        [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:nil];
-    }
-    
-    if (self.willSendCallback) self.willSendCallback(request);
-    
-    NSOperationQueue* operataionQueue = nil;
-    if(queueName) operataionQueue = [[HNQueueManager instance] getOperationQueueWithName:queueName];
-    else operataionQueue = [HNQueueManager instance].globalQueue;
-    [operataionQueue addOperation:operation];
-    
-    return operation;
+    return task;
 }
 - (void)cancel
 {
-    [self.myOperation cancel];
+    [self.myTask cancel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
 }
 @end

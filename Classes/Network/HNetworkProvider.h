@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^HNPSuccessCallback)(id sender, NSHTTPURLResponse *reponse, NSData *data);
+typedef void (^HNPSuccessCallback)(id sender, NSURLResponse *reponse, NSData *data);
 typedef void (^HNPFailCallback)(id sender, NSError *error);
-typedef void (^HNProgressBlock)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite);
+typedef void (^HNProgressBlock)(id sender, double progress);
 typedef void (^HNPWillSendCallback)(NSMutableURLRequest *request);
 
 

@@ -115,8 +115,8 @@
             HNetworkDAO *dao = [HNetworkDAO new];
             dao.baseURL = @"http://img.hb.aicdn.com/30e26fbd16eafb928a8c4a4943ab7d0557a67d7714295-uhMVq2_fw658";
             dao.isFileDownload = YES;
-            [dao setProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite){
-                NSLog(@"progress %lli, %lli", totalBytesWritten, totalBytesExpectedToWrite);
+            [dao setProgressBlock:^(id sender, double progress){
+                NSLog(@"progress %f", progress);
             }];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);

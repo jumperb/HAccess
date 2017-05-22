@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define HNQueueTaskFinishNotification @"HNQueueTaskFinishNotification"
+
+@interface HNQueue : NSObject
+@property (nonatomic, readonly)NSInteger maxConcurrentCount;
+- (instancetype)initWithConcurrent:(NSInteger)concurrent;
+- (void)addTask:(NSURLSessionTask *)task;
+- (void)cancelAllTask;
+@end
+
 /*
  *  this is a queue manager
  */
@@ -16,10 +25,10 @@
 //singleton
 + (instancetype)instance;
 
-@property (nonatomic, readonly) NSOperationQueue* globalQueue;
+@property (nonatomic, readonly) HNQueue* globalQueue;
 
 // get special queue
-- (NSOperationQueue*)getOperationQueueWithName:(NSString*)name;
+- (HNQueue*)getOperationQueueWithName:(NSString*)name;
 // distroy queue
 - (void)destoryOperationQueueWithName:(NSString*)name;
 // init queue manually
