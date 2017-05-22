@@ -9,7 +9,7 @@
 #import "HDatabaseDAO.h"
 #import "HPropertyMgr.h"
 #import <objc/runtime.h>
-#import <Hodor/HCommon.h>
+#import <Hodor/NSString+ext.h>
 
 
 /**

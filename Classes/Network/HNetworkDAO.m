@@ -9,7 +9,9 @@
 #import "HNetworkDAO.h"
 #import "HDeserializableObject.h"
 #import <HCache/HFileCache.h>
-#import <Hodor/HCommon.h>
+#import <Hodor/NSObject+ext.h>
+#import <Hodor/NSError+ext.h>
+#import <Hodor/HClassManager.h>
 
 /**
  *  property desc
