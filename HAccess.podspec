@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HAccess"
-  s.version      = "2.3.5"
+  s.version      = "2.3.6"
   s.summary      = "A short description of HAccess."
 
   s.description  = <<-DESC
@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
       ss.dependency "Hodor/Defines"
       ss.dependency "Hodor/Feature"
 	  ss.dependency "Hodor/NS-Category"
-      ss.dependency 'AFNetworking' ,'~>2.0'
+      ss.dependency 'AFNetworking'
       ss.dependency 'HCache'
       ss.dependency 'HAccess/Entity'
       ss.ios.source_files = 'Classes/Network/*.{h,m,mm,cpp,c}'
