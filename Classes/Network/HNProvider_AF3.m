@@ -196,6 +196,20 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     }
     
 
+    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
+    serializer.acceptableContentTypes = [NSSet setWithObjects:
+                                         @"application/json",
+                                         @"text/json",
+                                         @"text/javascript",
+                                         @"text/html",
+                                         @"text/plain",
+                                         @"application/atom+xml",
+                                         @"application/xml",
+                                         @"text/xml",
+                                         @"image/png",
+                                         @"image/jpeg", nil];
+    [self sessionManager].responseSerializer = serializer;
+    
     NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress * _Nullable progress) {
         
         @strongify(self)
