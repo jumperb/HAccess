@@ -229,14 +229,14 @@ static dispatch_queue_t HNProviderProcessingQueue() {
     
     return self.myTask;
 }
-- (NSURLSessionTask *)requestTask:(NSMutableURLRequest *)request progress:(nullable void (^)(NSProgress *nsprogress))progress completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completion {
+- (NSURLSessionTask *)requestTask:(NSMutableURLRequest *)request progress:(nullable void (^)(NSProgress *downloadProgress))progressBlock completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completion {
     
     __block NSURLSessionTask *task = nil;
     
     if (self.fileDownloadPath)
     {
         @weakify(self)
-        task = [[self sessionManager] downloadTaskWithRequest:request progress:progress destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        task = [[self sessionManager] downloadTaskWithRequest:request progress:progressBlock destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
             @strongify(self)
             return [NSURL fileURLWithPath:self.fileDownloadPath];
         } completionHandler:completion];
@@ -246,7 +246,7 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         if ([self.method isEqualToString:@"POST"])
         {
             task = [[self sessionManager] uploadTaskWithStreamedRequest:request
-                                                               progress:progress
+                                                               progress:progressBlock
                                                       completionHandler:completion];
         }
         else {
