@@ -54,5 +54,6 @@ typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
  *  else send request and save a cache if success
  */
 @interface HNCacheTypeAlternative : HNCustomCacheStrategy
-+ (instancetype)createWtihCacheDuration:(long long)cacheDuration nextRequstInterval:(long long)nextRequestInterval;
++ (instancetype)createWtihNextRequstInterval:(long long)nextRequestInterval;
 @end
+

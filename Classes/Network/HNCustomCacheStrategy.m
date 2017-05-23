@@ -108,10 +108,10 @@
 @end
 
 @implementation HNCacheTypeAlternative
-+ (instancetype)createWtihCacheDuration:(long long)cacheDuration nextRequstInterval:(long long)nextRequestInterval
++ (instancetype)createWtihNextRequstInterval:(long long)nextRequestInterval
 {
     HNCacheTypeAlternative *cacheType = [HNCacheTypeAlternative new];
-    cacheType.cacheDuration = cacheDuration;
+    cacheType.cacheDuration = nextRequestInterval;
     cacheType.requstInterval = nextRequestInterval;
     return cacheType;
 }
