@@ -139,7 +139,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 + (BOOL)cancelQueueWithName:(NSString*)queueName;
 
 
-#pragma mark - extention
+#pragma mark - life circle
 
 /**
  *  set request headers, default operation is search property of 'HPHeader' tag, then set the key and value
@@ -170,6 +170,11 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *  @param params: contain all params
  */
 - (void)didSetupParams:(NSMutableDictionary *)params;
+
+/**
+ * will send request
+ */
+- (void)willSendRequest:(NSString *)urlString method:(NSString *)method headers:(NSMutableDictionary *)headers params:(NSMutableDictionary *)params;
 
 /**
  *  will Send Request
@@ -204,8 +209,12 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  */
 - (void)requestFinishedFailureWithError:(NSError*)error;
 
+
+
+
+#pragma mark - other
 /**
- *  my cache key, 
+ *  my cache key,
  *  u can special a request' cache key by rewrite this method.
  *  return baseURL+pathURL by default
  *  @return key
@@ -218,8 +227,6 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  */
 - (void)doMockFileRequest;
 #endif
-
-#pragma mark - other
 
 //hold self
 

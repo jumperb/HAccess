@@ -183,8 +183,11 @@
                 [self requestFinishedFailureWithError:herr(kInnerErrorCode, ([NSString stringWithFormat:@"%@ is not a HNetworkProvider", className]))];
                 return;
             }
-
+            
+            [self willSendRequest:urlString method:self.method headers:headers params:params];
+            
             [self.provider setUrlString:urlString];
+            [self.provider setHeadParameters:headers];
             [self.provider setParams:params];
             [self.provider setMethod:self.method];
             [self.provider setQueueName:queueName];
@@ -192,7 +195,6 @@
             [self.provider setTimeoutInterval:self.timeoutInterval];
             [self.provider setShouldContinueInBack:self.shouldContinueInBack];
             [self.provider setFileDownloadPath:self.fileDownloadPath];
-            [self.provider setHeadParameters:headers];
             if ([self.cacheType isKindOfClass:[HNSystemCacheStrategy class]])
             {
                 [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
@@ -323,6 +325,9 @@
 - (void)didSetupParams:(NSMutableDictionary *)params
 {
 
+}
+- (void)willSendRequest:(NSString *)urlString method:(NSString *)method headers:(NSMutableDictionary *)headers params:(NSMutableDictionary *)params
+{
 }
 - (id)processData:(NSData *)responseInfo
 {
