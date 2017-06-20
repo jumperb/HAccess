@@ -50,7 +50,8 @@ static dispatch_queue_t HNProviderProcessingQueue() {
 }
 - (AFHTTPSessionManager *)sessionManager {
     
-    if (!self.shouldContinueInBack)
+//    if (!self.shouldContinueInBack)
+    if (1)
     {
         static AFHTTPSessionManager *manager1;
         static dispatch_once_t onceToken1;
