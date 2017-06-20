@@ -196,7 +196,7 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         NSLog(@"\n\n#### multiData: %@", paramString);
     }
     
-
+    
     AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
     serializer.acceptableContentTypes = [NSSet setWithObjects:
                                          @"application/json",
@@ -219,9 +219,8 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         });
         
     } completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-        @strongify(self)
-        
         dispatch_async(HNProviderProcessingQueue(), ^{
+            @strongify(self)
             if (!error)
             {
                 if (self.successCallback) self.successCallback(self, response, responseObject);
@@ -230,7 +229,12 @@ static dispatch_queue_t HNProviderProcessingQueue() {
             {
                 if (self.failCallback) self.failCallback(self, error);
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+            if (self.myTask)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+                self.myTask = nil;
+            }
+            
         });
     }];
     
@@ -274,7 +278,11 @@ static dispatch_queue_t HNProviderProcessingQueue() {
 }
 - (void)cancel
 {
-    [self.myTask cancel];
-    [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+    if (self.myTask)
+    {
+        [self.myTask cancel];
+        [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+        self.myTask = nil;
+    }
 }
 @end
