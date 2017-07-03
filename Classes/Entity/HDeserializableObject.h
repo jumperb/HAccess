@@ -71,7 +71,7 @@ return;\
 
 //enableKeyMap: enable key mapping feature in deserialize progress?
 - (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap;
-
+- (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap couldEmpty:(BOOL)couldEmpty;
 //set with anothor obj, just shallow copy
 - (void)setWithDObj:(HDeserializableObject *)obj;
 

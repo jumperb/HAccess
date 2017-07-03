@@ -42,7 +42,6 @@
     if (self) {
         _propertyStructCache = [[NSMutableDictionary alloc] init];
         _queue = dispatch_queue_create("hpropertymgr.queue", DISPATCH_QUEUE_SERIAL);
-        _strictModle = YES;
     }
     return self;
 }

@@ -108,6 +108,10 @@
 }
 - (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap
 {
+    [self setWithDictionary:dict enableKeyMap:enableKeyMap couldEmpty:NO];
+}
+- (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap couldEmpty:(BOOL)couldEmpty
+{
     if (![dict isKindOfClass:[NSDictionary class]])
     {
         self.format_error = [NSString stringWithFormat:@"%@ key's value must be a NSDictionary", NSStringFromClass(self.class)];
@@ -135,7 +139,6 @@
             if (!value) value = [NSNull null];
             if ([value isKindOfClass:[NSNull class]])
             {
-                if (![HPropertyMgr shared].strictModle) continue;
                 if(!propertyExts.isOptional)
                 {
                     self.format_error = [NSString stringWithFormat:@"%@:%@ can not be empty", NSStringFromClass(self.class),ppDetail.name];
@@ -144,116 +147,106 @@
             }
             else if ([value isKindOfClass:[NSString class]])
             {
-                if (![HPropertyMgr shared].strictModle)
+                
+                if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])])
                 {
                     [self setValue:[value stringValue] forKey:ppDetail.name];
                 }
-                else
+                else if (!ppDetail.isObj && propertyExts.isAutocast)
                 {
-                    if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])])
+                    //基本类型
+                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                    NSNumber *valueNum = [formatter numberFromString:value];
+                    //if cannot convert value to number , set to 0 by defaylt
+                    if (!valueNum) valueNum = @(0);
+                    if ([propertyExts isInRange:valueNum])
                     {
-                        [self setValue:[value stringValue] forKey:ppDetail.name];
-                    }
-                    else if (!ppDetail.isObj && propertyExts.isAutocast)
-                    {
-                        //基本类型
-                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                        NSNumber *valueNum = [formatter numberFromString:value];
-                        //if cannot convert value to number , set to 0 by defaylt
-                        if (!valueNum) valueNum = @(0);
-                        if ([propertyExts isInRange:valueNum])
-                        {
-                            [self setValue:valueNum forKey:ppDetail.name];
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                            return;
-                        }
-                    }
-                    else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
-                    {
-                        //NSNumber
-                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                        NSNumber *valueNum = [formatter numberFromString:value];
-                        //if cannot convert value to number , set to 0 by defaylt
-                        if (!valueNum) valueNum = @(0);
-                        if ([propertyExts isInRange:valueNum])
-                        {
-                            [self setValue:valueNum forKey:ppDetail.name];
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                            return;
-                        }
-                    }
-                    else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])])
-                    {
-                        //NSDate
-                        double date = [value floatValue];
-                        if ([propertyExts isInRange:@(date)])
-                        {
-                            [self setValue:[NSDate dateWithTimeIntervalSince1970:date] forKey:ppDetail.name];
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                            return;
-                        }
+                        [self setValue:valueNum forKey:ppDetail.name];
                     }
                     else
                     {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
                         return;
                     }
-                    
                 }
+                else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
+                {
+                    //NSNumber
+                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                    NSNumber *valueNum = [formatter numberFromString:value];
+                    //if cannot convert value to number , set to 0 by defaylt
+                    if (!valueNum) valueNum = @(0);
+                    if ([propertyExts isInRange:valueNum])
+                    {
+                        [self setValue:valueNum forKey:ppDetail.name];
+                    }
+                    else
+                    {
+                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                        return;
+                    }
+                }
+                else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])])
+                {
+                    //NSDate
+                    double date = [value floatValue];
+                    if ([propertyExts isInRange:@(date)])
+                    {
+                        [self setValue:[NSDate dateWithTimeIntervalSince1970:date] forKey:ppDetail.name];
+                    }
+                    else
+                    {
+                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                        return;
+                    }
+                }
+                else
+                {
+                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+                    return;
+                }
+                    
+                
             }
             else if ([value isKindOfClass:[NSNumber class]])
             {
-                if (![HPropertyMgr shared].strictModle)
+                
+                if (!ppDetail.isObj || [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
                 {
-                    [self setValue:value forKey:ppDetail.name];
-                }
-                else
-                {
-                    if (!ppDetail.isObj || [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
+                    if ([propertyExts isInRange:value])
                     {
-                        if ([propertyExts isInRange:value])
-                        {
-                            [self setValue:value forKey:ppDetail.name];
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                            return;
-                        }
-                    }
-                    else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])]))
-                    {
-                        //NSString
-                        [self setValue:[value stringValue] forKey:ppDetail.name];
-                    }
-                    else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])]))
-                    {
-                        //NSDate
-                        if ([propertyExts isInRange:value])
-                        {
-                            [self setValue:[NSDate dateWithTimeIntervalSince1970:[value doubleValue]] forKey:ppDetail.name];
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                            return;
-                        }
+                        [self setValue:value forKey:ppDetail.name];
                     }
                     else
                     {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+                        self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
                         return;
                     }
                 }
+                else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])]))
+                {
+                    //NSString
+                    [self setValue:[value stringValue] forKey:ppDetail.name];
+                }
+                else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])]))
+                {
+                    //NSDate
+                    if ([propertyExts isInRange:value])
+                    {
+                        [self setValue:[NSDate dateWithTimeIntervalSince1970:[value doubleValue]] forKey:ppDetail.name];
+                    }
+                    else
+                    {
+                        self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                        return;
+                    }
+                }
+                else
+                {
+                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+                    return;
+                }
+                
             }
             else if ([value isKindOfClass:[NSArray class]])
             {
@@ -362,7 +355,7 @@
         }
         else
         {
-            if (![HPropertyMgr shared].strictModle) continue;
+            if (couldEmpty) continue;
             if(!propertyExts.isOptional)
             {
                 self.format_error = [NSString stringWithFormat:@"%@:%@ can not be empty", NSStringFromClass(self.class), ppDetail.name];

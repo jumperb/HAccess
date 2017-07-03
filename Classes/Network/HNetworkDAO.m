@@ -116,9 +116,9 @@
     _queueName = queueName;
     
     
-
+    
     NSString* urlString = [self fullurl];
-
+    
 #ifdef DEBUG
     if (self.isMock)
     {
@@ -126,16 +126,16 @@
         return;
     }
 #endif
-
-
+    
+    
     //prepare file download path
     if (self.isFileDownload)
     {
         self.fileDownloadPath = [self createTempFilePath:urlString];
     }
     else self.fileDownloadPath = nil;
-
-
+    
+    
     //if is file access url
     if ([urlString hasPrefix:@"file://"])
     {
@@ -206,6 +206,7 @@
                 if (!self.fileDownloadPath)
                 {
                     self.responseData = data;
+                    if ([response isKindOfClass:[NSHTTPURLResponse class]]) self.httpResponse = (NSHTTPURLResponse *)response;
                     [self requestFinishedSucessWithInfo:data response:response];
                 }
                 else
@@ -251,7 +252,7 @@
     _sucessBlock = sucess;
     _failedBlock = failure;
     [self cacheLogic:queueName];
-
+    
 }
 - (void)start:(void(^)(id sender, id data, NSError *error))finish
 {
@@ -272,10 +273,13 @@
 - (void)cancel
 {
     [self.provider cancel];
+    if (!self.continueAlive)
+    {
         //clear
-    _failedBlock = nil;
-    _sucessBlock = nil;
-    _holdSelf = nil;
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+    }
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -303,7 +307,7 @@
 {
     if (self.class == [HNetworkDAO class]) return;
     NSArray* pplist = [self ppList];
-
+    
     for(NSString* key in pplist)
     {
         NSArray *exts = [[self class] annotations:key];
@@ -324,7 +328,7 @@
 }
 - (void)didSetupParams:(NSMutableDictionary *)params
 {
-
+    
 }
 - (void)willSendRequest:(NSString *)urlString method:(NSString *)method headers:(NSMutableDictionary *)headers params:(NSMutableDictionary *)params
 {
@@ -332,7 +336,7 @@
 - (id)processData:(NSData *)responseInfo
 {
     [self.deserializer setDeserializeKeyPath:self.deserializeKeyPath];
-
+    
     id processRes = responseInfo;
     if ([self.deserializer respondsToSelector:@selector(preprocess:)])
     {
@@ -404,17 +408,17 @@
 {
     NSString *urlString = @"HNetworkDAO.bundle";
     NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]];
-
+    
     if (self.mockBundlePath)
     {
         mockFileBundle = [NSBundle bundleWithURL:[NSURL URLWithString:self.mockBundlePath]];
     }
-
+    
     if (mockFileBundle)
     {
         NSString *fileType = nil;
         if ([self.deserializer respondsToSelector:@selector(mockFileType)]) fileType = [self.deserializer mockFileType];
-            
+        
         urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:fileType];
         if (urlString)
         {
@@ -460,9 +464,12 @@
             }
             else
             {
-                self.failedBlock = nil;
-                self.sucessBlock = nil;
-                self.holdSelf = nil;
+                if (!self.continueAlive)
+                {
+                    self.failedBlock = nil;
+                    self.sucessBlock = nil;
+                    self.holdSelf = nil;
+                }
             }
         }];
     }
@@ -493,21 +500,24 @@
     {
         return; //has deal all exception
     }
-
+    
     if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
     {
         HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
         [customCacheStrategy handleRespInfo:responInfo];
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_sucessBlock)
             _sucessBlock(self, responseEntity);
         
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
+        if (!self.continueAlive)
+        {
+            //clear
+            _failedBlock = nil;
+            _sucessBlock = nil;
+            _holdSelf = nil;
+        }
     });
 }
 
@@ -516,15 +526,17 @@
 {
     NSLog(@"\n\n#### request error:\n%li,%@,%@ \n url = %@", (long)error.code,error.domain,error.localizedDescription, [self fullurl]);
     if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_failedBlock)
             _failedBlock(self,  error);
-        
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
+        if (!self.continueAlive)
+        {
+            //clear
+            _failedBlock = nil;
+            _sucessBlock = nil;
+            _holdSelf = nil;
+        }
     });
 }
 
@@ -533,11 +545,13 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if(_sucessBlock)
             _sucessBlock(self, info);
-        
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
+        if (!self.continueAlive)
+        {
+            //clear
+            _failedBlock = nil;
+            _sucessBlock = nil;
+            _holdSelf = nil;
+        }
     });
 }
 
@@ -559,6 +573,10 @@
 - (void)unHoldNetwork
 {
     _holdSelf = nil;
+}
+- (NSString *)responseString
+{
+    return [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding];
 }
 @end
 

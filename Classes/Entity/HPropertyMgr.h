@@ -23,10 +23,6 @@
 //singleton
 + (instancetype)shared;
 
-
-//default is NO, in strict modle, the example progress is very strict
-@property (nonatomic, assign) BOOL strictModle;
-
 //get the cached property list
 - (NSArray *)entityPropertylist:(NSString *)entityClassName;
 

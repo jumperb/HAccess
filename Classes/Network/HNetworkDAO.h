@@ -37,7 +37,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *  output: set 'deserializeKeyPath' to let it know witch part of data you concern, then set a kind of 'HEDeserialize' to 'deserializer' property.
  *          the 'HEDeserialize' has tree imp, 'HNEntityDeserializer','HNArrayDescerializer','HNManualDescerializer', use any one kind for special data format
  *  cache:  read the cache type define, it is very simple and useful, and actrually most case could be constructed by cache instead of database.
- *          you need not concern about the cache size, it do every thing automaticly. 
+ *          you need not concern about the cache size, it do every thing automaticly.
  *          use 'cache type' with some special 'cacheDuration' will get more flexable
  */
 @interface HNetworkDAO : NSObject
@@ -65,6 +65,8 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic, strong) id userInfo;
 //rude data, if the request is file download ,it will not work
 @property (nonatomic, strong) NSData *responseData;
+//http resp ,if it's a http response
+@property (nonatomic, strong) NSHTTPURLResponse *httpResponse;
 //cache type
 @property (nonatomic) id<HNCacheStrategy> cacheType;
 //if it is file download request, set the to YES.
@@ -74,6 +76,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
 @property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
 
+@property (nonatomic) BOOL continueAlive;
 
 //mock request
 @property (nonatomic) BOOL isMock;
@@ -90,7 +93,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 /**
  *  begin request
  *
- *  @param queueName queue name, if you don't care about serail/concurrent set 'nil', 
+ *  @param queueName queue name, if you don't care about serail/concurrent set 'nil',
  *         if you set a name ,it will create a serail queue automaticly if queue not exsit.
  *  @param sucess    callback when request success
  *  @param failure   callback when request fail
@@ -120,8 +123,8 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  *  manual create a queue
  *  if you want create a concurrent queue with special concurrent count, you should use this
  *
- *  @param queueName
- *  @param maxMaxConcurrent
+ *  @param queueName queueName
+ *  @param maxMaxConcurrent maxMaxConcurrent
  */
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent;
 
@@ -132,7 +135,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 /**
  *  kill a operationQueue
- *  @param queueName
+ *  @param queueName queueName
  *
  *  @return is success
  */
@@ -143,7 +146,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 /**
  *  set request headers, default operation is search property of 'HPHeader' tag, then set the key and value
- *  @param headers: empty NSMutableDictionary
+ *  @param headers empty NSMutableDictionary
  */
 - (void)setupHeader:(NSMutableDictionary *)headers;
 
@@ -167,7 +170,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 /**
  *  after set all params
  *  usually we gen signature there
- *  @param params: contain all params
+ *  @param params contain all params
  */
 - (void)didSetupParams:(NSMutableDictionary *)params;
 
@@ -179,13 +182,13 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 /**
  *  will Send Request
  *  you can do some log, encript progress there
- *  @param request
+ *  @param request requst
  */
 - (void)willSendRequest:(NSMutableURLRequest *)request;
 /**
  *  send request
  *
- *  @param queueName
+ *  @param queueName queueName
  */
 - (void)startWithQueueName:(NSString*)queueName;
 
@@ -197,7 +200,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 /**
  *  deal response data and convert to a object as new response, if return NSError, it will route to fail callback
- *  @param responseObject: rude response data, usally is a NSDictionary or NSArray by json decode
+ *  @param responseObject rude response data, usally is a NSDictionary or NSArray by json decode
  *
  *  @return object
  */
@@ -205,7 +208,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 
 /**
  *  after recv error, default operation is fail callback
- *  @param error
+ *  @param error error
  */
 - (void)requestFinishedFailureWithError:(NSError*)error;
 
@@ -221,6 +224,11 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
  */
 - (NSString *)cacheKey;
 
+/**
+ * get response string
+ * @return responseString
+ */
+- (NSString *)responseString;
 #ifdef DEBUG
 /**
  *  custom Request,support local file.json
