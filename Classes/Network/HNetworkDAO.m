@@ -273,13 +273,10 @@
 - (void)cancel
 {
     [self.provider cancel];
-    if (!self.continueAlive)
-    {
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
-    }
+    //clear
+    _failedBlock = nil;
+    _sucessBlock = nil;
+    _holdSelf = nil;
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -464,12 +461,9 @@
             }
             else
             {
-                if (!self.continueAlive)
-                {
-                    self.failedBlock = nil;
-                    self.sucessBlock = nil;
-                    self.holdSelf = nil;
-                }
+                self.failedBlock = nil;
+                self.sucessBlock = nil;
+                self.holdSelf = nil;
             }
         }];
     }
@@ -500,7 +494,10 @@
     {
         return; //has deal all exception
     }
-    
+    if ([responseEntity isEqual:HNDRedirectedResp])
+    {
+        return;
+    }
     if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
     {
         HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
@@ -508,16 +505,13 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_sucessBlock)
-            _sucessBlock(self, responseEntity);
+        if(_sucessBlock) _sucessBlock(self, responseEntity);
         
-        if (!self.continueAlive)
-        {
-            //clear
-            _failedBlock = nil;
-            _sucessBlock = nil;
-            _holdSelf = nil;
-        }
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+        
     });
 }
 
@@ -528,30 +522,25 @@
     if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_failedBlock)
-            _failedBlock(self,  error);
-        if (!self.continueAlive)
-        {
-            //clear
-            _failedBlock = nil;
-            _sucessBlock = nil;
-            _holdSelf = nil;
-        }
+        if(_failedBlock) _failedBlock(self,  error);
+        
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
+        
     });
 }
 
 - (void)downloadFinished:(HDownloadFileInfo *)info
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_sucessBlock)
-            _sucessBlock(self, info);
-        if (!self.continueAlive)
-        {
-            //clear
-            _failedBlock = nil;
-            _sucessBlock = nil;
-            _holdSelf = nil;
-        }
+        if(_sucessBlock) _sucessBlock(self, info);
+        
+        //clear
+        _failedBlock = nil;
+        _sucessBlock = nil;
+        _holdSelf = nil;
     });
 }
 

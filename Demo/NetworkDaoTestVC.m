@@ -94,7 +94,7 @@
             DemoNetworkDAO *dao = [DemoNetworkDAO new];
             dao.appkey = @"db5c321697d0fd38ce68988d5a28f97e";
             dao.info = @"joke";
-            dao.cacheType = [HNCacheTypeAlternative createWtihCacheDuration:60 nextRequstInterval:40];
+            dao.cacheType = [HNCacheTypeAlternative createWtihNextRequstInterval:40];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
                 else

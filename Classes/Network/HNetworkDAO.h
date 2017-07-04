@@ -19,6 +19,7 @@
 //in most situation, you use json Deserializer
 #import "HNJsonDeserializer.h"
 
+#define HNDRedirectedResp @"HNDRedirectedResp"
 
 @class HNetworkDAO;
 typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
@@ -75,8 +76,6 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //only use for subclass
 @property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
 @property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
-
-@property (nonatomic) BOOL continueAlive;
 
 //mock request
 @property (nonatomic) BOOL isMock;
