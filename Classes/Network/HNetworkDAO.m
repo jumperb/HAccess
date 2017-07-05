@@ -340,8 +340,7 @@
         processRes = [self.deserializer preprocess:responseInfo];
         if ([processRes isKindOfClass:[NSError class]])
         {
-            [self requestFinishedFailureWithError:processRes];
-            return nil;
+            return processRes;
         }
     }
     
@@ -349,13 +348,7 @@
     if (!responseEntity)
     {
         NSString *errorStr = [NSString stringWithFormat:@"inner error:%@.getOutputEntiy return nil", NSStringFromClass(self.class)];
-        [self requestFinishedFailureWithError:herr(kInnerErrorCode,  errorStr)];
-        return nil;
-    }
-    if ([responseEntity isKindOfClass:[NSError class]])
-    {
-        [self requestFinishedFailureWithError:responseEntity];
-        return nil;
+        return herr(kInnerErrorCode, errorStr);
     }
     return responseEntity;
 }
@@ -447,13 +440,24 @@
         HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
         customCacheStrategy.cacheKey = self.cacheKey;
         @weakify(self)
+        @weakify(customCacheStrategy);
         [customCacheStrategy cacheLogic:^(BOOL shouldRequest, NSData *cachedData) {
             @strongify(self)
+            @strongify(customCacheStrategy);
             if (cachedData)
             {
-                id responseEntity = [self processData:cachedData];
-                if (!responseEntity) return; //has deal all exception
-                else if(self.sucessBlock) self.sucessBlock(nil, responseEntity);
+                id res = [self processData:cachedData];
+                if ([res isKindOfClass:[NSError class]] || [res isEqual:HNDRedirectedResp])
+                {
+                    NSAssert(NO, @"cache data is not correct");
+                    //delete cache
+                    [customCacheStrategy deleteCache];
+                    shouldRequest = YES;
+                }
+                else
+                {
+                    if(self.sucessBlock) self.sucessBlock(nil, res);
+                }
             }
             if (shouldRequest)
             {
@@ -489,30 +493,33 @@
 
 - (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSURLResponse *)response
 {
-    id responseEntity = [self processData:responInfo];
-    if (!responseEntity)
+    id res = [self processData:responInfo];
+    if ([res isKindOfClass:[NSError class]])
     {
-        return; //has deal all exception
+        [self requestFinishedFailureWithError:res];
     }
-    if ([responseEntity isEqual:HNDRedirectedResp])
+    else if ([res isEqual:HNDRedirectedResp])
     {
         return;
     }
-    if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
+    else
     {
-        HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
-        [customCacheStrategy handleRespInfo:responInfo];
+        if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
+        {
+            HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
+            [customCacheStrategy handleRespInfo:responInfo];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(_sucessBlock) _sucessBlock(self, res);
+            
+            //clear
+            _failedBlock = nil;
+            _sucessBlock = nil;
+            _holdSelf = nil;
+            
+        });
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(_sucessBlock) _sucessBlock(self, responseEntity);
-        
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
-        
-    });
 }
 
 
