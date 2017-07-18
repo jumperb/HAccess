@@ -128,6 +128,14 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent;
 
 /**
+ *
+ *  set queue finish callback
+ *  @param queueName queueName
+ *  @param finish    callback when queue finish
+ */
++ (void)queue:(NSString *)queueName finish:(void(^)(id sender))finish;
+
+/**
  *  cancel current request, and cancel the operation
  */
 - (void)cancel;

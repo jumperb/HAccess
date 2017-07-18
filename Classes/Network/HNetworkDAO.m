@@ -479,12 +479,15 @@
 {
     [HNQueueManager initQueueWithName:queueName maxMaxConcurrent:maxMaxConcurrent];
 }
-
++ (void)queue:(NSString *)queueName finish:(void(^)(id sender))finish
+{
+    [HNQueueManager queue:queueName finish:finish];
+}
 + (BOOL)cancelQueueWithName:(NSString*)queueName
 {
     if(queueName)
     {
-        [[HNQueueManager instance] destoryOperationQueueWithName:queueName];
+        [HNQueueManager destoryOperationQueueWithName:queueName];
         return YES;
     }
     return NO;

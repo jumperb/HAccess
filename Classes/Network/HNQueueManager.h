@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <Hodor/HCommonBlock.h>
 #define HNQueueTaskFinishNotification @"HNQueueTaskFinishNotification"
 
 @interface HNQueue : NSObject
 @property (nonatomic, readonly)NSInteger maxConcurrentCount;
-- (instancetype)initWithConcurrent:(NSInteger)concurrent;
+@property (nonatomic) simple_callback emptyCallback;
+
 - (void)addTask:(NSURLSessionTask *)task;
 - (void)cancelAllTask;
 @end
@@ -30,7 +31,9 @@
 // get special queue
 - (HNQueue*)getOperationQueueWithName:(NSString*)name;
 // distroy queue
-- (void)destoryOperationQueueWithName:(NSString*)name;
++ (void)destoryOperationQueueWithName:(NSString*)name;
 // init queue manually
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent;
+// queue finish callback
++ (void)queue:(NSString *)queueName finish:(simple_callback)finish;
 @end
