@@ -136,18 +136,18 @@ ppx(searchKey, HPMapto(@"key"))
 
 不出意外，你会获得一个字典返回
 
-**注意:** “.m”文件里面有个ppx描述，这种写法叫做“属性注解”，这是一个属性描述方法，这句话的意思是说，把ID映射到id，为啥要映射啊？
-A.服务器参数有objective-c的保留字
-B.服务端参数名太随意，而我们有洁癖
-C.如果服务端要日怪，非要把参数放在 http header 里面，还可以这样
+**注意:** “.m”文件里面有个ppx描述，这种写法叫做“属性注解”，这是一个属性描述方法，这句话的意思是说，把ID映射到id，为啥要映射啊？  
+A.服务器参数有objective-c的保留字  
+B.服务端参数名太随意，而我们有洁癖  
+C.如果服务端要日怪，非要把参数放在 http header 里面，还可以这样  
 ```objectivec
 ppx(searchKey, HPMapto(@"key"), HPHeader)
 ```
 
 ## 三.简单反序列化
 
-SimpleDAO下发下来应该是个图集对象，我们希望直接能获取到一个直接可用的业务模型
-我们先根据返回数据编写模型,可以直接写在SimpleDAO里面，我们期望返回的模型如下定义
+SimpleDAO下发下来应该是个图集对象，我们希望直接能获取到一个直接可用的业务模型  
+我们先根据返回数据编写模型,可以直接写在SimpleDAO里面，我们期望返回的模型如下定义  
 ```objectivec
 @interface ImageObject : HDeserializableObject
 @property (nonatomic) NSString *ID;
@@ -169,33 +169,33 @@ SimpleDAO下发下来应该是个图集对象，我们希望直接能获取到�
 @end
 
 ```
-为了顺利进行反序列化，我们让他都继承自HDeserializableObject
-并且在SimpleDAO的init函数中添加如下语句，告知DAO需要反序列化成什么
+为了顺利进行反序列化，我们让他都继承自HDeserializableObject  
+并且在SimpleDAO的init函数中添加如下语句，告知DAO需要反序列化成什么  
 ```objectivec
 self.deserializer = [HNArrayDeserializer deserializerWithClass:[ImageObject class]];
 ```
-HNArrayDeserializer 是指一种反序列化为数组的反序列化器，反序列化器内置只有有三种：
+HNArrayDeserializer 是指一种反序列化为数组的反序列化器，反序列化器内置只有有三种：  
 
-HNEntityDeserializer(反序列化为对象，支持对象的嵌套)，
-HNArrayDeserializer(反序列化为数组)，
-HNManualDeserializer（人工反序列化） 就能满足所有的情况。
+HNEntityDeserializer(反序列化为对象，支持对象的嵌套)，  
+HNArrayDeserializer(反序列化为数组)，  
+HNManualDeserializer（人工反序列化） 就能满足所有的情况。  
 
-再试一试？
+再试一试？  
 
-你会依次遇到几个问题，后面是解决方式
+你会依次遇到几个问题，后面是解决方式  
 
 `1.ImageObject的属性叫ID 但是数据的key叫id`  
 
-将头文件的id改成大写然后做属性映射
-ppx(ID, HPMapto(@"id”))
+将头文件的id改成大写然后做属性映射  
+ppx(ID, HPMapto(@"id”))  
 
 `2.服务端下发的id是数字，但是我们要求是字符串，怎么办？`  
-ppx(ID, HPMapto(@"id"), HPAutoCast) //AutoCast是指字符串和数字可以按需自动转换
+ppx(ID, HPMapto(@"id"), HPAutoCast) //AutoCast是指字符串和数字可以按需自动转换  
 
 `3.框架报了ImageObject的fullImageURL不能为空，那个只是客户端使用的，不需要转化的`  
-ppx(fullImageURL, HPIgnore) //忽略掉
+ppx(fullImageURL, HPIgnore) //忽略掉  
 
-整体代码如下
+整体代码如下  
 ```objectivec
 @implementation ImageObject
 ppx(ID, HPMapto(@"id"), HPAutoCast)
@@ -216,21 +216,22 @@ ppx(fullImageURL, HPIgnore)
 
 错误分为三种级别：
 
-* 1.从NSURLSession来的错误，从AFNetworking来的错误，这种错误的Domain是“Network”
-例如，http的404，500等
+* 1.从NSURLSession来的错误，从AFNetworking来的错误，这种错误的Domain是“Network”  
+例如，http的404，500等  
 
-* 2.服务端返回业务错误码，这种错误的Domain是“Server”，例如
-{"code":"100002","info":"系统忙，请稍候再试"}
+* 2.服务端返回业务错误码，这种错误的Domain是“Server”，例如  
+{"code":"100002","info":"系统忙，请稍候再试"}  
 
-* 3.服务端的数据不合格，被客户端检查出来了，这种错误的Domain是识别到错误的模块，code是“kDataFormatErrorCode”，例如json解码失败，数据字段缺失等，例如"com.haccess.HNJsonDeserializer.HNEntityDeserializer,ImageObject:ID must be @NSString type"
+* 3.服务端的数据不合格，被客户端检查出来了  
+这种错误的Domain是识别到错误的模块，code是“kDataFormatErrorCode”，例如json解码失败，数据字段缺失等，例如"com.haccess.HNJsonDeserializer.HNEntityDeserializer,ImageObject:ID must be @NSString type"
 
-其中第一种和第三种都是自动处理了，第二种需要代码来检测，框架不知道哪个代表成功哪个代表错误
-例如如下的返回结果
+其中第一种和第三种都是自动处理了，第二种需要代码来检测，框架不知道哪个代表成功哪个代表错误  
+例如如下的返回结果  
 ```objectivec
 {"msg":"访问权限错误","status":false}
 ```
-我们会在json解析完成后来检查数据是不是代表错误，检查代码写在哪儿呢？
-首先HNetworkDAO有个生命周期，类似UIViewController，这些都是一些请求过程的关键环节，可以在子类中自定义
+我们会在json解析完成后来检查数据是不是代表错误，检查代码写在哪儿呢？  
+首先HNetworkDAO有个生命周期，类似UIViewController，这些都是一些请求过程的关键环节，可以在子类中自定义  
 ```objectivec
 #pragma mark - life circle
 //设置请求头部
@@ -255,8 +256,8 @@ ppx(fullImageURL, HPIgnore)
 - (void)requestFinishedFailureWithError:(NSError*)error;
 ```
 
-我们需要做的服务器错误处理就发生在"getOutputEntiy"这个环节
-复写这个方法
+我们需要做的服务器错误处理就发生在"getOutputEntiy"这个环节  
+复写这个方法  
 ```objectivec
 - (id)getOutputEntiy:(id)responseObject
 {
@@ -274,13 +275,13 @@ ppx(fullImageURL, HPIgnore)
     }
 }
 ```
-这样我们就可以把错误报到上层去了
-Error Domain=SimpleDAO.m Code=503 "访问权限错误！" UserInfo={NSLocalizedDescription=访问权限错误！
+这样我们就可以把错误报到上层去了  
+Error Domain=SimpleDAO.m Code=503 "访问权限错误！" UserInfo={NSLocalizedDescription=访问权限错误！  
 
 ## 五.生命周期的作用
 
-我们来做个简单的签名
-签名算法:所有请求参数，把key按照升序排列，数据按照a=1&b=2的方式连接成串，追加"123456"进行MD5得到sign，然后再通过sign传到服务器
+我们来做个简单的签名  
+签名算法:所有请求参数，把key按照升序排列，数据按照a=1&b=2的方式连接成串，追加"123456"进行MD5得到sign，然后再通过sign传到服务器  
 ```objectivec
 - (NSString *)sign:(NSDictionary *)params
 {
@@ -303,7 +304,7 @@ Error Domain=SimpleDAO.m Code=503 "访问权限错误！" UserInfo={NSLocalizedD
     return [signString md5];
 }
 ```
-那么在哪儿写入呢？
+那么在哪儿写入呢？  
 ```objectivec
 - (void)willSendRequest:(NSString *)urlString method:(NSString *)method headers:(NSMutableDictionary *)headers params:(NSMutableDictionary *)params
 {
@@ -311,12 +312,12 @@ Error Domain=SimpleDAO.m Code=503 "访问权限错误！" UserInfo={NSLocalizedD
     params[@"sign"] = [self sign:params];
 }
 ```
-好了，发个请求试试吧
+好了，发个请求试试吧  
 
-## 7.复杂反序列化
+## 7.复杂反序列化  
 
-#### 7.1 反序列化路径
-如果数据层次较复杂，SimpleDAO是不知道你关心那一部分数据的，这里就需要指定反序列化路径了，例如
+#### 7.1 反序列化路径  
+如果数据层次较复杂，SimpleDAO是不知道你关心那一部分数据的，这里就需要指定反序列化路径了，例如  
 ```
 {
 	"resp":{
@@ -336,17 +337,17 @@ self.deserializeKeyPath = @"resp.data";
 
 #### 7.2 反序列化选项
 
-我们之前已经接触到了几个反序列化选项
-`HPMapto`: 属性映射关系
-`HPIgnore`: 忽略这个属性，不要对这个属性进行反序列化
-`HPAutoCast`: 字符串和数字自动按需转换
+我们之前已经接触到了几个反序列化选项  
+`HPMapto`: 属性映射关系  
+`HPIgnore`: 忽略这个属性，不要对这个属性进行反序列化   
+`HPAutoCast`: 字符串和数字自动按需转换  
 
-然而还有四个选项没告诉大家
+然而还有四个选项没告诉大家  
 
-`HPOptional`:  这个属性可以为空
-`HPInnerType`: 指明内部类型，常用于指明数组内部是啥类型
-`HPScope`: 这个属性的值域是什么，一般用于描述枚举类型
-`HPDivideType`: 类型分离，用于决定数组内部类型或者字典对应类型，例如数组中的数据
+`HPOptional`:  这个属性可以为空  
+`HPInnerType`: 指明内部类型，常用于指明数组内部是啥类型  
+`HPScope`: 这个属性的值域是什么，一般用于描述枚举类型  
+`HPDivideType`: 类型分离，用于决定数组内部类型或者字典对应类型，例如数组中的数据  
 ```json
 [
     {
@@ -363,21 +364,21 @@ self.deserializeKeyPath = @"resp.data";
     }
 ]
 ```
-需要将 type == pic 的字典转换成 PicObject, type == video 则转换成 VideoObject
-那么就可以这样写
+需要将 type == pic 的字典转换成 PicObject, type == video 则转换成 VideoObject  
+那么就可以这样写  
 ```
 ppx(某个属性, HPDivideType(@"type", "pic", [PicObject class], "video", [VideoObject class]))
 ```
-除了字符串 ，这里还可以填写 @(1), @(枚举值) 作为type的值
+除了字符串 ，这里还可以填写 @(1), @(枚举值) 作为type的值  
 
-记住这七个选项的作用，需要用到的时候再来查看Demo中的用法
-注意: 反序列化选项`对DAO的属性同样适用`，例如，你定义的属性名和请求参数的名字可以不一样！并通过HPMapto转换过去
+记住这七个选项的作用，需要用到的时候再来查看Demo中的用法  
+注意: 反序列化选项`对DAO的属性同样适用`，例如，你定义的属性名和请求参数的名字可以不一样！并通过HPMapto转换过去  
 
 
 ## 七.队列控制
 
-在上文中我们已经能获取到一个图片数组了，我们现在想要把图片显示出来
-请求那儿改成这样
+在上文中我们已经能获取到一个图片数组了，我们现在想要把图片显示出来  
+请求那儿改成这样  
 ```objectivec
 SimpleDAO *dao = [SimpleDAO new];
 dao.searchKey = @"sexy";
@@ -396,8 +397,8 @@ dao.searchKey = @"sexy";
     }
 }];
 ```
-这时我们发现图片有时候会同时回来，前一张会把后一张盖住，原因是下载图片的请求我们是同时发出去的。
-我们可以让请求排队执行，以解决这个问题
+这时我们发现图片有时候会同时回来，前一张会把后一张盖住，原因是下载图片的请求我们是同时发出去的。  
+我们可以让请求排队执行，以解决这个问题  
 
 #### 7.1并发控制
 
@@ -445,17 +446,17 @@ for (ImageObject *imgObj in data)
 ```
 ## 八.缓存控制
 
-某个页面有个请求，需要间隔8小时才能发送请求，没到8小时，则展示缓存数据
+某个页面有个请求，需要间隔8小时才能发送请求，没到8小时，则展示缓存数据  
 在SimpleDAO的初始化方法中添加如下一行
 ```objectivec
 self.cacheType = [HNCacheTypeAlternative createWtihNextRequstInterval:60*60*8];
 ```
-还有其他缓存类型可选`HNCacheTypeBoth`，`HNCacheTypeOnlyWrite`，也可以自定义，需要用到再去研究吧。
+还有其他缓存类型可选`HNCacheTypeBoth`，`HNCacheTypeOnlyWrite`，也可以自定义，需要用到再去研究吧。  
 缓存存放位置 = `[HFileCache shareCache].cacheDir`
 
-再试一下，发现缓存起作用了。
-但是我们发现输入ID不同，没有导致缓存失效，但是，按照这个接口的意义，不同的ID应该对应不同的缓存对象！怎么办呢？
-那么我们需要给缓存key添加ID，在SimpleDAO.m中添加如下函数
+再试一下，发现缓存起作用了。  
+但是我们发现输入ID不同，没有导致缓存失效，但是，按照这个接口的意义，不同的ID应该对应不同的缓存对象！怎么办呢？  
+那么我们需要给缓存key添加ID，在SimpleDAO.m中添加如下函数  
 ```objectivec
 - (NSString *)cacheKey
 {
@@ -467,8 +468,8 @@ self.cacheType = [HNCacheTypeAlternative createWtihNextRequstInterval:60*60*8];
 
 ## 九.请求模拟-Mock
 
-###9.1 自动Mock
-自动mock的基础是猜测法，意思是说，框架来猜你要啥样的数据
+###9.1 自动Mock  
+自动mock的基础是猜测法，意思是说，框架来猜你要啥样的数据  
 
 ##### 9.1.1 添加一个依赖，并执行pod update
 
@@ -486,27 +487,27 @@ dispatch_once(&onceToken, ^{
 ```objectivec
 self.isMock = YES;
 ```
-运行一下吧
+运行一下吧  
 
-运行起来报错了，原因是url不合法，看一下数据，原来是src不对.
-我们可以看到数据，同时下发了url和fullImageURL,  我们用一下这个地址发现只有fullImageURL这是一个有效的图片地址
-这是因为，在自动mock中，猜对了fullImageURL的值应该是啥样的，但是”url”的命名框架猜不出来。
+运行起来报错了，原因是url不合法，看一下数据，原来是src不对.  
+我们可以看到数据，同时下发了url和fullImageURL,  我们用一下这个地址发现只有fullImageURL这是一个有效的图片地址  
+这是因为，在自动mock中，猜对了fullImageURL的值应该是啥样的，但是”url”的命名框架猜不出来。  
 
-对于自动mock，命名越准确，注解写的越准确，那么就越容易猜中。
+对于自动mock，命名越准确，注解写的越准确，那么就越容易猜中。  
 
-我们这里暂时把fullImageURL改成“可选的”，以完成这个案例
-ppx(fullImageURL, HPOptional)
-运行一下吧.
-##### 9.1.4 指定mock类型
-如果框架猜测的结果不对，那么可以手动指定某一个属性mock成什么数据，例如
+我们这里暂时把fullImageURL改成“可选的”，以完成这个案例  
+ppx(fullImageURL, HPOptional)  
+运行一下吧.  
+##### 9.1.4 指定mock类型  
+如果框架猜测的结果不对，那么可以手动指定某一个属性mock成什么数据，例如  
 ```
 ppx(server_modified, HPMockAsDate)
 ppx(server_created, HPMockAsDate)
 ```
-这几个注解定义在“HNetworkAutoMock.h”中
+这几个注解定义在“HNetworkAutoMock.h”中  
 
-对于多层次的model也是可用的, 在HAccessTools里面有更加清楚的demo
-注意: 模拟数据的随机图片地址是可裁剪的，在将要发送图片请求时修改一下url
+对于多层次的model也是可用的, 在HAccessTools里面有更加清楚的demo  
+注意: 模拟数据的随机图片地址是可裁剪的，在将要发送图片请求时修改一下url  
 ```objectivec
 if ([url containsString:@"unsplash.it"])
 {
@@ -518,15 +519,15 @@ if ([url containsString:@"unsplash.it"])
 占位符是显示区域宽高
 
 ### 9.2 手动Mock
-不开启HNetworkAutoMock的情况下，打开isMock开关，则走手动mock
-在项目中建立一个`HNetworkDAO.bundle`, 在里面建立`SimpleDAO同名`的一个json文件即可，在这个json文件里面就是手写json数据了
+不开启HNetworkAutoMock的情况下，打开isMock开关，则走手动mock  
+在项目中建立一个`HNetworkDAO.bundle`, 在里面建立`SimpleDAO同名`的一个json文件即可，在这个json文件里面就是手写json数据了  
 
 ## 十.其他问题
 
-a.文件上传见HNetworkMultiDataObj
+a.文件上传见HNetworkMultiDataObj  
 
-b.请合理设计你的接口类继承关系
+b.请合理设计你的接口类继承关系  
 
-c.HDeserializableObject和HDatabaseDAO的可以直接参考HAccess的demo
+c.HDeserializableObject和HDatabaseDAO的可以直接参考HAccess的demo  
 
-d.HFileCache是一种扔进去就不用管了的缓存，见这个库的demo
+d.HFileCache是一种扔进去就不用管了的缓存，见这个库的demo  
