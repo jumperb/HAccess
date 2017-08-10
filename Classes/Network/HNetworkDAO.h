@@ -80,7 +80,9 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //mock request
 @property (nonatomic) BOOL isMock;
 //default bundle is HNetworkDAO.bundle
-@property (nonatomic, strong) NSString* mockBundlePath;
+@property (nonatomic, strong) NSString* mockBundleName;
+//default mock file name is ClassName.json
+@property (nonatomic, strong) NSString* mockFileName;
 
 /**
  *  begin request

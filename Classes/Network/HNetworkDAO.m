@@ -396,33 +396,35 @@
 //mock request
 - (void)doMockFileRequest
 {
-    NSString *urlString = @"HNetworkDAO.bundle";
-    NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"HNetworkDAO" ofType:@"bundle"]];
-    
-    if (self.mockBundlePath)
+    NSString *bundleName = @"HNetworkDAO.bundle";
+    if (self.mockBundleName)
     {
-        mockFileBundle = [NSBundle bundleWithURL:[NSURL URLWithString:self.mockBundlePath]];
+        bundleName = self.mockBundleName;
     }
+    NSBundle *mockFileBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:bundleName ofType:nil]];
     
     if (mockFileBundle)
     {
-        NSString *fileType = nil;
-        if ([self.deserializer respondsToSelector:@selector(mockFileType)]) fileType = [self.deserializer mockFileType];
-        
-        urlString = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:fileType];
-        if (urlString)
+        NSString *mockFilePath = nil;
+        if (self.mockFileName)
         {
-            urlString = [NSURL fileURLWithPath:urlString].absoluteString;
-            [self doLocalFileRequest:urlString];
-            return;
+             mockFilePath = [mockFileBundle pathForResource:self.mockFileName ofType:nil];
         }
         else
         {
-            urlString = [NSString stringWithFormat:@"%@.%@",NSStringFromClass([self class]),fileType];
+            NSString *fileType = nil;
+            if ([self.deserializer respondsToSelector:@selector(mockFileType)]) fileType = [self.deserializer mockFileType];
+            mockFilePath = [mockFileBundle pathForResource:NSStringFromClass([self class]) ofType:fileType];
         }
+        
+        mockFilePath = [NSURL fileURLWithPath:mockFilePath].absoluteString;
+        [self doLocalFileRequest:mockFilePath];
+    }
+    else
+    {
+        [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kInnerErrorCode description:[NSString stringWithFormat:@"%@ not exsit", bundleName]]];
     }
     
-    [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:kInnerErrorCode description:[NSString stringWithFormat:@"%@ file not exsit", urlString]]];
 }
 #endif
 
