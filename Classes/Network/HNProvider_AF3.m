@@ -282,9 +282,9 @@ static dispatch_queue_t HNProviderProcessingQueue() {
 {
     asyncAtQueue(HNProviderProcessingQueue(), ^{
         if (self.myTask)
-        {
-            [self.myTask cancel];
+        {            
             [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+            [self.myTask cancel];
             self.myTask = nil;
         }
     });
