@@ -451,7 +451,7 @@
                 id res = [self processData:cachedData];
                 if ([res isKindOfClass:[NSError class]] || [res isEqual:HNDRedirectedResp])
                 {
-                    NSAssert(NO, @"cache data is not correct");
+                    NSLog(@"warning : cache data is not correct, it will be deleted");
                     //delete cache
                     [customCacheStrategy deleteCache];
                     shouldRequest = YES;
