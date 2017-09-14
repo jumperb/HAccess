@@ -16,6 +16,7 @@
 
 @interface HNProvider_AF3 ()
 @property (nonatomic) NSURLSessionTask *myTask;
+@property (nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation HNProvider_AF3
@@ -40,14 +41,14 @@ HReg(HNetworkProviderRegKey)
 
 
 
-static dispatch_queue_t HNProviderProcessingQueue() {
-    static dispatch_queue_t HNProviderProcessingQueue;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        HNProviderProcessingQueue = hCreateQueue("com.hnetwork.processing", DISPATCH_QUEUE_CONCURRENT);
-    });
-    
-    return HNProviderProcessingQueue;
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+        self.queue = hCreateQueue("com.hnetwork.processing", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
 }
 - (AFHTTPSessionManager *)sessionManager {
     
@@ -75,18 +76,11 @@ static dispatch_queue_t HNProviderProcessingQueue() {
         return manager2;
     }
 }
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-    }
-    return self;
-}
+
 
 - (NSURLSessionTask *)sendRequest
 {
-    syncAtQueue(HNProviderProcessingQueue(), ^{
+    syncAtQueue(self.queue, ^{
         NSMutableDictionary* parametersDict = nil;
         NSMutableDictionary* multiDataDict = nil;
         if ([self.params isKindOfClass:[NSDictionary class]])
@@ -221,7 +215,7 @@ static dispatch_queue_t HNProviderProcessingQueue() {
             });
             
         } completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-            asyncAtQueue(HNProviderProcessingQueue(), ^{
+            asyncAtQueue(self.queue, ^{
                 @strongify(self)
                 if (!error)
                 {
@@ -280,9 +274,9 @@ static dispatch_queue_t HNProviderProcessingQueue() {
 }
 - (void)cancel
 {
-    asyncAtQueue(HNProviderProcessingQueue(), ^{
+    asyncAtQueue(self.queue, ^{
         if (self.myTask)
-        {            
+        {
             [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
             [self.myTask cancel];
             self.myTask = nil;
