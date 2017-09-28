@@ -20,21 +20,7 @@
 @end
 
 @implementation HNProvider_AF3
-@synthesize urlString;
-@synthesize params;
-@synthesize method;
-@synthesize queueName;
 
-@synthesize timeoutInterval;
-@synthesize shouldContinueInBack;
-@synthesize fileDownloadPath;
-@synthesize headParameters;
-@synthesize cachePolicy;
-
-@synthesize successCallback;
-@synthesize failCallback;
-@synthesize progressCallback;
-@synthesize willSendCallback;
 
 
 HReg(HNetworkProviderRegKey)
@@ -118,7 +104,7 @@ HReg(HNetworkProviderRegKey)
         if(multiDataDict.allKeys.count > 0)
         {
             
-            request = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:parametersDict constructingBodyWithBlock:^(id <AFMultipartFormData> multipartFormData)
+            request = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:self.urlString parameters:parametersDict constructingBodyWithBlock:^(id <AFMultipartFormData> multipartFormData)
                        {
                            @strongify(self)
                            //get file
@@ -167,7 +153,7 @@ HReg(HNetworkProviderRegKey)
         }
         else
         {
-            request = [requestSerializer requestWithMethod:self.method URLString:urlString parameters:parametersDict error:nil];
+            request = [requestSerializer requestWithMethod:self.method URLString:self.urlString parameters:parametersDict error:nil];
         }
         
         //set to body directly
@@ -186,7 +172,7 @@ HReg(HNetworkProviderRegKey)
             [paramString appendFormat:@"%@=%@", key, [parametersDict[key] stringValue]];
         }
         
-        NSLog(@"\n\n#### send request:\n%@ %@\n%@",self.method, urlString, paramString.length>0?paramString:@"");
+        NSLog(@"\n\n#### send request:\n%@ %@\n%@",self.method, self.urlString, paramString.length>0?paramString:@"");
         if (multiDataDict.count > 0)
         {
             NSLog(@"\n\n#### multiData: %@", paramString);
@@ -238,7 +224,7 @@ HReg(HNetworkProviderRegKey)
         if (self.willSendCallback) self.willSendCallback(request);
         
         HNQueue *operataionQueue;
-        if(self.queueName) operataionQueue = [[HNQueueManager instance] getOperationQueueWithName:queueName];
+        if(self.queueName) operataionQueue = [[HNQueueManager instance] getOperationQueueWithName:self.queueName];
         else operataionQueue = [HNQueueManager instance].globalQueue;
         [operataionQueue addTask:self.myTask];
     });
@@ -274,7 +260,7 @@ HReg(HNetworkProviderRegKey)
 }
 - (void)cancel
 {
-    asyncAtQueue(self.queue, ^{
+    syncAtQueue(self.queue, ^{
         if (self.myTask)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];

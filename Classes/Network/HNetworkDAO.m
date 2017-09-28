@@ -166,79 +166,88 @@
         //request
         @weakify(self)
         _holdSelf = self;
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSString *className = [HClassManager getClassNameForKey:HNetworkProviderRegKey];
+        Class class = NSClassFromString(className);
+        
+        if (!class)
+        {
+            [self requestFinishedFailureWithError:herr(kInnerErrorCode, @"can't find any Class for HNetworkProviderRegKey")];
+            return;
+        }
+        if (self.provider)
+        {
+            [self.provider cancel];
+            self.provider = nil;
+        }
+        self.provider = [class new];
+        if (![self.provider conformsToProtocol:@protocol(HNetworkProvider)])
+        {
+            [self requestFinishedFailureWithError:herr(kInnerErrorCode, ([NSString stringWithFormat:@"%@ is not a HNetworkProvider", className]))];
+            return;
+        }
+        
+        [self willSendRequest:urlString method:self.method headers:headers params:params];
+        
+        [self.provider setUrlString:urlString];
+        [self.provider setHeadParameters:headers];
+        [self.provider setParams:params];
+        [self.provider setMethod:self.method];
+        NSLog(@"mehtod = %@", [self.provider method]);
+//            if([self.provider method] == nil)
+//            {
+//                NSAssert(NO, @"");
+//            }
+        [self.provider setQueueName:queueName];
+        
+        [self.provider setTimeoutInterval:self.timeoutInterval];
+        [self.provider setShouldContinueInBack:self.shouldContinueInBack];
+        [self.provider setFileDownloadPath:self.fileDownloadPath];
+        if ([self.cacheType isKindOfClass:[HNSystemCacheStrategy class]])
+        {
+            [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
+        }
+        [self.provider setSuccessCallback:^(id sender, NSURLResponse *response, NSData *data){
+            @strongify(self)
+            NSLog(@"#### revc response:\n%@", [self fullurl]);
             
-            NSString *className = [HClassManager getClassNameForKey:HNetworkProviderRegKey];
-            Class class = NSClassFromString(className);
-            
-            if (!class)
+            if (!self.fileDownloadPath)
             {
-                [self requestFinishedFailureWithError:herr(kInnerErrorCode, @"can't find any Class for HNetworkProviderRegKey")];
-                return;
+                self.responseData = data;
+                if ([response isKindOfClass:[NSHTTPURLResponse class]]) self.httpResponse = (NSHTTPURLResponse *)response;
+                [self requestFinishedSucessWithInfo:data response:response];
             }
-            
-            self.provider = [class new];
-            if (![self.provider conformsToProtocol:@protocol(HNetworkProvider)])
+            else
             {
-                [self requestFinishedFailureWithError:herr(kInnerErrorCode, ([NSString stringWithFormat:@"%@ is not a HNetworkProvider", className]))];
-                return;
+                HDownloadFileInfo *info = [HDownloadFileInfo new];
+                info.filePath = self.fileDownloadPath;
+                info.MIMEType = [response MIMEType];
+                info.length = [response expectedContentLength];
+                info.suggestedFilename = [response suggestedFilename];
+                //delete after 1 min
+                [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:3600] forFilePath:info.filePath];
+                [self downloadFinished:info];
             }
-            
-            [self willSendRequest:urlString method:self.method headers:headers params:params];
-            
-            [self.provider setUrlString:urlString];
-            [self.provider setHeadParameters:headers];
-            [self.provider setParams:params];
-            [self.provider setMethod:self.method];
-            [self.provider setQueueName:queueName];
-            
-            [self.provider setTimeoutInterval:self.timeoutInterval];
-            [self.provider setShouldContinueInBack:self.shouldContinueInBack];
-            [self.provider setFileDownloadPath:self.fileDownloadPath];
-            if ([self.cacheType isKindOfClass:[HNSystemCacheStrategy class]])
-            {
-                [self.provider setCachePolicy:[(HNSystemCacheStrategy *)self.cacheType policy]];
-            }
-            [self.provider setSuccessCallback:^(id sender, NSURLResponse *response, NSData *data){
-                @strongify(self)
-                NSLog(@"#### revc response:\n%@", [self fullurl]);
-                
-                if (!self.fileDownloadPath)
-                {
-                    self.responseData = data;
-                    if ([response isKindOfClass:[NSHTTPURLResponse class]]) self.httpResponse = (NSHTTPURLResponse *)response;
-                    [self requestFinishedSucessWithInfo:data response:response];
-                }
-                else
-                {
-                    HDownloadFileInfo *info = [HDownloadFileInfo new];
-                    info.filePath = self.fileDownloadPath;
-                    info.MIMEType = [response MIMEType];
-                    info.length = [response expectedContentLength];
-                    info.suggestedFilename = [response suggestedFilename];
-                    //delete after 1 min
-                    [[HFileCache shareCache] setExpire:[NSDate dateWithTimeIntervalSinceNow:3600] forFilePath:info.filePath];
-                    [self downloadFinished:info];
-                }
-            }];
-            
-            [self.provider setFailCallback:^(id sender, NSError *error){
-                @strongify(self)
-                [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
-            }];
-            
-            [self.provider setProgressCallback:^(id sender, double progress){
-                @strongify(self)
-                if (self.progressBlock) self.progressBlock(self, progress);
-            }];
-            
-            [self.provider setWillSendCallback:^(NSMutableURLRequest *request){
-                @strongify(self)
-                [self willSendRequest:request];
-            }];
-            
-            [self.provider sendRequest];
-        });
+        }];
+        
+        [self.provider setFailCallback:^(id sender, NSError *error){
+            @strongify(self)
+            [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
+        }];
+        
+        [self.provider setProgressCallback:^(id sender, double progress){
+            @strongify(self)
+            if (self.progressBlock) self.progressBlock(self, progress);
+        }];
+        
+        [self.provider setWillSendCallback:^(NSMutableURLRequest *request){
+            @strongify(self)
+            [self willSendRequest:request];
+        }];
+        
+        
+        [self.provider sendRequest];
+        
     }
 }
 - (void)start:(void(^)(id sender, id data))sucess failure:(void(^)(id sender, NSError *error))failure
