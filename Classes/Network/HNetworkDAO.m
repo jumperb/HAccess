@@ -258,6 +258,7 @@
                     sucess:(void (^)(id, id))sucess
                    failure:(void (^)(id, NSError *))failure
 {
+    self.onRequesting = YES;
     _sucessBlock = sucess;
     _failedBlock = failure;
     [self cacheLogic:queueName];
@@ -286,6 +287,7 @@
     _failedBlock = nil;
     _sucessBlock = nil;
     _holdSelf = nil;
+    self.onRequesting = NO;
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -531,7 +533,7 @@
             _failedBlock = nil;
             _sucessBlock = nil;
             _holdSelf = nil;
-            
+            self.onRequesting = NO;
         });
     }
 }
@@ -549,6 +551,7 @@
         _failedBlock = nil;
         _sucessBlock = nil;
         _holdSelf = nil;
+        self.onRequesting = NO;
         
     });
 }
@@ -562,6 +565,7 @@
         _failedBlock = nil;
         _sucessBlock = nil;
         _holdSelf = nil;
+        self.onRequesting = NO;
     });
 }
 
