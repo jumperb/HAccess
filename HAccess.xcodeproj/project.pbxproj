@@ -40,13 +40,7 @@
 		9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806241C9BEBB700519539 /* HNetworkDAO.m */; };
 		9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806261C9BEBB700519539 /* HNQueueManager.m */; };
 		9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */; };
-		9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */; };
-		9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */; };
-		9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF8476F1C92680400202D0E /* Person.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9EF8822A1C8816D300238751 /* HNetworkDAO.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9EF882291C8816D300238751 /* HNetworkDAO.bundle */; };
-		9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */; };
-		9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB73FA1E1B2DF049FECC1E41 /* libPods-HAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A193E4158595155F021CF283 /* libPods-HAccess.a */; };
 /* End PBXBuildFile section */
 
@@ -118,19 +112,7 @@
 		9E6806261C9BEBB700519539 /* HNQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNQueueManager.m; sourceTree = "<group>"; };
 		9E6806271C9BEBB700519539 /* HNJsonDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNJsonDeserializer.h; sourceTree = "<group>"; };
 		9E6806281C9BEBB700519539 /* HNJsonDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNJsonDeserializer.m; sourceTree = "<group>"; };
-		9E68062A1C9BEBB700519539 /* HNPBDeseriralizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNPBDeseriralizer.h; sourceTree = "<group>"; };
-		9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNPBDeseriralizer.m; sourceTree = "<group>"; };
-		9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBNetworkDaoTestVC.h; sourceTree = "<group>"; };
-		9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBNetworkDaoTestVC.m; sourceTree = "<group>"; };
-		9EF8476E1C92680400202D0E /* Person.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.pbobjc.h; sourceTree = "<group>"; };
-		9EF8476F1C92680400202D0E /* Person.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.pbobjc.m; sourceTree = "<group>"; };
 		9EF882291C8816D300238751 /* HNetworkDAO.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HNetworkDAO.bundle; sourceTree = "<group>"; };
-		9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBTestNetworkDAO.h; sourceTree = "<group>"; };
-		9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBTestNetworkDAO.m; sourceTree = "<group>"; };
-		9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.pbobjc.h; sourceTree = "<group>"; };
-		9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.pbobjc.m; sourceTree = "<group>"; };
-		9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.pbobjc.h; sourceTree = "<group>"; };
-		9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.pbobjc.m; sourceTree = "<group>"; };
 		A193E4158595155F021CF283 /* libPods-HAccess.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HAccess.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -189,10 +171,6 @@
 				002D86771B46616300D1D729 /* NetworkDaoTestVC.m */,
 				000C9B261C90326C009D6EE0 /* TestNetworkDAO.h */,
 				000C9B271C90326C009D6EE0 /* TestNetworkDAO.m */,
-				9EF847641C92637900202D0E /* PBNetworkDaoTestVC.h */,
-				9EF847651C92637900202D0E /* PBNetworkDaoTestVC.m */,
-				9EFFCCC71C945F96008764E8 /* PBTestNetworkDAO.h */,
-				9EFFCCC81C945F96008764E8 /* PBTestNetworkDAO.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -200,7 +178,6 @@
 		002D862C1B462EA300D1D729 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				9EF847671C92650300202D0E /* PBEntity */,
 				002438A11C30E108003F3CF9 /* network */,
 				002438A01C30E0F3003F3CF9 /* deserial */,
 				0024389F1C30E0D4003F3CF9 /* dbtest */,
@@ -216,7 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				9E6806211C9BEBB700519539 /* Network */,
-				9E6806291C9BEBB700519539 /* Network+Protobuf */,
 				002D865E1B465BFA00D1D729 /* Database */,
 				002D86631B465BFA00D1D729 /* Entity */,
 			);
@@ -328,28 +304,6 @@
 				15FC2F001ED2BA91005E8B7B /* HNProvider_AF3.m */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		9E6806291C9BEBB700519539 /* Network+Protobuf */ = {
-			isa = PBXGroup;
-			children = (
-				9E68062A1C9BEBB700519539 /* HNPBDeseriralizer.h */,
-				9E68062B1C9BEBB700519539 /* HNPBDeseriralizer.m */,
-			);
-			path = "Network+Protobuf";
-			sourceTree = "<group>";
-		};
-		9EF847671C92650300202D0E /* PBEntity */ = {
-			isa = PBXGroup;
-			children = (
-				9EFFCCD01C950FEA008764E8 /* Photo.pbobjc.h */,
-				9EFFCCD11C950FEA008764E8 /* Photo.pbobjc.m */,
-				9EFFCCCD1C950BC7008764E8 /* User.pbobjc.h */,
-				9EFFCCCE1C950BC7008764E8 /* User.pbobjc.m */,
-				9EF8476E1C92680400202D0E /* Person.pbobjc.h */,
-				9EF8476F1C92680400202D0E /* Person.pbobjc.m */,
-			);
-			path = PBEntity;
 			sourceTree = "<group>";
 		};
 		9EF882261C8814F400238751 /* Mock */ = {
@@ -497,11 +451,9 @@
 				002D86571B462EA300D1D729 /* User.m in Sources */,
 				9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */,
 				002D864E1B462EA300D1D729 /* BossLocalDao.m in Sources */,
-				9EF847701C92680400202D0E /* Person.pbobjc.m in Sources */,
 				002D86561B462EA300D1D729 /* StudentLocalDao.m in Sources */,
 				00A005701CA9149800C1E213 /* HNSystemCacheStrategy.m in Sources */,
 				00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */,
-				9E68062F1C9BEBB700519539 /* HNPBDeseriralizer.m in Sources */,
 				9E68062E1C9BEBB700519539 /* HNJsonDeserializer.m in Sources */,
 				002D866F1B465BFA00D1D729 /* HEntity.m in Sources */,
 				002D86781B46616300D1D729 /* NetworkDaoTestVC.m in Sources */,
@@ -513,10 +465,8 @@
 				002D865C1B465ABC00D1D729 /* MenuVC.m in Sources */,
 				9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */,
 				00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */,
-				9EFFCCC91C945F96008764E8 /* PBTestNetworkDAO.m in Sources */,
 				00DC44621C9BAD940036282E /* HEntity+Persistence.m in Sources */,
 				002D866D1B465BFA00D1D729 /* HDatabaseDAO.m in Sources */,
-				9EFFCCCF1C950BC7008764E8 /* User.pbobjc.m in Sources */,
 				00769C111BA866980022878B /* HPropertyMgr.m in Sources */,
 				00786CFB1B96D0F4005A8247 /* TestEntity1.m in Sources */,
 				00A005691CA90D6400C1E213 /* HAccess2DBSource.m in Sources */,
@@ -525,8 +475,6 @@
 				15FC2F011ED2BA91005E8B7B /* HNProvider_AF3.m in Sources */,
 				00350FEE1C9FE27300CDF06B /* HNetworkMultiDataObj.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
-				9EF847661C92637900202D0E /* PBNetworkDaoTestVC.m in Sources */,
-				9EFFCCD21C950FEA008764E8 /* Photo.pbobjc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

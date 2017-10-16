@@ -10,5 +10,5 @@ target 'HAccess' do
 	pod "HTestVC"
 	pod "HTextInput"
 	pod "HCache"
-	pod "protocol-for-objectivec"
+#	pod "protocol-for-objectivec"
 end

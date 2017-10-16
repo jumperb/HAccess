@@ -16,7 +16,6 @@
 
 #import "TestNetworkDAO.h"
 #import "TestEntity1.h"
-#import "PBNetworkDaoTestVC.h"
 
 @interface NetworkDaoTestVC ()
 @property (nonatomic) UIView *textBack;
@@ -144,10 +143,10 @@
             }];
         }];
         
-        [self addMenu:@"pbnetwork test" callback:^(id sender, id data) {
-            @strongify(self)
-            [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
-        }];
+//        [self addMenu:@"pbnetwork test" callback:^(id sender, id data) {
+//            @strongify(self)
+//            [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
+//        }];
         
     }
     return self;
