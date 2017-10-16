@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HAccess"
-  s.version      = "2.5.3"
+  s.version      = "2.5.4"
   s.summary      = "A short description of HAccess."
 
   s.description  = <<-DESC
@@ -31,14 +31,14 @@ Pod::Spec.new do |s|
   s.subspec 'Entity' do |ss|
       ss.dependency "Hodor/Defines"
       ss.dependency "Hodor/Feature"
-	  ss.dependency "Hodor/NS-Category"
+	    ss.dependency "Hodor/NS-Category"
       ss.ios.source_files = 'Classes/Entity/*.{h,m,mm,cpp,c}'
   end
 
   s.subspec 'Network' do |ss|
       ss.dependency "Hodor/Defines"
       ss.dependency "Hodor/Feature"
-	  ss.dependency "Hodor/NS-Category"
+	    ss.dependency "Hodor/NS-Category"
       ss.dependency 'AFNetworking'
       ss.dependency 'HCache'
       ss.dependency 'HAccess/Entity'
@@ -48,16 +48,9 @@ Pod::Spec.new do |s|
   s.subspec 'Database' do |ss|
       ss.dependency "Hodor/Defines"
       ss.dependency "Hodor/Feature"
-	  ss.dependency "Hodor/NS-Category"
+	    ss.dependency "Hodor/NS-Category"
       ss.dependency 'FMDB'
       ss.dependency 'HAccess/Entity'
       ss.ios.source_files = 'Classes/Database/*.{h,m,mm,cpp,c}'
   end
-
-  s.subspec 'Network+Protobuf' do |ss|
-      ss.dependency 'HAccess/Network'
-      ss.dependency 'protocol-for-objectivec'
-      ss.ios.source_files = 'Classes/Network+Protobuf/**/*.{h,m,mm,cpp,c}'
-  end
-
 end
