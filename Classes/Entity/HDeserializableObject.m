@@ -276,7 +276,7 @@
                         {
                             NSDictionary *dict2 = arrayItem;
                             id obj = [[theClass alloc] init];
-                            [(HDeserializableObject *)obj setWithDictionary:dict2 enableKeyMap:enableKeyMap];
+                            [(HDeserializableObject *)obj setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
                             if ([(HDeserializableObject *)obj format_error])
                             {
                                 self.format_error = [(HDeserializableObject *)obj format_error];
@@ -328,7 +328,7 @@
                 else if ([theClass isSubclassOfClass:[HDeserializableObject class]])
                 {
                     id obj = [[theClass alloc] init];
-                    [(HDeserializableObject *)obj setWithDictionary:value enableKeyMap:enableKeyMap];
+                    [(HDeserializableObject *)obj setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
                     if ([(HDeserializableObject *)obj format_error])
                     {
                         self.format_error = [(HDeserializableObject *)obj format_error];
