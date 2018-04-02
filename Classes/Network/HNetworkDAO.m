@@ -232,6 +232,7 @@
         
         [self.provider setFailCallback:^(id sender, NSURLResponse *response, NSError *error){
             @strongify(self)
+            if ([response isKindOfClass:[NSHTTPURLResponse class]]) self.httpResponse = (NSHTTPURLResponse *)response;
             [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
         }];
         
