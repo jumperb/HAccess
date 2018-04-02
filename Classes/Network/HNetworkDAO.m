@@ -230,7 +230,7 @@
             }
         }];
         
-        [self.provider setFailCallback:^(id sender, NSError *error){
+        [self.provider setFailCallback:^(id sender, NSURLResponse *response, NSError *error){
             @strongify(self)
             [self requestFinishedFailureWithError:[NSError errorWithDomain:@"Network" code:error.code description:error.localizedDescription]];
         }];

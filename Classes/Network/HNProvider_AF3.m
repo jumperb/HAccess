@@ -209,7 +209,7 @@ HReg(HNetworkProviderRegKey)
                 }
                 else
                 {
-                    if (self.failCallback) self.failCallback(self, error);
+                    if (self.failCallback) self.failCallback(self, response, error);
                 }
                 if (self.myTask)
                 {
