@@ -85,6 +85,9 @@
     NSString *ID = [userDao lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
     
+    BOOL bSuc = [User addIndex:@"birth"];
+    NSLog(@"create User table(birth) index %@", bSuc ? @"successfully" : @"failed");
+    
     NSLog(@"query User by ID:%@",ID);
     User *auser = (User *)[userDao get:ID];
     NSLog(@"User from db:\n%@",[auser jsonString]);
