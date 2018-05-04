@@ -67,6 +67,8 @@
 //batch add , it will not set value reversed, such as ID, created, modified
 - (BOOL)adds:(NSArray *)entities;
 
+#pragma mark add index
+- (BOOL)addIndex:(NSString *)conditions;
 
 #pragma mark - delete
 //delete

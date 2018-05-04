@@ -554,6 +554,20 @@
     return res;
 }
 
+#pragma mark add index
+- (BOOL)addIndex:(NSString *)conditions {
+    
+    if (![self tableName]) return NO;
+    if (!conditions) return NO;
+    __block BOOL res = YES;
+    [self inDatabase:^(FMDatabase* db)
+     {
+         NSString *sql = [NSString stringWithFormat:@"CREATE INDEX if not exists %@_Index ON %@(%@)", conditions,[self tableName], conditions];
+         res = [db executeUpdate:sql];
+     }];
+    return res;
+    
+}
 
 
 - (BOOL)removes:(NSString *)conditions

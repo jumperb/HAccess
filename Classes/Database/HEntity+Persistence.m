@@ -51,6 +51,12 @@
     return [[self dao] adds:entities];
 }
 
+#pragma mark - add index
+
++ (BOOL)addIndex:(NSString *)conditions {
+    
+    return [[self dao] addIndex:conditions];
+}
 
 #pragma mark - delete
 
