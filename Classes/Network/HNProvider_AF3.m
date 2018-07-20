@@ -36,6 +36,22 @@ HReg(HNetworkProviderRegKey)
     }
     return self;
 }
++ (AFHTTPResponseSerializer *)responseSerializer
+{
+    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
+    serializer.acceptableContentTypes = [NSSet setWithObjects:
+                                         @"application/json",
+                                         @"text/json",
+                                         @"text/javascript",
+                                         @"text/html",
+                                         @"text/plain",
+                                         @"application/atom+xml",
+                                         @"application/xml",
+                                         @"text/xml",
+                                         @"image/png",
+                                         @"image/jpeg", nil];
+    return serializer;
+}
 - (AFHTTPSessionManager *)sessionManager {
     
     //    if (!self.shouldContinueInBack)
@@ -47,6 +63,8 @@ HReg(HNetworkProviderRegKey)
             NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
             configuration.timeoutIntervalForRequest = 30;
             manager1 = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+            manager1.responseSerializer = [HNProvider_AF3 responseSerializer];
+            
         });
         return manager1;
     }
@@ -58,6 +76,8 @@ HReg(HNetworkProviderRegKey)
             NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"com.hnetwork.provider"];
             configuration.timeoutIntervalForRequest = 30;
             manager2 = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+            AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
+            manager2.responseSerializer = [HNProvider_AF3 responseSerializer];
         });
         return manager2;
     }
@@ -178,20 +198,6 @@ HReg(HNetworkProviderRegKey)
             NSLog(@"\n\n#### multiData: %@", paramString);
         }
         
-        
-        AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
-        serializer.acceptableContentTypes = [NSSet setWithObjects:
-                                             @"application/json",
-                                             @"text/json",
-                                             @"text/javascript",
-                                             @"text/html",
-                                             @"text/plain",
-                                             @"application/atom+xml",
-                                             @"application/xml",
-                                             @"text/xml",
-                                             @"image/png",
-                                             @"image/jpeg", nil];
-        [self sessionManager].responseSerializer = serializer;
         
         NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress * _Nullable progress) {
             
