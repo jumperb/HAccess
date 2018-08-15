@@ -56,6 +56,8 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 @property (nonatomic, strong) NSString *deserializeKeyPath;
 //timeout
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;
+//request content type , like application/json
+@property (nonatomic) NSString *requstContentType;
 //upload progress or download progress
 @property (nonatomic, strong) HNProgressBlock progressBlock;
 //should continue when app is not active

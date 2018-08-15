@@ -107,8 +107,13 @@ HReg(HNetworkProviderRegKey)
                 }
             }
         }
-        
-        AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
+        AFHTTPRequestSerializer *requestSerializer = nil;
+        if ([self.requstContentType.lowercaseString isEqualToString:@"application/json"]) {
+            requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:NSJSONWritingPrettyPrinted];
+        }
+        else {
+            requestSerializer = [AFHTTPRequestSerializer serializer];
+        }
         //timeout
         requestSerializer.timeoutInterval = self.timeoutInterval;
         //HEAD

@@ -193,6 +193,7 @@
         [self.provider setHeadParameters:headers];
         [self.provider setParams:params];
         [self.provider setMethod:self.method];
+        [self.provider setRequstContentType:self.requstContentType];
         NSLog(@"mehtod = %@", [self.provider method]);
 //            if([self.provider method] == nil)
 //            {

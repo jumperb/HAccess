@@ -21,7 +21,7 @@ typedef void (^HNPWillSendCallback)(NSMutableURLRequest *request);
 @property (nonatomic) id params;
 @property (nonatomic) NSString *method;
 @property (nonatomic) NSString *queueName;
-
+@property (nonatomic) NSString *requstContentType;
 @property (nonatomic) NSTimeInterval timeoutInterval;
 @property (nonatomic) BOOL shouldContinueInBack;
 @property (nonatomic) NSString *fileDownloadPath;
