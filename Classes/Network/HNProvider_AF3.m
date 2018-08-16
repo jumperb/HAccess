@@ -203,7 +203,7 @@ HReg(HNetworkProviderRegKey)
             NSLog(@"\n\n#### multiData: %@", paramString);
         }
         
-        
+        if (self.willSendCallback) self.willSendCallback(request);
         NSURLSessionTask *task = [self requestTask:request progress:^(NSProgress * _Nullable progress) {
             
             @strongify(self)
@@ -232,7 +232,6 @@ HReg(HNetworkProviderRegKey)
         }];
         
         self.myTask = task;
-        if (self.willSendCallback) self.willSendCallback(request);
         
         HNQueue *operataionQueue;
         if(self.queueName) operataionQueue = [[HNQueueManager instance] getOperationQueueWithName:self.queueName];
