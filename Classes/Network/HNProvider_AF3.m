@@ -224,7 +224,7 @@ HReg(HNetworkProviderRegKey)
                 }
                 if (self.myTask)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask, @"queue":self.queueName}];
                     self.myTask = nil;
                 }
                 
@@ -273,7 +273,7 @@ HReg(HNetworkProviderRegKey)
     syncAtQueue(self.queue, ^{
         if (self.myTask)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:HNQueueTaskFinishNotification object:nil userInfo:@{@"data":self.myTask, @"queue":self.queueName}];
             [self.myTask cancel];
             self.myTask = nil;
         }

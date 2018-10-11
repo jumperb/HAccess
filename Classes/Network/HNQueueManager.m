@@ -60,6 +60,8 @@
 
 - (void)taskFinish:(NSNotification *)noti
 {
+    NSString *queueName = noti.userInfo[@"queue"];
+    if (![queueName isEqual:self.name]) return;
     NSURLSessionTask *targetTask = noti.userInfo[@"data"];
     if (!targetTask) return;
     asyncAtQueue(self.dataQueue, ^{
