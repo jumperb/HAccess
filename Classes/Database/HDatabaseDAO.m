@@ -56,7 +56,7 @@
     self.ID = [result stringForColumn:@"id"];
     self.created = [result longForColumn:@"created"];
     self.modified = [result longForColumn:@"modified"];
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
     for (NSString *p in pplist)
     {
         NSArray *exts = [[self class] annotations:p];
@@ -724,7 +724,7 @@
 
 - (NSArray *)entityPropertylist:(Class)entityClass isDepSearch:(BOOL)deepSearch
 {
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(entityClass) isDepSearch:deepSearch];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(entityClass) deepTo:[HDeserializableObject class]];
     NSMutableArray *newPPlist = [NSMutableArray new];
     for (NSString *p in pplist)
     {
@@ -737,7 +737,7 @@
 }
 - (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(Class)entityClass isDepSearch:(BOOL)deepSearch
 {
-    NSArray<HPropertyDetail *> *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(entityClass) isDepSearch:deepSearch];
+    NSArray<HPropertyDetail *> *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(entityClass) deepTo:[HDeserializableObject class]];
     NSMutableArray<HPropertyDetail *> *newPPDetaillist = [NSMutableArray new];
     for (HPropertyDetail *p in pplist)
     {

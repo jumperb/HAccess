@@ -118,7 +118,7 @@
         return;
     }
     
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(self.class) isDepSearch:YES];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
     
     for (HPropertyDetail *ppDetail in pplist)
     {
@@ -368,7 +368,7 @@
 - (void)setWithDObj:(HDeserializableObject *)obj
 {
     if (![obj isKindOfClass:[HDeserializableObject class]]) return;
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
     for (NSString *p in pplist)
     {
         id v = [obj valueForKey:p];
@@ -509,7 +509,7 @@
 {
     id copy = [[self class] new];
     if (copy) {
-        NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+        NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
         for (NSString *p in pplist)
         {
             id v = [self valueForKey:p];

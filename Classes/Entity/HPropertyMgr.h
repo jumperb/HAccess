@@ -27,8 +27,8 @@
 - (NSArray *)entityPropertylist:(NSString *)entityClassName;
 
 //deepSearch: should search iteratively by inherit relation
-- (NSArray *)entityPropertylist:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
-- (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(NSString *)entityClassName isDepSearch:(BOOL)deepSearch;
+- (NSArray *)entityPropertylist:(NSString *)entityClassName deepTo:(Class)deepToClass;
+- (NSArray<HPropertyDetail *> *)entityPropertyDetailList:(NSString *)entityClassName deepTo:(Class)deepToClass;
 
 
 @end

@@ -23,7 +23,7 @@ ppx(modified, HPOptional)
 - (void)setWithEntity:(HEntity *)entity
 {
     if (![entity isKindOfClass:[HEntity class]]) return;
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) isDepSearch:YES];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
     for (NSString *p in pplist)
     {
         if ([p isEqualToString:@"ID"] && self.ID == nil)
