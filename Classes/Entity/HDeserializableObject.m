@@ -7,20 +7,6 @@
 //
 
 #import "HDeserializableObject.h"
-/**
- *  propert extend attr
- */
-@interface HDOPropertyExt : NSObject
-@property (nonatomic) BOOL isOptional;
-@property (nonatomic) BOOL isIgnore;
-@property (nonatomic) BOOL isAutocast;
-@property (nonatomic) NSString *keyMapto;
-@property (nonatomic) Class innerType;
-@property (nonatomic) NSArray *divideType;
-@property (nonatomic) NSNumber *from;
-@property (nonatomic) NSNumber *to;
-- (BOOL)isInRange:(NSNumber *)value;
-@end
 
 @implementation HDOPropertyExt
 - (instancetype)initWithObjs:(id)objs
@@ -133,225 +119,8 @@
         id value = [dict valueForKeyPath:mappedKey];
         if (value)
         {
-            id oldValue = value;
-            value = [self preMapValue:value forKey:ppDetail.name];
+            [self setValue:value forProperty:ppDetail exts:propertyExts enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
             if (self.format_error) return;
-            if (!value) value = [NSNull null];
-            if ([value isKindOfClass:[NSNull class]])
-            {
-                if(!propertyExts.isOptional)
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ can not be empty", NSStringFromClass(self.class),ppDetail.name];
-                    return;
-                }
-            }
-            else if ([value isKindOfClass:[NSString class]])
-            {
-                
-                if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])])
-                {
-                    [self setValue:[value stringValue] forKey:ppDetail.name];
-                }
-                else if (!ppDetail.isObj && propertyExts.isAutocast)
-                {
-                    //基本类型
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    NSNumber *valueNum = [formatter numberFromString:value];
-                    //if cannot convert value to number , set to 0 by defaylt
-                    if (!valueNum) valueNum = @(0);
-                    if ([propertyExts isInRange:valueNum])
-                    {
-                        [self setValue:valueNum forKey:ppDetail.name];
-                    }
-                    else
-                    {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                        return;
-                    }
-                }
-                else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
-                {
-                    //NSNumber
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    NSNumber *valueNum = [formatter numberFromString:value];
-                    //if cannot convert value to number , set to 0 by defaylt
-                    if (!valueNum) valueNum = @(0);
-                    if ([propertyExts isInRange:valueNum])
-                    {
-                        [self setValue:valueNum forKey:ppDetail.name];
-                    }
-                    else
-                    {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                        return;
-                    }
-                }
-                else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])])
-                {
-                    //NSDate
-                    double date = [value floatValue];
-                    if ([propertyExts isInRange:@(date)])
-                    {
-                        [self setValue:[NSDate dateWithTimeIntervalSince1970:date] forKey:ppDetail.name];
-                    }
-                    else
-                    {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                        return;
-                    }
-                }
-                else
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                    
-                
-            }
-            else if ([value isKindOfClass:[NSNumber class]])
-            {
-                
-                if (!ppDetail.isObj || [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
-                {
-                    if ([propertyExts isInRange:value])
-                    {
-                        [self setValue:value forKey:ppDetail.name];
-                    }
-                    else
-                    {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                        return;
-                    }
-                }
-                else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])]))
-                {
-                    //NSString
-                    [self setValue:[value stringValue] forKey:ppDetail.name];
-                }
-                else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])]))
-                {
-                    //NSDate
-                    if ([propertyExts isInRange:value])
-                    {
-                        [self setValue:[NSDate dateWithTimeIntervalSince1970:[value doubleValue]] forKey:ppDetail.name];
-                    }
-                    else
-                    {
-                        self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
-                        return;
-                    }
-                }
-                else
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                
-            }
-            else if ([value isKindOfClass:[NSArray class]])
-            {
-                if (!ppDetail.isObj)
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                if (![ppDetail.typeString isEqualToString:NSStringFromClass([NSArray class])] &&
-                    ![ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableArray class])])
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                
-                
-                NSMutableArray *objs = [NSMutableArray new];
-                for (id arrayItem in (NSArray *)value)
-                {
-                    Class theClass = [self classInArray:arrayItem ppDetail:ppDetail];
-                    if (self.format_error) return;
-                    if (!theClass) continue;
-                    
-                    if ([theClass isSubclassOfClass:[HDeserializableObject class]])
-                    {
-                        if ([arrayItem isKindOfClass:[NSDictionary class]])
-                        {
-                            NSDictionary *dict2 = arrayItem;
-                            id obj = [[theClass alloc] init];
-                            [(HDeserializableObject *)obj setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
-                            if ([(HDeserializableObject *)obj format_error])
-                            {
-                                self.format_error = [(HDeserializableObject *)obj format_error];
-                                return;
-                            }
-                            else
-                            {
-                                [objs addObject:obj];
-                            }
-                            
-                        }
-                        else
-                        {
-                            self.format_error = [NSString stringWithFormat:@"%@:%@ must be NSDictionary type", NSStringFromClass(self.class), ppDetail.name];
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        [objs addObject:arrayItem];
-                    }
-                }
-                [self setValue:objs forKey:ppDetail.name];
-                
-            }
-            else if ([value isKindOfClass:[NSDictionary class]])
-            {
-                if (!ppDetail.isObj)
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] ||
-                    [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])] ||
-                    [ppDetail.typeString isEqualToString:NSStringFromClass([NSArray class])] ||
-                    [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableArray class])])
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
-                    return;
-                }
-                
-                Class theClass = [self classForDictionary:value ppDetail:ppDetail];
-                if (self.format_error) return;
-                
-                if ([theClass isSubclassOfClass:[NSDictionary class]])
-                {
-                    [self setValue:value forKey:ppDetail.name];
-                }
-                else if ([theClass isSubclassOfClass:[HDeserializableObject class]])
-                {
-                    id obj = [[theClass alloc] init];
-                    [(HDeserializableObject *)obj setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
-                    if ([(HDeserializableObject *)obj format_error])
-                    {
-                        self.format_error = [(HDeserializableObject *)obj format_error];
-                        return;
-                    }
-                    else
-                    {
-                        [self setValue:obj forKey:ppDetail.name];
-                    }
-                }
-            }
-            else
-            {
-                if (oldValue == value) //value not converted
-                {
-                    self.format_error = [NSString stringWithFormat:@"%@:%@ is unsupport type %@", NSStringFromClass(self.class), ppDetail.name, NSStringFromClass([value class])];
-                    return;
-                }
-                else //value has converted
-                {
-                    [self setValue:value forKey:ppDetail.name];
-                }
-            }
         }
         else
         {
@@ -364,7 +133,227 @@
         }
     }
 }
-
+- (void)setValue:(id)value forProperty:(HPropertyDetail *)ppDetail exts:(HDOPropertyExt *)propertyExts enableKeyMap:(BOOL)enableKeyMap couldEmpty:(BOOL)couldEmpty {
+    id oldValue = value;
+    value = [self preMapValue:value forKey:ppDetail.name];
+    if (self.format_error) return;
+    if (!value) value = [NSNull null];
+    if ([value isKindOfClass:[NSNull class]])
+    {
+        if(!propertyExts.isOptional)
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ can not be empty", NSStringFromClass(self.class),ppDetail.name];
+            return;
+        }
+    }
+    else if ([value isKindOfClass:[NSString class]])
+    {
+        
+        if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])])
+        {
+            [self setValue:[value stringValue] forKey:ppDetail.name];
+        }
+        else if (!ppDetail.isObj && propertyExts.isAutocast)
+        {
+            //基本类型
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            NSNumber *valueNum = [formatter numberFromString:value];
+            //if cannot convert value to number , set to 0 by defaylt
+            if (!valueNum) valueNum = @(0);
+            if ([propertyExts isInRange:valueNum])
+            {
+                [self setValue:valueNum forKey:ppDetail.name];
+            }
+            else
+            {
+                self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                return;
+            }
+        }
+        else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
+        {
+            //NSNumber
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            NSNumber *valueNum = [formatter numberFromString:value];
+            //if cannot convert value to number , set to 0 by defaylt
+            if (!valueNum) valueNum = @(0);
+            if ([propertyExts isInRange:valueNum])
+            {
+                [self setValue:valueNum forKey:ppDetail.name];
+            }
+            else
+            {
+                self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                return;
+            }
+        }
+        else if (ppDetail.isObj && propertyExts.isAutocast && [ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])])
+        {
+            //NSDate
+            double date = [value floatValue];
+            if ([propertyExts isInRange:@(date)])
+            {
+                [self setValue:[NSDate dateWithTimeIntervalSince1970:date] forKey:ppDetail.name];
+            }
+            else
+            {
+                self.format_error = [NSString stringWithFormat:@"%@:%@ value is out of scope (%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                return;
+            }
+        }
+        else
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        
+        
+    }
+    else if ([value isKindOfClass:[NSNumber class]])
+    {
+        
+        if (!ppDetail.isObj || [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])])
+        {
+            if ([propertyExts isInRange:value])
+            {
+                [self setValue:value forKey:ppDetail.name];
+            }
+            else
+            {
+                self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                return;
+            }
+        }
+        else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] || [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableString class])]))
+        {
+            //NSString
+            [self setValue:[value stringValue] forKey:ppDetail.name];
+        }
+        else if (propertyExts.isAutocast && ([ppDetail.typeString isEqualToString:NSStringFromClass([NSDate class])]))
+        {
+            //NSDate
+            if ([propertyExts isInRange:value])
+            {
+                [self setValue:[NSDate dateWithTimeIntervalSince1970:[value doubleValue]] forKey:ppDetail.name];
+            }
+            else
+            {
+                self.format_error = [NSString stringWithFormat:@"%@:%@value is out of scope(%@, %@)", NSStringFromClass(self.class), ppDetail.name, propertyExts.from, propertyExts.to];
+                return;
+            }
+        }
+        else
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        
+    }
+    else if ([value isKindOfClass:[NSArray class]])
+    {
+        if (!ppDetail.isObj)
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        if (![ppDetail.typeString isEqualToString:NSStringFromClass([NSArray class])] &&
+            ![ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableArray class])])
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        
+        
+        NSMutableArray *objs = [NSMutableArray new];
+        for (id arrayItem in (NSArray *)value)
+        {
+            Class theClass = [self classInArray:arrayItem ppDetail:ppDetail];
+            if (self.format_error) return;
+            if (!theClass) continue;
+            
+            if ([theClass isSubclassOfClass:[HDeserializableObject class]])
+            {
+                if ([arrayItem isKindOfClass:[NSDictionary class]])
+                {
+                    NSDictionary *dict2 = arrayItem;
+                    id obj = [[theClass alloc] init];
+                    [(HDeserializableObject *)obj setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
+                    if ([(HDeserializableObject *)obj format_error])
+                    {
+                        self.format_error = [(HDeserializableObject *)obj format_error];
+                        return;
+                    }
+                    else
+                    {
+                        [objs addObject:obj];
+                    }
+                    
+                }
+                else
+                {
+                    self.format_error = [NSString stringWithFormat:@"%@:%@ must be NSDictionary type", NSStringFromClass(self.class), ppDetail.name];
+                    return;
+                }
+            }
+            else
+            {
+                [objs addObject:arrayItem];
+            }
+        }
+        [self setValue:objs forKey:ppDetail.name];
+        
+    }
+    else if ([value isKindOfClass:[NSDictionary class]])
+    {
+        if (!ppDetail.isObj)
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSString class])] ||
+            [ppDetail.typeString isEqualToString:NSStringFromClass([NSNumber class])] ||
+            [ppDetail.typeString isEqualToString:NSStringFromClass([NSArray class])] ||
+            [ppDetail.typeString isEqualToString:NSStringFromClass([NSMutableArray class])])
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ must be %c%@ type", NSStringFromClass(self.class), ppDetail.name, ppDetail.typeCode ,ppDetail.typeString];
+            return;
+        }
+        
+        Class theClass = [self classForDictionary:value ppDetail:ppDetail];
+        if (self.format_error) return;
+        
+        if ([theClass isSubclassOfClass:[NSDictionary class]])
+        {
+            [self setValue:value forKey:ppDetail.name];
+        }
+        else if ([theClass isSubclassOfClass:[HDeserializableObject class]])
+        {
+            id obj = [[theClass alloc] init];
+            [(HDeserializableObject *)obj setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
+            if ([(HDeserializableObject *)obj format_error])
+            {
+                self.format_error = [(HDeserializableObject *)obj format_error];
+                return;
+            }
+            else
+            {
+                [self setValue:obj forKey:ppDetail.name];
+            }
+        }
+    }
+    else
+    {
+        if (oldValue == value) //value not converted
+        {
+            self.format_error = [NSString stringWithFormat:@"%@:%@ is unsupport type %@", NSStringFromClass(self.class), ppDetail.name, NSStringFromClass([value class])];
+            return;
+        }
+        else //value has converted
+        {
+            [self setValue:value forKey:ppDetail.name];
+        }
+    }
+}
 - (void)setWithDObj:(HDeserializableObject *)obj
 {
     if (![obj isKindOfClass:[HDeserializableObject class]]) return;

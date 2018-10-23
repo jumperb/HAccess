@@ -58,7 +58,7 @@ return;\
 
 
 
-
+@class HDOPropertyExt;
 
 @interface HDeserializableObject : NSObject <NSCopying>
 @property (nonatomic, strong) NSString *format_error;
@@ -77,7 +77,8 @@ return;\
 
 //before data examlation and value setting, you can pre-processing data there, if some error occured, please record to self.format_error and return nil
 - (id)preMapValue:(id)value forKey:(NSString *)key;
-
+//set value to property, you can rewrite it for some special design, if some error occured, please record to self.format_error and return nil
+- (void)setValue:(id)value forProperty:(HPropertyDetail *)ppDetail exts:(HDOPropertyExt *)propertyExts enableKeyMap:(BOOL)enableKeyMap couldEmpty:(BOOL)couldEmpty;
 #pragma mark - advance method
 
 //decide the class in array, according to data, propert info and annotation, if some error occured, please record to self.format_error and return nil
@@ -85,4 +86,20 @@ return;\
 
 //decide the class of a dictionaty , according to data, propert info and annotation, if some error occured, please record to self.format_error and return nil
 - (Class)classForDictionary:(NSDictionary *)item ppDetail:(HPropertyDetail *)ppDetail;
+@end
+
+
+/**
+ *  propert extend attr
+ */
+@interface HDOPropertyExt : NSObject
+@property (nonatomic) BOOL isOptional;
+@property (nonatomic) BOOL isIgnore;
+@property (nonatomic) BOOL isAutocast;
+@property (nonatomic) NSString *keyMapto;
+@property (nonatomic) Class innerType;
+@property (nonatomic) NSArray *divideType;
+@property (nonatomic) NSNumber *from;
+@property (nonatomic) NSNumber *to;
+- (BOOL)isInRange:(NSNumber *)value;
 @end
