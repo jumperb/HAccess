@@ -62,7 +62,7 @@
 - (NSArray *)_entityPropertylist:(NSString *)entityClassName deepTo:(Class)deepToClass
 {
     NSString *key = entityClassName;
-    if (deepToClass) key = [entityClassName stringByAppendingFormat:@"_to_%@", NSStringFromClass(deepToClass)];
+    if (deepToClass) key = [entityClassName stringByAppendingFormat:@"_to_%@", NSStringFromClass(deepToClass?:@"self")];
     HPropertyStructCacheData *cacheData = _propertyStructCache[key];
 
     if (!cacheData)
@@ -113,7 +113,7 @@
 - (NSArray<HPropertyDetail *> *)_entityPropertyDetailList:(NSString *)entityClassName deepTo:(Class)deepToClass
 {
     NSString *key = entityClassName;
-    if (deepToClass) key = [entityClassName stringByAppendingFormat:@"_to_%@", NSStringFromClass(deepToClass)];
+    if (deepToClass) key = [entityClassName stringByAppendingFormat:@"_to_%@", NSStringFromClass(deepToClass?:@"self")];
     HPropertyStructCacheData *cacheData = _propertyStructCache[key];
     if (!cacheData)
     {
