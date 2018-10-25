@@ -56,7 +56,7 @@
     self.ID = [result stringForColumn:@"id"];
     self.created = [result longForColumn:@"created"];
     self.modified = [result longForColumn:@"modified"];
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HEntity class]];
     for (NSString *p in pplist)
     {
         NSArray *exts = [[self class] annotations:p];
