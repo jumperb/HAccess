@@ -35,6 +35,10 @@
     }
     return self;
 }
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)addTask:(NSURLSessionTask *)task
 {
     asyncAtQueue(self.dataQueue, ^{
