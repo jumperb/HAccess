@@ -276,7 +276,7 @@
                 if ([arrayItem isKindOfClass:[NSDictionary class]])
                 {
                     NSDictionary *dict2 = arrayItem;
-                    id obj = [[theClass alloc] init];
+                    id obj = [self createObjectWithClass:theClass];
                     [(HDeserializableObject *)obj setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
                     if ([(HDeserializableObject *)obj format_error])
                     {
@@ -328,7 +328,7 @@
         }
         else if ([theClass isSubclassOfClass:[HDeserializableObject class]])
         {
-            id obj = [[theClass alloc] init];
+            id obj = [self createObjectWithClass:theClass];
             [(HDeserializableObject *)obj setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
             if ([(HDeserializableObject *)obj format_error])
             {
@@ -491,7 +491,9 @@
         }
     }
 }
-
+- (id)createObjectWithClass:(Class)cls {
+    return [cls new];
+}
 
 #pragma mark - NSCoping
 - (id)copyWithZone:(nullable NSZone *)zone

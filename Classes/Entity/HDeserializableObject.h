@@ -86,6 +86,9 @@ return;\
 
 //decide the class of a dictionaty , according to data, propert info and annotation, if some error occured, please record to self.format_error and return nil
 - (Class)classForDictionary:(NSDictionary *)item ppDetail:(HPropertyDetail *)ppDetail;
+
+//create obj
+- (id)createObjectWithClass:(Class)cls;
 @end
 
 
