@@ -36,6 +36,7 @@
 		00DD89241B462D6600214FD3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 00DD89231B462D6600214FD3 /* AppDelegate.m */; };
 		00DD892C1B462D6600214FD3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD892B1B462D6600214FD3 /* Images.xcassets */; };
 		00E907851BAD11F600E10652 /* DeserializeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E907841BAD11F600E10652 /* DeserializeDemo.m */; };
+		152761A9221697EF007EE5E2 /* NSObject+HDeserializable.m in Sources */ = {isa = PBXBuildFile; fileRef = 152761A8221697EF007EE5E2 /* NSObject+HDeserializable.m */; };
 		15FC2F011ED2BA91005E8B7B /* HNProvider_AF3.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC2F001ED2BA91005E8B7B /* HNProvider_AF3.m */; };
 		9E68062C1C9BEBB700519539 /* HNetworkDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806241C9BEBB700519539 /* HNetworkDAO.m */; };
 		9E68062D1C9BEBB700519539 /* HNQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6806261C9BEBB700519539 /* HNQueueManager.m */; };
@@ -103,6 +104,8 @@
 		00E907841BAD11F600E10652 /* DeserializeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeserializeDemo.m; sourceTree = "<group>"; };
 		0413D743DE52FC56EE813F8C /* Pods-HAccess.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.debug.xcconfig"; sourceTree = "<group>"; };
 		0E64B8DBCAB9BDE77B441E0F /* Pods-HAccess.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HAccess.release.xcconfig"; path = "Pods/Target Support Files/Pods-HAccess/Pods-HAccess.release.xcconfig"; sourceTree = "<group>"; };
+		152761A7221697EF007EE5E2 /* NSObject+HDeserializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+HDeserializable.h"; sourceTree = "<group>"; };
+		152761A8221697EF007EE5E2 /* NSObject+HDeserializable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+HDeserializable.m"; sourceTree = "<group>"; };
 		15FC2EFF1ED2BA91005E8B7B /* HNProvider_AF3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNProvider_AF3.h; sourceTree = "<group>"; };
 		15FC2F001ED2BA91005E8B7B /* HNProvider_AF3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNProvider_AF3.m; sourceTree = "<group>"; };
 		9E6806221C9BEBB700519539 /* HNDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNDeserializer.h; sourceTree = "<group>"; };
@@ -221,6 +224,8 @@
 				002D86651B465BFA00D1D729 /* HEntity.m */,
 				00769C0F1BA866980022878B /* HPropertyMgr.h */,
 				00769C101BA866980022878B /* HPropertyMgr.m */,
+				152761A7221697EF007EE5E2 /* NSObject+HDeserializable.h */,
+				152761A8221697EF007EE5E2 /* NSObject+HDeserializable.m */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -334,8 +339,6 @@
 				00DD89171B462D6600214FD3 /* Sources */,
 				00DD89181B462D6600214FD3 /* Frameworks */,
 				00DD89191B462D6600214FD3 /* Resources */,
-				309D185F96CF268151DAE35D /* [CP] Embed Pods Frameworks */,
-				4D859408206F3295706BED92 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -395,49 +398,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		309D185F96CF268151DAE35D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HAccess/Pods-HAccess-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4D859408206F3295706BED92 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HAccess/Pods-HAccess-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		92E4E7FA8231818972F6277D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HAccess-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -474,6 +450,7 @@
 				00DD89211B462D6600214FD3 /* main.m in Sources */,
 				15FC2F011ED2BA91005E8B7B /* HNProvider_AF3.m in Sources */,
 				00350FEE1C9FE27300CDF06B /* HNetworkMultiDataObj.m in Sources */,
+				152761A9221697EF007EE5E2 /* NSObject+HDeserializable.m in Sources */,
 				002D86581B462EA300D1D729 /* UserLocalDao.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
