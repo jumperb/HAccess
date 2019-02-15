@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HPropertyMgr.h"
-#import <Hodor/HCommon.h>
+#import <Hodor/NSError+ext.h>
 #import <Hodor/NSObject+annotation.h>
 
 NS_ASSUME_NONNULL_BEGIN
