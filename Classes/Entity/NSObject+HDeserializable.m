@@ -460,7 +460,7 @@
     else if (propertyExts.divideType)
     {
         Class theClass = [self h_getClassWithDivideTypeForItem:item propertyExts:propertyExts ppName:ppDetail.name error:error];
-        if (error) return nil;
+        if (error && *error) return nil;
         if (!theClass)
         {
             NSString *format_error = [NSString stringWithFormat:@"can not decide the type of %@", ppDetail.name];
