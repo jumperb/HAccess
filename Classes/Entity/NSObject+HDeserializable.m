@@ -338,9 +338,14 @@
         Class theClass = [self h_classForDictionary:value ppDetail:ppDetail error:&err];
         if (err) return err;
         
-        if (theClass == [value class])
+        if ([theClass isSubclassOfClass:[NSDictionary class]])
         {
-            [self setValue:value forKey:ppDetail.name];
+            if (theClass == [NSMutableDictionary class]) {
+                [self setValue:[NSMutableDictionary dictionaryWithDictionary:value] forKey:ppDetail.name];
+            }
+            else {
+                [self setValue:value forKey:ppDetail.name];
+            }
         }
         else
         {
