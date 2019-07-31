@@ -118,7 +118,6 @@
         NSString *format_error = [NSString stringWithFormat:@"%@ key's value must be a NSDictionary", NSStringFromClass(self.class)];
         return herr(kDataFormatErrorCode, format_error);
     }
-    
     NSArray *pplist = [[HPropertyMgr shared] entityPropertyDetailList:NSStringFromClass(self.class) deepTo:[NSObject class]];
     
     for (HPropertyDetail *ppDetail in pplist)
@@ -288,32 +287,33 @@
             if (err) return err;
             if (!theClass) continue;
             
-            if (theClass != [arrayItem class])
-            {
+            if (theClass == [arrayItem class] || [[arrayItem class] isSubclassOfClass:theClass]) {
+                [objs addObject:arrayItem];
+            } else {
                 if ([arrayItem isKindOfClass:[NSDictionary class]])
                 {
-                    NSDictionary *dict2 = arrayItem;
-                    id obj = [self h_createObjectWithClass:theClass];
-                    NSError *err = [obj h_setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
-                    if (err)
-                    {
-                        return err;
+                    if (theClass == [NSMutableDictionary class]) {
+                        [objs addObject:[arrayItem mutableCopy]];
                     }
-                    else
-                    {
-                        [objs addObject:obj];
+                    else {
+                        NSDictionary *dict2 = arrayItem;
+                        id obj = [self h_createObjectWithClass:theClass];
+                        NSError *err = [obj h_setWithDictionary:dict2 enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
+                        if (err)
+                        {
+                            return err;
+                        }
+                        else
+                        {
+                            [objs addObject:obj];
+                        }
                     }
-                    
                 }
                 else
                 {
                     NSString *format_error = [NSString stringWithFormat:@"%@:%@ must be NSDictionary type", NSStringFromClass(self.class), ppDetail.name];
                     return herr(kDataFormatErrorCode, format_error);
                 }
-            }
-            else
-            {
-                [objs addObject:arrayItem];
             }
         }
         [self setValue:objs forKey:ppDetail.name];
@@ -338,26 +338,26 @@
         Class theClass = [self h_classForDictionary:value ppDetail:ppDetail error:&err];
         if (err) return err;
         
-        if ([theClass isSubclassOfClass:[NSDictionary class]])
+        if ([value class] == theClass || [[value class] isSubclassOfClass:theClass])
         {
-            if (theClass == [NSMutableDictionary class]) {
-                [self setValue:[NSMutableDictionary dictionaryWithDictionary:value] forKey:ppDetail.name];
-            }
-            else {
-                [self setValue:value forKey:ppDetail.name];
-            }
+            [self setValue:value forKey:ppDetail.name];
         }
         else
         {
-            id obj = [self h_createObjectWithClass:theClass];
-            NSError *err = [obj h_setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
-            if (err)
-            {
-                return err;
+            if (theClass == [NSMutableDictionary class]) {
+                [self setValue:[value mutableCopy] forKey:ppDetail.name];
             }
-            else
-            {
-                [self setValue:obj forKey:ppDetail.name];
+            else {
+                id obj = [self h_createObjectWithClass:theClass];
+                NSError *err = [obj h_setWithDictionary:value enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
+                if (err)
+                {
+                    return err;
+                }
+                else
+                {
+                    [self setValue:obj forKey:ppDetail.name];
+                }
             }
         }
     }
@@ -465,7 +465,7 @@
     else if (propertyExts.divideType)
     {
         Class theClass = [self h_getClassWithDivideTypeForItem:item propertyExts:propertyExts ppName:ppDetail.name error:error];
-        if (error && *error) return nil;
+        if (error) return nil;
         if (!theClass)
         {
             NSString *format_error = [NSString stringWithFormat:@"can not decide the type of %@", ppDetail.name];

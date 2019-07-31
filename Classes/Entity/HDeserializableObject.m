@@ -43,7 +43,7 @@
 }
 - (void)setWithDictionary:(NSDictionary *)dict enableKeyMap:(BOOL)enableKeyMap couldEmpty:(BOOL)couldEmpty
 {
-    NSError *err = [super h_setWithDictionary:dict enableKeyMap:enableKeyMap couldEmpty:NO];
+    NSError *err = [super h_setWithDictionary:dict enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
     if (err) {
         self.format_error = err.localizedDescription;
     }
@@ -72,7 +72,7 @@
         {
             id oldV = [self valueForKey:p];
             if ([oldV isEqual:v]) continue;
-
+            
             if([v isKindOfClass:[NSString class]])
             {
                 [self setValue:[v stringValue] forKey:p];
@@ -107,7 +107,7 @@
         self.format_error = error.localizedDescription;
         return nil;
     }
-    return c;    
+    return c;
 }
 - (Class)h_classForDictionary:(NSDictionary *)item ppDetail:(HPropertyDetail *)ppDetail error:(NSError * _Nullable __autoreleasing *)error {
     Class c = [self classForDictionary:item ppDetail:ppDetail];
@@ -146,7 +146,7 @@
             id v = [self valueForKey:p];
             if(v)
             {
-
+                
                 if([v isKindOfClass:[NSString class]])
                 {
                     [copy setValue:[[v stringValue] copyWithZone:zone] forKey:p];
@@ -195,7 +195,7 @@
             }
         }
     }
-
+    
     return copy;
 }
 @end
