@@ -194,7 +194,7 @@ HReg(HNetworkProviderRegKey)
         for (NSString *key in parametersDict)
         {
             if (paramString.length > 0) [paramString appendFormat:@"&"];
-            [paramString appendFormat:@"%@=%@", key, [parametersDict[key] stringValue]];
+            [paramString appendFormat:@"%@=%@", key, parametersDict[key]];
         }
         
         NSLog(@"\n\n#### send request:\n%@ %@\n%@",self.method, self.urlString, paramString.length>0?paramString:@"");
