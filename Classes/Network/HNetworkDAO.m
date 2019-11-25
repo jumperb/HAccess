@@ -127,7 +127,11 @@
     }
 #endif
     
-    
+    NSURL *testURL = [NSURL URLWithString:urlString];
+    if (!testURL) {
+        [self requestFinishedFailureWithError:herr(kNoDataErrorCode, ([NSString stringWithFormat:@"url is not approved %@", urlString]))];
+        return;
+    }
     //prepare file download path
     if (self.isFileDownload)
     {
