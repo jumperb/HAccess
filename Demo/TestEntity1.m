@@ -41,6 +41,9 @@ ppx(e, HPInnerType([TestEntity1 class]))
 @end
 
 @implementation TestEntity5
+- (int)c {
+    return 5;
+}
 @end
 
 

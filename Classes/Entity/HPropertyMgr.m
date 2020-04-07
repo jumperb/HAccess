@@ -84,6 +84,9 @@
                 {
                     objc_property_t property = properties[i];
                     NSString *key = [[NSString alloc] initWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
+                    const char* attr = property_getAttributes(property);
+                    char *vName = strstr(attr, "V_"); //property in category will not be contained
+                    if (vName == NULL) continue;                    
                     if ([key isEqualToString:@"hash"]) continue;
                     else if ([key isEqualToString:@"superclass"]) continue;
                     else if ([key isEqualToString:@"description"]) continue;

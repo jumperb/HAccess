@@ -55,6 +55,7 @@
 @interface TestEntity5 : HEntity
 @property (nonatomic) NSString *a;
 @property (nonatomic) NSArray<TestEntity4> *b;
+@property (nonatomic, readonly) int c;
 @end
 
 
