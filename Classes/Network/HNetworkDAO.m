@@ -128,7 +128,7 @@
 #endif
     
     NSURL *testURL = [NSURL URLWithString:urlString];
-    if (!testURL) {
+    if (!testURL || !testURL.host) {
         [self requestFinishedFailureWithError:herr(kNoDataErrorCode, ([NSString stringWithFormat:@"url is not approved %@", urlString]))];
         return;
     }
