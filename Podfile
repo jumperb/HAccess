@@ -1,5 +1,5 @@
-platform :ios, :deployment_target => "7.0"
-source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, :deployment_target => "9.0"
+source 'https://cdn.cocoapods.org/'
 
 target 'HAccess' do
 	pod "AFNetworking/NSURLSession"

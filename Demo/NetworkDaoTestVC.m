@@ -175,7 +175,7 @@
     if (!_textBack)
     {
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 60, self.view.width, 60)];
-        back.backgroundColor = [UIColor colorWithHex:0xf5f5f5];
+        back.backgroundColor = [UIColor h_colorWithHex:0xf5f5f5];
         back.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         if (!_textView)
         {
@@ -203,7 +203,7 @@
 
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.layer.cornerRadius = 5;
-        btn.backgroundColor = [UIColor colorWithHex:0x0066cc];
+        btn.backgroundColor = [UIColor h_colorWithHex:0x0066cc];
         btn.frame = CGRectMake(back.width - 60 - 10, (back.height - 44)/2, 60, 44);
         [btn setTintColor:[UIColor darkGrayColor]];
         [btn setTitle:@"send" forState:UIControlStateNormal];

@@ -261,8 +261,7 @@ HReg(HNetworkProviderRegKey)
                                                       completionHandler:completion];
         }
         else {
-            task = [[self sessionManager] dataTaskWithRequest:request
-                                            completionHandler:completion];
+            [[self sessionManager] dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:completion];        
         }
     }
     
