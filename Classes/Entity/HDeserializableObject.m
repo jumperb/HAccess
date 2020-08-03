@@ -63,7 +63,7 @@
 - (void)setWithDObj:(HDeserializableObject *)obj
 {
     if (![obj isKindOfClass:[HDeserializableObject class]]) return;
-    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(self.class) deepTo:[HDeserializableObject class]];
+    NSArray *pplist = [[HPropertyMgr shared] entityPropertylist:NSStringFromClass(obj.class) deepTo:[HDeserializableObject class]];
     for (NSString *p in pplist)
     {
         id v = [obj valueForKey:p];
