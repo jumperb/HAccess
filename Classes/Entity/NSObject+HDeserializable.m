@@ -340,7 +340,13 @@
         
         if ([value class] == theClass || [[value class] isSubclassOfClass:theClass])
         {
-            [self setValue:value forKey:ppDetail.name];
+            //iOS9会判断不准
+            if (theClass == [NSMutableDictionary class]) {
+                [self setValue:[value mutableCopy] forKey:ppDetail.name];
+            }
+            else {
+                [self setValue:value forKey:ppDetail.name];
+            }
         }
         else
         {
