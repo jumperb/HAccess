@@ -80,21 +80,21 @@
     [userDao removes:nil];
     NSLog(@"create new data model");
     User *newUser = [self newUser];
-    NSLog(@"I have create a user: \n%@",[newUser jsonString]);
+    NSLog(@"I have create a user: \n%@",[newUser h_jsonString]);
     [userDao add:newUser];
     NSString *ID = [userDao lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
     
     NSLog(@"query User by ID:%@",ID);
     User *auser = (User *)[userDao get:ID];
-    NSLog(@"User from db:\n%@",[auser jsonString]);
+    NSLog(@"User from db:\n%@",[auser h_jsonString]);
     NSLog(@"update the user，change desc to ‘new desc’");
     auser.desc = @"new desc";
     [userDao update:auser];
     NSLog(@"query the User after update");
     User *updatedUser = (User *)[userDao get:ID];
-    NSLog(@"%@",[updatedUser jsonString]);
-    NSLog(@"the 'desc' and 'modified' of the old object has been changed\n%@",[auser jsonString]);
+    NSLog(@"%@",[updatedUser h_jsonString]);
+    NSLog(@"the 'desc' and 'modified' of the old object has been changed\n%@",[auser h_jsonString]);
     NSLog(@"insert 10 item");
     for (int i = 0; i < 10; i ++)
     {
@@ -104,13 +104,13 @@
     NSArray *users = [userDao list:nil];
     for (User *auser in users)
     {
-        NSLog(@"%@", [auser jsonString]);
+        NSLog(@"%@", [auser h_jsonString]);
     }
     NSLog(@"condition query: sex=0");
     users = [userDao list:@"sex = 0"];
     for (User *auser in users)
     {
-        NSLog(@"%@", [auser jsonString]);
+        NSLog(@"%@", [auser h_jsonString]);
     }
     NSLog(@"query count");
     long count = [userDao count:@"sex = 0"];
@@ -130,7 +130,7 @@
     users = [userDao list:@"sex = 0"];
     for (User *user in users)
     {
-        NSLog(@"%@",[user jsonString]);
+        NSLog(@"%@",[user h_jsonString]);
     }
 }
 
@@ -142,21 +142,21 @@
     [User removes:nil];
     NSLog(@"create new data model");
     User *newUser = [self newUser];
-    NSLog(@"I have create a user: \n%@",[newUser jsonString]);
+    NSLog(@"I have create a user: \n%@",[newUser h_jsonString]);
     [newUser save];
     NSString *ID = [User lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
     
     NSLog(@"query User by ID:%@",ID);
     User *auser = (User *)[User get:ID];
-    NSLog(@"User from db:\n%@",[auser jsonString]);
+    NSLog(@"User from db:\n%@",[auser h_jsonString]);
     NSLog(@"update the user，change desc to ‘new desc’");
     auser.desc = @"new desc";
     [auser update];
     NSLog(@"query the User after update");
     User *updatedUser = (User *)[User get:ID];
-    NSLog(@"%@",[updatedUser jsonString]);
-    NSLog(@"the 'desc' and 'modified' of the old object has been changed\n%@",[auser jsonString]);
+    NSLog(@"%@",[updatedUser h_jsonString]);
+    NSLog(@"the 'desc' and 'modified' of the old object has been changed\n%@",[auser h_jsonString]);
     NSLog(@"insert 10 item");
     for (int i = 0; i < 10; i ++)
     {
@@ -166,13 +166,13 @@
     NSArray *users = [User list:nil];
     for (User *auser in users)
     {
-        NSLog(@"%@", [auser jsonString]);
+        NSLog(@"%@", [auser h_jsonString]);
     }
     NSLog(@"condition query: sex=0");
     users = [User list:@"sex = 0"];
     for (User *auser in users)
     {
-        NSLog(@"%@", [auser jsonString]);
+        NSLog(@"%@", [auser h_jsonString]);
     }
     NSLog(@"query count");
     long count = [User count:@"sex = 0"];
@@ -192,7 +192,7 @@
     users = [User list:@"sex = 0"];
     for (User *user in users)
     {
-        NSLog(@"%@",[user jsonString]);
+        NSLog(@"%@",[user h_jsonString]);
     }
 }
 
@@ -202,14 +202,14 @@
     [Student removes:nil];
     NSLog(@"create new Student model");
     Student *newStudent = [self newStudent];
-    NSLog(@"I have create a Student: \n%@",[newStudent jsonString]);
+    NSLog(@"I have create a Student: \n%@",[newStudent h_jsonString]);
     [newStudent save];
     NSString *ID = [Student lastInsertedID];
     NSLog(@"last inserted ID is %@",ID);
     
     NSLog(@"query Student by ID:%@",ID);
     Student *aStudent = (Student *)[Student get:ID];
-    NSLog(@"Student from db:\n%@",[aStudent jsonString]);
+    NSLog(@"Student from db:\n%@",[aStudent h_jsonString]);
     
     NSLog(@"total Student count : %li", [Student count:nil]);
 }

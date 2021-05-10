@@ -19,7 +19,7 @@
         NSString *errorMsg = [NSString stringWithFormat:@"HNJsonDeserializer: need NSData as input but your data is '%@'", NSStringFromClass([rudeData class])];
         return herr(kDataFormatErrorCode, errorMsg);
     }
-    id jsonValue = [rudeData JSONValue];
+    id jsonValue = [rudeData h_JSONValue];
     if (!jsonValue)
     {
         return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer"

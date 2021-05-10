@@ -29,7 +29,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"deserialize array" callback:^(id sender, id data) {
@@ -47,7 +47,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         [self addMenu:@"deserialize array 2，innertype tag" callback:^(id sender, id data) {
             NSDictionary *dict = @{@"c":@(1),
@@ -73,7 +73,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         [self addMenu:@"check empty, nil" callback:^(id sender, id data) {
             NSDictionary *dict = @{@"a":@(1),@"b":@(2),@"c":@"c"};
@@ -83,7 +83,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"check empty, nil 2" callback:^(id sender, id data) {
@@ -94,7 +94,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"HPOptional tag" callback:^(id sender, id data) {
@@ -105,7 +105,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"check type" callback:^(id sender, id data) {
@@ -116,7 +116,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"check type 2" callback:^(id sender, id data) {
@@ -127,7 +127,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"check type 3" callback:^(id sender, id data) {
@@ -138,7 +138,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"check type 4" callback:^(id sender, id data) {
@@ -149,7 +149,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         [self addMenu:@"check value scope 1" callback:^(id sender, id data) {
             NSDictionary *dict = @{@"a":@(11),@"b":@"12",@"c":@{
@@ -163,7 +163,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         [self addMenu:@"check value scope 2" callback:^(id sender, id data) {
             NSDictionary *dict = @{@"a":@"12",@"b":@"12",@"c":@{
@@ -177,7 +177,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"a complex deserializing" callback:^(id sender, id data) {
@@ -198,7 +198,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"property annotation" callback:^(id sender, id data) {
@@ -209,7 +209,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"autocast test" callback:^(id sender, id data) {
@@ -220,7 +220,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"autocast test2" callback:^(id sender, id data) {
@@ -231,7 +231,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@ date = %@", [entity jsonString], [entity.d displayDesc]);
+            else NSLog(@"deserialize success:%@ date = %@", [entity h_jsonString], [entity.d displayDesc]);
         }];
         
         [self addMenu:@"entity with protocal test" callback:^(id sender, id data) {
@@ -242,7 +242,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         
         [self addMenu:@"entity contain id<xxx> test" callback:^(id sender, id data) {
@@ -254,7 +254,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
         
         [self addMenu:@"HPDivideType test" callback:^(id sender, id data) {
@@ -270,7 +270,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"Reserved works test" callback:^(id sender, id data) {
@@ -281,7 +281,7 @@
             {
                 NSLog(@"%@",entity.format_error);
             }
-            else NSLog(@"deserialize success:%@", [entity jsonString]);
+            else NSLog(@"deserialize success:%@", [entity h_jsonString]);
         }];
 
         [self addMenu:@"NSCopying" callback:^(id sender, id data) {
@@ -299,7 +299,7 @@
             [entity setWithDictionary:dict];
 
             TestEntity5 *copy = [entity copy];
-            NSLog(@"%@", [copy jsonString]);
+            NSLog(@"%@", [copy h_jsonString]);
         }];
     }
     return self;

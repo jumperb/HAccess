@@ -43,7 +43,7 @@
                     NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
                     NSLog(@"error: %@\n orignal: %@", error, orgStr);
                 }
-                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data h_jsonString]);
             }];
             
             
@@ -59,7 +59,7 @@
                     NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
                     NSLog(@"error: %@\n orignal:%@", error, orgStr);
                 }
-                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data h_jsonString]);
             }];
         }];
         
@@ -72,7 +72,7 @@
                     NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
                     NSLog(@"error: %@\n orignal:%@", error, orgStr);
                 }
-                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data jsonString]);
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data h_jsonString]);
             }];
         }];
         
@@ -84,7 +84,7 @@
             dao.cacheType = [HNCacheTypeBoth createWtihCacheDuration:60];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
-                else NSLog(@"%@", [data jsonString]);
+                else NSLog(@"%@", [data h_jsonString]);
             }];
         }];
         
@@ -119,7 +119,7 @@
             }];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
-                else NSLog(@"get file: %@", [data jsonString]);
+                else NSLog(@"get file: %@", [data h_jsonString]);
             }];
         }];
         
@@ -129,7 +129,7 @@
             dao.isFileDownload = YES;
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
-                else NSLog(@"get file: %@", [data jsonString]);
+                else NSLog(@"get file: %@", [data h_jsonString]);
             }];
         }];
         
@@ -139,7 +139,7 @@
             dao.deserializer = [HNEntityDeserializer deserializerWithClass:[TestEntity2 class]];
             [dao startWithQueueName:nil finish:^(id sender, id data, NSError *error) {
                 if (error) NSLog(@"%@", error);
-                else NSLog(@"resp: %@", [data jsonString]);
+                else NSLog(@"resp: %@", [data h_jsonString]);
             }];
         }];
         

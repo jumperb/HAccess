@@ -4,9 +4,7 @@ source 'https://cdn.cocoapods.org/'
 target 'HAccess' do
 	pod "AFNetworking/NSURLSession"
 	pod "FMDB"
-	pod "Hodor/Defines"
-    pod "Hodor/Feature"
-    pod "Hodor/NS-Category"
+	pod "Hodor"
 	pod "HTestVC"
 	pod "HTextInput"
 	pod "HCache"
