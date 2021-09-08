@@ -131,6 +131,9 @@
         if (!mappedKey) mappedKey = ppDetail.name;
         
         id value = [dict valueForKeyPath:mappedKey];
+        if (!value && mappedKey != ppDetail.name) {
+            value = [dict valueForKeyPath:ppDetail.name];
+        }
         if (value)
         {
             NSError *er = [self h_setValue:value forProperty:ppDetail exts:propertyExts enableKeyMap:enableKeyMap couldEmpty:couldEmpty];
