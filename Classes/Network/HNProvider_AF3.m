@@ -8,7 +8,10 @@
 
 #import "HNProvider_AF3.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
-#import <Hodor/HCommon.h>
+#import <Hodor/HClassManager.h>
+#import <Hodor/HDefines.h>
+#import <Hodor/HGCDext.h>
+#import <Hodor/NSObject+ext.h>
 #import "HNetworkMultiDataObj.h"
 #import "HNQueueManager.h"
 
