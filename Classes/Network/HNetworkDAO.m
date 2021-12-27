@@ -533,12 +533,12 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if(_sucessBlock) _sucessBlock(self, res);
+            if(self->_sucessBlock) self->_sucessBlock(self, res);
             
             //clear
-            _failedBlock = nil;
-            _sucessBlock = nil;
-            _holdSelf = nil;
+            self->_failedBlock = nil;
+            self->_sucessBlock = nil;
+            self->_holdSelf = nil;
             self.onRequesting = NO;
         });
     }
@@ -551,12 +551,12 @@
     if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_failedBlock) _failedBlock(self,  error);
+        if(self->_failedBlock) self->_failedBlock(self,  error);
         
         //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
+        self->_failedBlock = nil;
+        self->_sucessBlock = nil;
+        self->_holdSelf = nil;
         self.onRequesting = NO;
         
     });
@@ -565,7 +565,7 @@
 - (void)downloadFinished:(HDownloadFileInfo *)info
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_sucessBlock) _sucessBlock(self, info);
+        if(self->_sucessBlock) self->_sucessBlock(self, info);
         
         //clear
         _failedBlock = nil;
