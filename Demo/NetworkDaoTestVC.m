@@ -143,6 +143,23 @@
             }];
         }];
         
+        [self addMenu:@"test json request" callback:^(id sender, id data) {
+            DemoJsonDao *dao = [DemoJsonDao new];
+            dao.s = @"123";
+            DemoJsonDaoEntity *obj = [DemoJsonDaoEntity new];
+            obj.a = @"a";
+            obj.b = 0;
+            obj.objs = @[CdemoJsonDaoEntity(@"b", 1), CdemoJsonDaoEntity(@"c", 2)];
+            dao.obj = obj;
+            [dao startWithQueueName:nil finish:^(SimpleNetDAO *sender, id data, NSError *error) {
+                if (error)
+                {
+                    NSString *orgStr = [[NSString alloc] initWithData:sender.responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error: %@\n orignal: %@", error, orgStr);
+                }
+                else NSLog(@"resp: %@\n%@", NSStringFromClass([data class]), [data h_jsonString]);
+            }];
+        }];
 //        [self addMenu:@"pbnetwork test" callback:^(id sender, id data) {
 //            @strongify(self)
 //            [self.navigationController pushViewController:[PBNetworkDaoTestVC new] animated:YES];
@@ -291,3 +308,27 @@ ppx(appkey, HPMapto(@"key"))
 @implementation DemoEntity
 ppx(otherInfo, HPIgnore)
 @end
+
+
+@implementation DemoJsonDao
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.baseURL = @"https://www.fastmock.site";
+        self.pathURL = @"mock/68e3baf7b104d3c372fed7a41937caa7/haccess/test/jsonrequest";
+        self.method = @"POST";
+        self.requstContentType = HNContentTypeApplicaitonJson;
+    }
+    return self;
+}
+@end
+
+@implementation DemoJsonDaoEntity
+@end
+DemoJsonDaoEntity *CdemoJsonDaoEntity(NSString *a, int b) {
+    DemoJsonDaoEntity *obj = [DemoJsonDaoEntity new];
+    obj.a = a;
+    obj.b = b;
+    return obj;
+}

@@ -29,7 +29,7 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 #define HPHeader @"header" //if this property is a head attr in request, tag this
 //HPMapto: already defined in HDeserializableObject
 //HPIgnore: already defined in HDeserializableObject
-
+#define HNContentTypeApplicaitonJson @"application/json"
 
 /**
  *  network data access operation

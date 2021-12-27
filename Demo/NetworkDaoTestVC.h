@@ -28,3 +28,17 @@
 @property (nonatomic) NSString *text;
 @property (nonatomic) NSMutableArray *otherInfo;
 @end
+
+
+@interface DemoJsonDaoEntity : NSObject
+@property (nonatomic) NSString *a;
+@property (nonatomic) int b;
+@property (nonatomic) NSArray *objs;
+@end
+DemoJsonDaoEntity *CdemoJsonDaoEntity(NSString *a, int b);
+@interface DemoJsonDao : HNetworkDAO
+@property (nonatomic) DemoJsonDaoEntity *obj;
+@property (nonatomic) NSString *s;
+@end
+
+

@@ -8,9 +8,7 @@
 
 #import "HNProvider_AF3.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
-#import <Hodor/HClassManager.h>
-#import <Hodor/HDefines.h>
-#import <Hodor/HGCDext.h>
+#import <Hodor/HCommon.h>
 #import "HNetworkMultiDataObj.h"
 #import "HNQueueManager.h"
 
@@ -103,7 +101,7 @@ HReg(HNetworkProviderRegKey)
                 }
                 else
                 {
-                    [parametersDict setObject:value forKey:key];
+                    [parametersDict setObject:[value serialization] forKey:key];
                 }
             }
         }
