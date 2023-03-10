@@ -140,10 +140,9 @@ HReg(HNetworkProviderRegKey)
                                if(multiDataObj.datas)
                                {
                                    //datas
-                                   NSString* newKey = [NSString stringWithFormat:@"%@[]",key];
                                    for(NSData* data in multiDataObj.datas)
                                    {
-                                       [multipartFormData appendPartWithFileData:data name:newKey fileName:multiDataObj.fileName mimeType:multiDataObj.mimeType];
+                                       [multipartFormData appendPartWithFileData:data name:key fileName:multiDataObj.fileName mimeType:multiDataObj.mimeType];
                                    }
                                }
                                else if(multiDataObj.data)
