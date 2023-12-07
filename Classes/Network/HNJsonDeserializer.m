@@ -139,18 +139,11 @@
             return herr(kInnerErrorCode, errorMsg);
         }
         
-        if (![targetClass isSubclassOfClass:[HDeserializableObject class]])
+        NSObject *entity = [[targetClass alloc] init];
+        NSError * err = [entity h_setWithDictionary:dict enableKeyMap:YES couldEmpty:NO];
+        if (err)
         {
-            NSString *errorMsg = [NSString stringWithFormat:@"%@: is not subclass of HDeserializableObject", NSStringFromClass(self.class)];
-            return herr(kInnerErrorCode, errorMsg);
-        }
-        
-        HDeserializableObject *entity = (HDeserializableObject *)[[targetClass alloc]init];
-        [entity setWithDictionary:dict];
-        if (entity.format_error)
-        {
-            NSString *errInfo = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), entity.format_error];
-            return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer.HNArrayDeserializer" code:kDataFormatErrorCode description:errInfo];
+            return err;
         }
         [res addObject:entity];
     }
