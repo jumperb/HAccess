@@ -77,20 +77,11 @@
         return herr(kInnerErrorCode, errorMsg);
     }
     //create entity
-    
-    HDeserializableObject *entity = (HDeserializableObject *)[[self.entityClass alloc]init];
-    if (![entity isKindOfClass:[HDeserializableObject class]])
+    NSObject *entity = [[self.entityClass alloc] init];
+    NSError * err = [entity h_setWithDictionary:rudeData enableKeyMap:YES couldEmpty:NO];
+    if (err)
     {
-        
-        NSString *errorMsg = [NSString stringWithFormat:@"%s, %@ is not a subclass of HDeserializableObject", __FUNCTION__, NSStringFromClass(self.entityClass)];
-        return herr(kInnerErrorCode, errorMsg);
-    }
-    
-    
-    [entity setWithDictionary:rudeData];
-    if (entity.format_error)
-    {
-        return [NSError errorWithDomain:@"com.haccess.HNJsonDeserializer.HNEntityDeserializer" code:kDataFormatErrorCode description:entity.format_error];
+        return err;
     }
     else return entity;
     
