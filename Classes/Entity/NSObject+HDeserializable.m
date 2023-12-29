@@ -156,6 +156,16 @@
     value = [self h_preMapValue:value forKey:ppDetail.name];
     if ([value isKindOfClass:[NSError class]]) return value;
     if (!value) value = [NSNull null];
+    
+    if ([ppDetail.typeString isEqualToString:NSStringFromClass([NSObject class])]) { //NSObject类型
+        [self setValue:value forKey:ppDetail.name];
+        return nil;
+    }
+    if (ppDetail.typeCode == '@' && ppDetail.typeString.length == 0) { // id这种类型
+        [self setValue:value forKey:ppDetail.name];
+        return nil;
+    }
+    
     if ([value isKindOfClass:[NSNull class]])
     {
         if(!propertyExts.isOptional)
