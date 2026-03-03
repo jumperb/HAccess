@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HNCacheStrategy.h"
 
-typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
+typedef void(^HNCustomCacheCallback)(BOOL shouldContinue, NSData *cachedData);
 
 
 /**
@@ -20,8 +20,10 @@ typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
 @property (nonatomic) NSString *cacheKey;
 //how long the cache lives, default is a week
 @property (nonatomic) long long cacheDuration;
-//excute cache logic
+//excute cache logic before request
 - (void)cacheLogic:(HNCustomCacheCallback)cacheCallback;
+//excute cache logic on request fail
+- (void)cacheLogicOnFail:(NSError *)error cacheCallback:(HNCustomCacheCallback)cacheCallback;
 //handle response, mostly we just write cache
 - (NSData *)handleRespInfo:(NSData *)respInfo;
 //is my cache usable, if not exist or cache is too old return NO
@@ -57,3 +59,10 @@ typedef void(^HNCustomCacheCallback)(BOOL shouldRequest, NSData *cachedData);
 + (instancetype)createWtihNextRequstInterval:(long long)nextRequestInterval;
 @end
 
+
+/**
+ * When the request fails, if there is a cache, first you will get cached response for success block, then you will get a fail block
+ */
+@interface HNCacheTypeUseCacheOnFail : HNCustomCacheStrategy
++ (instancetype)createWtihCacheDuration:(long long)cacheDuration;
+@end

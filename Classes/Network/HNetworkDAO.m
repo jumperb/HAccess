@@ -9,10 +9,7 @@
 #import "HNetworkDAO.h"
 #import "HDeserializableObject.h"
 #import <HCache/HFileCache.h>
-#import <Hodor/NSObject+ext.h>
-#import <Hodor/NSError+ext.h>
-#import <Hodor/HDefines.h>
-#import <Hodor/HClassManager.h>
+#import <Hodor/HCommon.h>
 
 /**
  *  property desc
@@ -267,7 +264,11 @@
     self.onRequesting = YES;
     _sucessBlock = sucess;
     _failedBlock = failure;
-    [self cacheLogic:queueName];
+    @weakify(self)
+    [self cacheLogic:0 error:nil continueCallback:^(id res){
+        @strongify(self)
+        [self startWithQueueName:queueName];
+    }];
     
 }
 - (void)start:(void(^)(id sender, id data, NSError *error))finish
@@ -277,23 +278,25 @@
 - (void)startWithQueueName:(NSString *)queueName
                     finish:(void(^)(id sender, id data, NSError *error))finish
 {
-    _sucessBlock = ^(id sender, id data){
-        if (finish) finish(sender, data, nil);
-    };
-    _failedBlock = ^(id sender, NSError *error){
-        if (finish) finish(sender, nil, error);
-    };
-    [self cacheLogic:queueName];
+    _finishBlock = finish;
+    @weakify(self)
+    [self cacheLogic:0 error:nil continueCallback:^(id res){
+        @strongify(self)
+        [self startWithQueueName:queueName];
+    }];
 }
-
-- (void)cancel
-{
-    [self.provider cancel];
+- (void)_clear {
     //clear
     _failedBlock = nil;
     _sucessBlock = nil;
+    _finishBlock = nil;
     _holdSelf = nil;
     self.onRequesting = NO;
+}
+- (void)cancel
+{
+    [self.provider cancel];
+    [self _clear];
 }
 
 - (void)setupHeader:(NSMutableDictionary *)headers
@@ -379,7 +382,7 @@
 //local request
 - (void)doLocalFileRequest:(NSString *)urlString
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    asyncAtQueue(dispatch_get_global_queue(0, 0), ^{
         NSData *fileData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
         if (!fileData)
         {
@@ -452,7 +455,13 @@
     return [NSString stringWithFormat:@"%@%@",self.baseURL, self.pathURL];
 }
 
-- (void)cacheLogic:(NSString *)queueName
+
+/// 缓存处理逻辑
+/// - Parameters:
+///   - stage: 阶段 0:请求前, 1:失败后
+///   - error: 失败时的错误，1的时候才填
+///   - continueCallback: 是否继续原逻辑过程
+- (void)cacheLogic:(int)stage error:(NSError *)error continueCallback:(simple_callback)continueCallback
 {
     if ([self.cacheType isKindOfClass:[HNCustomCacheStrategy class]])
     {
@@ -460,38 +469,49 @@
         customCacheStrategy.cacheKey = self.cacheKey;
         @weakify(self)
         @weakify(customCacheStrategy);
-        [customCacheStrategy cacheLogic:^(BOOL shouldRequest, NSData *cachedData) {
+        
+        HNCustomCacheCallback cachaLogCallback = ^(BOOL shouldContinue, NSData *cachedData) {
             @strongify(self)
             @strongify(customCacheStrategy);
+            id res = nil;
             if (cachedData)
             {
-                id res = [self processData:cachedData];
+                res = [self processData:cachedData];
                 if ([res isKindOfClass:[NSError class]] || [res isEqual:HNDRedirectedResp])
                 {
                     NSLog(@"warning : cache data is not correct, it will be deleted");
                     //delete cache
                     [customCacheStrategy deleteCache];
-                    shouldRequest = YES;
+                    shouldContinue = YES;
                 }
                 else
                 {
-                    if(self.sucessBlock) self.sucessBlock(nil, res);
+                    asyncAtMain(^{
+                        [self finishCallback:nil res:res error:error];
+                        [self _clear];
+                    });
                 }
             }
-            if (shouldRequest)
+            if (shouldContinue)
             {
-                [self startWithQueueName:queueName];
+                continueCallback(res);
             }
-            else
-            {
-                self.failedBlock = nil;
-                self.sucessBlock = nil;
-                self.holdSelf = nil;
-            }
-        }];
+        };
+        if (stage == 0) {
+            [customCacheStrategy cacheLogic:cachaLogCallback];
+        }
+        else if (stage == 1) {
+            [customCacheStrategy cacheLogicOnFail:error cacheCallback:cachaLogCallback];
+        }
+        else {
+            continueCallback(nil);
+        }
     }
-    else [self startWithQueueName:queueName];
+    else {
+        continueCallback(nil);
+    }
 }
+
 
 #pragma mark - queue
 + (void)initQueueWithName:(NSString *)queueName maxMaxConcurrent:(NSInteger)maxMaxConcurrent
@@ -512,7 +532,11 @@
     return NO;
 }
 #pragma mark - netWorking finished
-
+- (void)finishCallback:(id)sender res:(id)res error:(NSError *)error {
+    if (self->_finishBlock) self->_finishBlock(sender, res, error);
+    if (res && self->_sucessBlock) self->_sucessBlock(sender, res);
+    if (error && self->_failedBlock) self->_failedBlock(sender, error);
+}
 - (void)requestFinishedSucessWithInfo:(NSData *)responInfo response:(NSURLResponse *)response
 {
     id res = [self processData:responInfo];
@@ -531,15 +555,9 @@
             HNCustomCacheStrategy *customCacheStrategy = self.cacheType;
             [customCacheStrategy handleRespInfo:responInfo];
         }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if(self->_sucessBlock) self->_sucessBlock(self, res);
-            
-            //clear
-            self->_failedBlock = nil;
-            self->_sucessBlock = nil;
-            self->_holdSelf = nil;
-            self.onRequesting = NO;
+        asyncAtMain(^{
+            [self finishCallback:self res:res error:nil];
+            [self _clear];
         });
     }
 }
@@ -549,29 +567,22 @@
 {
     NSLog(@"\n\n#### request error:\n%li,%@,%@ \n url = %@", (long)error.code,error.domain,error.localizedDescription, [self fullurl]);
     if (self.responseData) NSLog(@"data:\n%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
+    @weakify(self)
+    [self cacheLogic:1 error:error continueCallback:^(id res){
+        asyncAtMain(^{
+            @strongify(self)
+            [self finishCallback:self res:res error:error];
+            [self _clear];
+        });
+    }];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->_failedBlock) self->_failedBlock(self,  error);
-        
-        //clear
-        self->_failedBlock = nil;
-        self->_sucessBlock = nil;
-        self->_holdSelf = nil;
-        self.onRequesting = NO;
-        
-    });
 }
 
 - (void)downloadFinished:(HDownloadFileInfo *)info
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->_sucessBlock) self->_sucessBlock(self, info);
-        
-        //clear
-        _failedBlock = nil;
-        _sucessBlock = nil;
-        _holdSelf = nil;
-        self.onRequesting = NO;
+    asyncAtMain(^{
+        [self finishCallback:self res:info error:nil];
+        [self _clear];
     });
 }
 

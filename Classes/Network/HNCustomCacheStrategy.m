@@ -51,7 +51,10 @@
 }
 - (void)cacheLogic:(HNCustomCacheCallback)cacheCallback
 {
-    
+    cacheCallback(YES, nil);
+}
+- (void)cacheLogicOnFail:(NSError *)error cacheCallback:(HNCustomCacheCallback)cacheCallback {
+    cacheCallback(YES, nil);
 }
 - (NSData *)handleRespInfo:(id)respInfo
 {
@@ -134,5 +137,25 @@
         }
     }
     cacheCallback((data == nil), data);
+}
+@end
+
+
+
+@implementation HNCacheTypeUseCacheOnFail
++ (instancetype)createWtihCacheDuration:(long long)cacheDuration
+{
+    HNCacheTypeUseCacheOnFail *cacheType = [HNCacheTypeUseCacheOnFail new];
+    cacheType.cacheDuration = cacheDuration;
+    return cacheType;
+}
+- (void)cacheLogicOnFail:(NSError *)error cacheCallback:(HNCustomCacheCallback)cacheCallback
+{
+    NSData *data = nil;
+    if ([self isCacheUseable:self.cacheKey])
+    {
+        data = [[HFileCache shareCache] dataForKey:self.cacheKey];
+    }
+    cacheCallback(NO, data);
 }
 @end

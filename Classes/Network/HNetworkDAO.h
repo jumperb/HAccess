@@ -22,7 +22,9 @@
 #define HNDRedirectedResp @"HNDRedirectedResp"
 
 @class HNetworkDAO;
-typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
+typedef void(^HNetworkDAOSuccessBlock)(HNetworkDAO* request, id resultInfo);
+typedef void(^HNetworkDAOFailBlock)(HNetworkDAO* request, NSError *error);
+typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo, NSError *error);
 
 
 //ppx annotation
@@ -77,9 +79,9 @@ typedef void(^HNetworkDAOFinishBlock)(HNetworkDAO* request, id resultInfo);
 //is it on requesting
 @property (nonatomic) BOOL onRequesting;
 //only use for subclass
-@property (nonatomic, strong) HNetworkDAOFinishBlock sucessBlock;
-@property (nonatomic, strong) HNetworkDAOFinishBlock failedBlock;
-
+@property (nonatomic, strong) HNetworkDAOSuccessBlock sucessBlock;
+@property (nonatomic, strong) HNetworkDAOFailBlock failedBlock;
+@property (nonatomic, strong) HNetworkDAOFinishBlock finishBlock;
 //mock request
 @property (nonatomic) BOOL isMock;
 //default bundle is HNetworkDAO.bundle
